@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{place.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{place.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/places/add}" th:text="#{place.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${places.empty}" th:text="#{place.list.empty}" />
+            <div th:if="${!places.empty}" class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th th:text="#{place.id.label}" scope="col" />
+                            <th th:text="#{place.name.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="place : ${places}">
+                            <td th:text="${place.id}" />
+                            <td th:text="${place.name}" />
+                            <td>
+                                <form th:action="@{/places/delete/{id}(id=${place.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm float-end">
+                                    <a th:href="@{/places/edit/{id}(id=${place.id})}" th:text="#{place.list.edit}" class="btn btn-sm btn-info" />
+                                    <button th:text="#{place.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
