@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.flywaydb.flyway' version '9.0.2'
 }
 
 group = 'com.humegatech'
@@ -30,4 +31,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/mpls-food'
+    user = 'postgres'
+    password = ''
+    schemas = ['public']
 }
