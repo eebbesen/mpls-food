@@ -15,7 +15,13 @@
             <div th:replace="fragments/forms::globalErrors('deal')" />
             <form th:action="${#httpServletRequest.requestURI}" method="post">
                 <div th:replace="fragments/forms::inputRow(object='deal', field='description', type='textarea')" />
-                <div th:replace="fragments/forms::inputRow(object='deal', field='daysOfWeek')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='sunday', type='checkbox')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='monday', type='checkbox')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='tuesday', type='checkbox')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='wednesday', type='checkbox')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='thursday', type='checkbox')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='friday', type='checkbox')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='saturday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='place', type='select')" />
                 <input type="submit" th:value="#{deal.add.headline}" class="btn btn-primary mt-4" />
             </form>

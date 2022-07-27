@@ -1,7 +1,6 @@
 package com.humegatech.mpls_food.model;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 
 public class DealDTO {
@@ -9,13 +8,24 @@ public class DealDTO {
     private Long id;
 
     @NotNull
-    private String description;
-
-    @Size(max = 255)
-    private String daysOfWeek;
+    private Long place;
 
     @NotNull
-    private Long place;
+    private String description;
+
+    private boolean sunday;
+
+    private boolean monday;
+
+    private boolean tuesday;
+
+    private boolean wednesday;
+
+    private boolean thursday;
+
+    private boolean friday;
+
+    private boolean saturday;
 
     public Long getId() {
         return id;
@@ -33,13 +43,33 @@ public class DealDTO {
         this.description = description;
     }
 
-    public String getDaysOfWeek() {
-        return daysOfWeek;
-    }
+    public boolean isSunday() { return sunday; }
 
-    public void setDaysOfWeek(final String daysOfWeek) {
-        this.daysOfWeek = daysOfWeek;
-    }
+    public void setSunday(final boolean sunday) { this.sunday = sunday; }
+
+    public boolean isMonday() { return monday; }
+
+    public void setMonday(final boolean monday) { this.monday = monday; }
+
+    public boolean isTuesday() { return tuesday; }
+
+    public void setTuesday(final boolean tuesday) { this.tuesday = tuesday; }
+
+    public boolean isWednesday() { return wednesday; }
+
+    public void setWednesday(final boolean wednesday) { this.wednesday = wednesday; }
+
+    public boolean isThursday() { return thursday; }
+
+    public void setThursday(final boolean thursday) { this.thursday = thursday; }
+
+    public boolean isFriday() { return friday; }
+
+    public void setFriday(final boolean friday) { this.friday = friday; }
+
+    public boolean isSaturday() { return saturday; }
+
+    public void setSaturday(final boolean saturday) { this.saturday = saturday; }
 
     public Long getPlace() {
         return place;

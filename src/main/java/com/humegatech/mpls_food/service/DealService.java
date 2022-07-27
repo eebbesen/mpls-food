@@ -57,14 +57,26 @@ public class DealService {
     private DealDTO mapToDTO(final Deal deal, final DealDTO dealDTO) {
         dealDTO.setId(deal.getId());
         dealDTO.setDescription(deal.getDescription());
-        dealDTO.setDaysOfWeek(deal.getDaysOfWeek());
+        dealDTO.setSunday(deal.isSunday());
+        dealDTO.setMonday(deal.isMonday());
+        dealDTO.setTuesday(deal.isTuesday());
+        dealDTO.setWednesday(deal.isWednesday());
+        dealDTO.setThursday(deal.isThursday());
+        dealDTO.setFriday(deal.isFriday());
+        dealDTO.setSaturday(deal.isSaturday());
         dealDTO.setPlace(deal.getPlace() == null ? null : deal.getPlace().getId());
         return dealDTO;
     }
 
     private Deal mapToEntity(final DealDTO dealDTO, final Deal deal) {
         deal.setDescription(dealDTO.getDescription());
-        deal.setDaysOfWeek(dealDTO.getDaysOfWeek());
+        deal.setSunday(dealDTO.isSunday());
+        deal.setMonday(dealDTO.isMonday());
+        deal.setTuesday(dealDTO.isTuesday());
+        deal.setWednesday(dealDTO.isWednesday());
+        deal.setThursday(dealDTO.isThursday());
+        deal.setFriday(dealDTO.isFriday());
+        deal.setSaturday(dealDTO.isSaturday());
         final Place place = dealDTO.getPlace() == null ? null : placeRepository.findById(dealDTO.getPlace())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "place not found"));
         deal.setPlace(place);

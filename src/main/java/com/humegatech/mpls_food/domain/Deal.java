@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -37,9 +39,6 @@ public class Deal {
     @Column(nullable = false, columnDefinition = "text")
     private String description;
 
-    @Column
-    private String daysOfWeek;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
@@ -51,6 +50,34 @@ public class Deal {
     @LastModifiedDate
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
+
+    @Column
+    @Value("false")
+    private boolean sunday;
+
+    @Column
+    @Value("false")
+    private boolean monday;
+
+    @Column
+    @Value("false")
+    private boolean tuesday;
+
+    @Column
+    @Value("false")
+    private boolean wednesday;
+
+    @Column
+    @Value("false")
+    private boolean thursday;
+
+    @Column
+    @Value("false")
+    private boolean friday;
+
+    @Column
+    @Value("false")
+    private boolean saturday;
 
     public Long getId() {
         return id;
@@ -66,14 +93,6 @@ public class Deal {
 
     public void setDescription(final String description) {
         this.description = description;
-    }
-
-    public String getDaysOfWeek() {
-        return daysOfWeek;
-    }
-
-    public void setDaysOfWeek(final String daysOfWeek) {
-        this.daysOfWeek = daysOfWeek;
     }
 
     public Place getPlace() {
@@ -99,5 +118,33 @@ public class Deal {
     public void setLastUpdated(final OffsetDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
+
+    public boolean isSunday() { return sunday; }
+
+    public void setSunday(final boolean sunday) { this.sunday = sunday; }
+
+    public boolean isMonday() { return monday; }
+
+    public void setMonday(final boolean monday) { this.monday = monday; }
+
+    public boolean isTuesday() { return tuesday; }
+
+    public void setTuesday(final boolean tuesday) { this.tuesday = tuesday; }
+
+    public boolean isWednesday() { return wednesday; }
+
+    public void setWednesday(final boolean wednesday) { this.wednesday = wednesday; }
+
+    public boolean isThursday() { return thursday; }
+
+    public void setThursday(final boolean thursday) { this.thursday = thursday; }
+
+    public boolean isFriday() { return friday; }
+
+    public void setFriday(final boolean friday) { this.friday = friday; }
+
+    public boolean isSaturday() { return saturday; }
+
+    public void setSaturday(final boolean saturday) { this.saturday = saturday; }
 
 }

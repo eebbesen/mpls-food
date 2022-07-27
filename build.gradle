@@ -38,4 +38,5 @@ flyway {
     user = 'postgres'
     password = ''
     schemas = ['public']
+    cleanDisabled = false
 }
