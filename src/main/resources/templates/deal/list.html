@@ -17,29 +17,15 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th th:text="#{deal.id.label}" scope="col" />
-                            <th th:text="#{deal.sunday.label}" scope="col" />
-                            <th th:text="#{deal.monday.label}" scope="col" />
-                            <th th:text="#{deal.tuesday.label}" scope="col" />
-                            <th th:text="#{deal.wednesday.label}" scope="col" />
-                            <th th:text="#{deal.thursday.label}" scope="col" />
-                            <th th:text="#{deal.friday.label}" scope="col" />
-                            <th th:text="#{deal.saturday.label}" scope="col" />
+                            <th th:text="#{deal.description.label}" scope="col" />
                             <th th:text="#{deal.place.label}" scope="col" />
                             <th><!-- --></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="deal : ${deals}">
-                            <td th:text="${deal.id}" />
-                            <td th:text="${deal.sunday}" />
-                            <td th:text="${deal.monday}" />
-                            <td th:text="${deal.tuesday}" />
-                            <td th:text="${deal.wednesday}" />
-                            <td th:text="${deal.thursday}" />
-                            <td th:text="${deal.friday}" />
-                            <td th:text="${deal.saturday}" />
-                            <td th:text="${deal.place}" />
+                            <td th:text="${deal.description}" />
+                            <td th:text="${placeValues.get(deal.place)}" />
                             <td>
                                 <form th:action="@{/deals/delete/{id}(id=${deal.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm float-end">
                                     <a th:href="@{/deals/edit/{id}(id=${deal.id})}" th:text="#{deal.list.edit}" class="btn btn-sm btn-info" />
