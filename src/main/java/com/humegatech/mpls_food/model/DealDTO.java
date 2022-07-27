@@ -79,4 +79,46 @@ public class DealDTO {
         this.place = place;
     }
 
+    public String daysActive() {
+        String daysActive = "";
+
+        if (sunday) {
+            daysActive = concat(daysActive, "Sunday");
+        }
+
+        if (monday) {
+            daysActive = concat(daysActive, "Monday");
+        }
+
+        if (tuesday) {
+            daysActive = concat(daysActive, "Tuesday");
+        }
+
+        if (wednesday) {
+            daysActive = concat(daysActive, "Wednesday");
+        }
+
+        if (thursday) {
+            daysActive = concat(daysActive, "Thursday");
+        }
+
+        if (friday) {
+            daysActive = concat(daysActive, "Friday");
+        }
+
+        if (saturday) {
+            daysActive = concat(daysActive, "Saturday");
+        }
+
+        return daysActive;
+    }
+
+    private static String concat(final String text, final String newValue){
+        if (text.length() > 0) {
+            return String.format("%s, %s", text, newValue);
+        }
+
+        return newValue;
+    }
+
 }
