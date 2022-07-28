@@ -57,4 +57,12 @@ public class PlaceDTO {
 
     public void setOrderAhead(final boolean orderAhead) { this.orderAhead = orderAhead; }
 
+    public String truncatedAddress() {
+        if ( address.indexOf("\n") < 0 ) {
+            return address;
+        }
+
+        return address.substring(0, address.lastIndexOf("\n")).replaceAll("\n", " ");
+    }
+
 }

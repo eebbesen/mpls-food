@@ -19,7 +19,6 @@
                         <tr>
                             <th th:text="#{place.name.label}" scope="col" />
                             <th th:text="#{place.address.label}" scope="col" />
-                            <th th:text="#{place.website.label}" scope="col" />
                             <th th:text="#{place.app.label}" scope="col" />
                             <th th:text="#{place.orderAhead.label}" scope="col" />
                             <th><!-- --></th>
@@ -27,9 +26,8 @@
                     </thead>
                     <tbody>
                         <tr th:each="place : ${places}">
-                            <td th:text="${place.name}" />
-                            <td th:text="${place.address}" />
-                            <td><a th:href="@{${place.website}}" th:text="${#strings.abbreviate(place.website,50)}" /></td>
+                            <td><a th:href="@{${place.website}}" th:text="${place.name}" /></td>
+                            <td th:text="${place.truncatedAddress}" />
                             <td th:text="${place.app}" />
                             <td th:text="${place.orderAhead}" />
                             <td>

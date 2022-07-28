@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DealDTOTest {
+
     @Test
     public void testDaysActive() {
         DealDTO deal = new DealDTO();
