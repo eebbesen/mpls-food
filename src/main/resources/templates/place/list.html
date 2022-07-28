@@ -29,7 +29,7 @@
                         <tr th:each="place : ${places}">
                             <td th:text="${place.name}" />
                             <td th:text="${place.address}" />
-                            <td th:text="${place.website}" />
+                            <td><a th:href="@{${place.website}}" th:text="${#strings.abbreviate(place.website,50)}" /></td>
                             <td th:text="${place.app}" />
                             <td th:text="${place.orderAhead}" />
                             <td>
