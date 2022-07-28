@@ -19,6 +19,9 @@
                         <tr>
                             <th th:text="#{place.name.label}" scope="col" />
                             <th th:text="#{place.address.label}" scope="col" />
+                            <th th:text="#{place.website.label}" scope="col" />
+                            <th th:text="#{place.app.label}" scope="col" />
+                            <th th:text="#{place.orderAhead.label}" scope="col" />
                             <th><!-- --></th>
                         </tr>
                     </thead>
@@ -26,6 +29,9 @@
                         <tr th:each="place : ${places}">
                             <td th:text="${place.name}" />
                             <td th:text="${place.address}" />
+                            <td th:text="${place.website}" />
+                            <td th:text="${place.app}" />
+                            <td th:text="${place.orderAhead}" />
                             <td>
                                 <form th:action="@{/places/delete/{id}(id=${place.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm float-end">
                                     <a th:href="@{/places/edit/{id}(id=${place.id})}" th:text="#{place.list.edit}" class="btn btn-sm btn-info" />

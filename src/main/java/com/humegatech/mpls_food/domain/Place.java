@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -42,6 +44,18 @@ public class Place {
     @OneToMany(mappedBy = "place")
     private Set<Deal> placeDeals;
 
+    @Column
+    private String website;
+
+
+    @Column
+    @Value("false")
+    private boolean app;
+
+    @Column
+    @Value("false")
+    private boolean orderAhead;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private OffsetDateTime dateCreated;
@@ -73,6 +87,18 @@ public class Place {
     public void setAddress(final String address) {
         this.address = address;
     }
+
+    public String getWebsite() { return website; }
+
+    public void setWebsite(String website) { this.website = website; }
+
+    public boolean isApp() { return app; }
+
+    public void setApp(boolean app) { this.app = app; }
+
+    public boolean isOrderAhead() { return orderAhead; }
+
+    public void setOrderAhead(boolean orderAhead) { this.orderAhead = orderAhead; }
 
     public Set<Deal> getPlaceDeals() {
         return placeDeals;

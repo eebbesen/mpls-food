@@ -16,6 +16,9 @@
             <form th:action="${#httpServletRequest.requestURI}" method="post">
                 <div th:replace="fragments/forms::inputRow(object='place', field='name')" />
                 <div th:replace="fragments/forms::inputRow(object='place', field='address', type='textarea')" />
+                <div th:replace="fragments/forms::inputRow(object='place', field='website')" />
+                <div th:replace="fragments/forms::inputRow(object='place', field='app', type='checkbox')" />
+                <div th:replace="fragments/forms::inputRow(object='place', field='orderAhead', type='checkbox')" />
                 <input type="submit" th:value="#{place.add.headline}" class="btn btn-primary mt-4" />
             </form>
         </div>

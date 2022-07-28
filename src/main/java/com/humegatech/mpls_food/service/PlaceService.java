@@ -56,12 +56,18 @@ public class PlaceService {
         placeDTO.setId(place.getId());
         placeDTO.setName(place.getName());
         placeDTO.setAddress(place.getAddress());
+        placeDTO.setWebsite(place.getWebsite());
+        placeDTO.setApp(place.isApp());
+        placeDTO.setOrderAhead(place.isOrderAhead());
         return placeDTO;
     }
 
     private Place mapToEntity(final PlaceDTO placeDTO, final Place place) {
         place.setName(placeDTO.getName());
         place.setAddress(placeDTO.getAddress());
+        place.setWebsite(placeDTO.getWebsite());
+        place.setApp(placeDTO.isApp());
+        place.setOrderAhead(placeDTO.isOrderAhead());
         return place;
     }
 

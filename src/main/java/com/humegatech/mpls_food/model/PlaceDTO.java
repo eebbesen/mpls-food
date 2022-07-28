@@ -15,6 +15,12 @@ public class PlaceDTO {
     @NotNull
     private String address;
 
+    private String website;
+
+    private boolean app;
+
+    private boolean orderAhead;
+
     public Long getId() {
         return id;
     }
@@ -38,5 +44,17 @@ public class PlaceDTO {
     public void setAddress(final String address) {
         this.address = address;
     }
+
+    public String getWebsite() { return website; }
+
+    public void setWebsite(final String website) { this.website = website; }
+
+    public boolean isApp() { return app; }
+
+    public void setApp(final boolean app) { this.app = app; }
+
+    public boolean isOrderAhead() { return orderAhead; };
+
+    public void setOrderAhead(final boolean orderAhead) { this.orderAhead = orderAhead; }
 
 }
