@@ -17,15 +17,15 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th th:text="#{place.id.label}" scope="col" />
                             <th th:text="#{place.name.label}" scope="col" />
+                            <th th:text="#{place.address.label}" scope="col" />
                             <th><!-- --></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="place : ${places}">
-                            <td th:text="${place.id}" />
                             <td th:text="${place.name}" />
+                            <td th:text="${place.address}" />
                             <td>
                                 <form th:action="@{/places/delete/{id}(id=${place.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm float-end">
                                     <a th:href="@{/places/edit/{id}(id=${place.id})}" th:text="#{place.list.edit}" class="btn btn-sm btn-info" />

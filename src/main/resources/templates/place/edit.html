@@ -16,7 +16,7 @@
             <form th:action="${#httpServletRequest.requestURI}" method="post">
                 <div th:replace="fragments/forms::inputRow(object='place', field='name')" />
                 <div th:replace="fragments/forms::inputRow(object='place', field='address', type='textarea')" />
-                <input type="submit" th:value="#{place.edit.headline}" class="btn btn-primary mt-4" />
+                <input type="submit" th:value="#{place.save.headline}" class="btn btn-primary mt-4" />
             </form>
         </div>
     </body>
