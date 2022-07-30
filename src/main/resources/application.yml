@@ -20,7 +20,7 @@ spring:
           new_generator_mappings: true
   security:
     user:
-      name: ${FOOD_USERNAME}
-      password: ${FOOD_PASSWORD}
+      name: user
+      password: user
 springdoc:
   pathsToMatch: /api/**
