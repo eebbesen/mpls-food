@@ -5,6 +5,7 @@ import com.humegatech.mpls_food.model.DealDTO;
 import com.humegatech.mpls_food.repos.PlaceRepository;
 import com.humegatech.mpls_food.service.DealService;
 import com.humegatech.mpls_food.util.WebUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,11 +41,13 @@ public class DealController {
     }
 
     @GetMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String add(@ModelAttribute("deal") final DealDTO dealDTO) {
         return "deal/add";
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String add(@ModelAttribute("deal") @Valid final DealDTO dealDTO,
             final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -56,12 +59,14 @@ public class DealController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String edit(@PathVariable final Long id, final Model model) {
         model.addAttribute("deal", dealService.get(id));
         return "deal/edit";
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String edit(@PathVariable final Long id,
             @ModelAttribute("deal") @Valid final DealDTO dealDTO, final BindingResult bindingResult,
             final RedirectAttributes redirectAttributes) {
@@ -74,6 +79,7 @@ public class DealController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
         dealService.delete(id);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("deal.delete.success"));

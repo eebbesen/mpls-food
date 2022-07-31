@@ -4,6 +4,8 @@ import com.humegatech.mpls_food.model.PlaceDTO;
 import com.humegatech.mpls_food.service.PlaceService;
 import com.humegatech.mpls_food.util.WebUtils;
 import javax.validation.Valid;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,11 +34,13 @@ public class PlaceController {
     }
 
     @GetMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String add(@ModelAttribute("place") final PlaceDTO placeDTO) {
         return "place/add";
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String add(@ModelAttribute("place") @Valid final PlaceDTO placeDTO,
             final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (!bindingResult.hasFieldErrors("name") &&
@@ -52,12 +56,14 @@ public class PlaceController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String edit(@PathVariable final Long id, final Model model) {
         model.addAttribute("place", placeService.get(id));
         return "place/edit";
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String edit(@PathVariable final Long id,
             @ModelAttribute("place") @Valid final PlaceDTO placeDTO,
             final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
@@ -75,6 +81,7 @@ public class PlaceController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
         final String referencedWarning = placeService.getReferencedWarning(id);
         if (referencedWarning != null) {
