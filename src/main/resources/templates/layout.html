@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
         <title th:text="#{app.title}" layout:title-pattern="$CONTENT_TITLE | $LAYOUT_TITLE" />
         <meta charset="utf-8" />
@@ -36,6 +36,14 @@
                                     <li><a th:href="@{/places}" th:text="#{place.list.headline}" class="dropdown-item" /></li>
                                     <li><a th:href="@{/deals}" th:text="#{deal.list.headline}" class="dropdown-item" /></li>
                                 </ul>
+                            </li>
+                            <li class="navbar-item" sec:authorize="isAuthenticated()">
+                                <form th:action="@{/logout}" method="post">
+                                    <input type="submit" value="Logout" class="nav-link border-0 bg-transparent"/>
+                                </form>
+                            </li>
+                            <li class="navbar-item" sec:authorize="isAnonymous()">
+                                <a th:href="@{/login}" th:text="#{navigation.login}" class="nav-link" />
                             </li>
                         </ul>
                     </div>

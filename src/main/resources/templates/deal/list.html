@@ -8,8 +8,10 @@
         <div layout:fragment="content">
             <div class="d-flex flex-wrap mb-4">
                 <h1 th:text="#{deal.list.headline}" class="flex-grow-1" />
-                <div>
-                    <a th:href="@{/deals/add}" th:text="#{deal.list.createNew}" class="btn btn-primary ms-2" />
+                <div sec:authorize="isAuthenticated()">
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a th:href="@{/deals/add}" th:text="#{deal.list.createNew}" class="btn btn-primary ms-2" />
+                    </div>
                 </div>
             </div>
             <div th:if="${deals.empty}" th:text="#{deal.list.empty}" />
@@ -28,11 +30,15 @@
                             <td th:text="${deal.description}" />
                             <td th:text="${placeValues.get(deal.place)}" />
                             <td th:text="${deal.daysActive}" />
-                            <td>
-                                <form th:action="@{/deals/delete/{id}(id=${deal.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm float-end">
-                                    <a th:href="@{/deals/edit/{id}(id=${deal.id})}" th:text="#{deal.list.edit}" class="btn btn-sm btn-info" />
-                                    <button th:text="#{deal.list.delete}" type="submit" class="btn btn-sm btn-danger" />
-                                </form>
+                                <td>
+                                    <div sec:authorize="isAuthenticated()">
+                                        <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <form th:action="@{/deals/delete/{id}(id=${deal.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm float-end">
+                                            <a th:href="@{/deals/edit/{id}(id=${deal.id})}" th:text="#{deal.list.edit}" class="btn btn-sm btn-info" />
+                                            <button th:text="#{deal.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                        </form>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>

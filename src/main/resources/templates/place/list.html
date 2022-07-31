@@ -8,8 +8,10 @@
         <div layout:fragment="content">
             <div class="d-flex flex-wrap mb-4">
                 <h1 th:text="#{place.list.headline}" class="flex-grow-1" />
-                <div>
-                    <a th:href="@{/places/add}" th:text="#{place.list.createNew}" class="btn btn-primary ms-2" />
+                <div sec:authorize="isAuthenticated()">
+                    <div sec:authorize="hasRole('ROLE_USER')">
+                        <a th:href="@{/places/add}" th:text="#{place.list.createNew}" class="btn btn-primary ms-2" />
+                    </div>
                 </div>
             </div>
             <div th:if="${places.empty}" th:text="#{place.list.empty}" />
@@ -31,10 +33,14 @@
                             <td th:text="${place.app}" />
                             <td th:text="${place.orderAhead}" />
                             <td>
-                                <form th:action="@{/places/delete/{id}(id=${place.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm float-end">
-                                    <a th:href="@{/places/edit/{id}(id=${place.id})}" th:text="#{place.list.edit}" class="btn btn-sm btn-info" />
-                                    <button th:text="#{place.list.delete}" type="submit" class="btn btn-sm btn-danger" />
-                                </form>
+                                <div sec:authorize="isAuthenticated()">
+                                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <form th:action="@{/places/delete/{id}(id=${place.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm float-end">
+                                            <a th:href="@{/places/edit/{id}(id=${place.id})}" th:text="#{place.list.edit}" class="btn btn-sm btn-info" />
+                                            <button th:text="#{place.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                        </form>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
