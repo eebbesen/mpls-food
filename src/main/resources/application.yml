@@ -10,6 +10,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
     open-in-view: false
     properties:
       hibernate:
@@ -22,5 +23,10 @@ spring:
     user:
       name: user
       password: user
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 springdoc:
   pathsToMatch: /api/**
