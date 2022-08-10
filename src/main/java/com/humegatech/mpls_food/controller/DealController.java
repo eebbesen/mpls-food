@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 
 @Controller
-@RequestMapping("/deals")
 public class DealController {
 
     private final DealService dealService;
@@ -28,13 +27,14 @@ public class DealController {
         this.placeRepository = placeRepository;
     }
 
-    @ModelAttribute
-    public void prepareContext(final Model model) {
-        model.addAttribute("placeValues", placeRepository.findAll().stream().collect(
-                Collectors.toMap(Place::getId, Place::getName)));
-    }
+//    @ModelAttribute
+//    public void prepareContext(final Model model) {
+//        model.addAttribute("placeValues", placeRepository.findAll().stream().collect(
+//                Collectors.toMap(Place::getId, Place::getName)));
+//    }
 
     @GetMapping
+    @RequestMapping("/deals")
     public String list(final Model model) {
         model.addAttribute("deals", dealService.findAll());
         return "deal/list";

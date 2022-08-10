@@ -2,14 +2,7 @@ package com.humegatech.mpls_food.domain;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
@@ -41,7 +34,8 @@ public class Place {
     @Column(nullable = false, columnDefinition = "text")
     private String address;
 
-    @OneToMany(mappedBy = "place")
+    @OneToMany
+    @JoinColumn(name = "place_id")
     private Set<Deal> placeDeals;
 
     @Column

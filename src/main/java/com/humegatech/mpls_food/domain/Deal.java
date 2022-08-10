@@ -39,8 +39,7 @@ public class Deal {
     @Column(nullable = false, columnDefinition = "text")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "place_id", nullable = false)
+    @ManyToOne
     private Place place;
 
     @CreatedDate

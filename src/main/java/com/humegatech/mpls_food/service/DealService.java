@@ -64,7 +64,7 @@ public class DealService {
         dealDTO.setThursday(deal.isThursday());
         dealDTO.setFriday(deal.isFriday());
         dealDTO.setSaturday(deal.isSaturday());
-        dealDTO.setPlace(deal.getPlace() == null ? null : deal.getPlace().getId());
+        dealDTO.setPlace(deal.getPlace() == null ? null : deal.getPlace());
         return dealDTO;
     }
 
@@ -77,7 +77,7 @@ public class DealService {
         deal.setThursday(dealDTO.isThursday());
         deal.setFriday(dealDTO.isFriday());
         deal.setSaturday(dealDTO.isSaturday());
-        final Place place = dealDTO.getPlace() == null ? null : placeRepository.findById(dealDTO.getPlace())
+        final Place place = dealDTO.getPlace() == null ? null : placeRepository.findById(dealDTO.getPlace().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "place not found"));
         deal.setPlace(place);
         return deal;

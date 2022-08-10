@@ -28,7 +28,7 @@
                     <tbody>
                         <tr th:each="deal : ${deals}">
                             <td th:text="${deal.description}" />
-                            <td th:text="${placeValues.get(deal.place)}" />
+                            <td th:text="${deal.place.name}" />
                             <td th:text="${deal.daysActive}" />
                                 <td>
                                     <div sec:authorize="isAuthenticated()">

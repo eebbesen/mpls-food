@@ -1,5 +1,7 @@
 package com.humegatech.mpls_food.model;
 
+import com.humegatech.mpls_food.domain.Place;
+
 import javax.validation.constraints.NotNull;
 
 
@@ -8,7 +10,7 @@ public class DealDTO {
     private Long id;
 
     @NotNull
-    private Long place;
+    private Place place;
 
     @NotNull
     private String description;
@@ -71,11 +73,11 @@ public class DealDTO {
 
     public void setSaturday(final boolean saturday) { this.saturday = saturday; }
 
-    public Long getPlace() {
+    public Place getPlace() {
         return place;
     }
 
-    public void setPlace(final Long place) {
+    public void setPlace(final Place place) {
         this.place = place;
     }
 
