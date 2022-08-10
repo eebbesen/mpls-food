@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 
+@RequestMapping("/deals")
 @Controller
 public class DealController {
 
@@ -27,14 +28,13 @@ public class DealController {
         this.placeRepository = placeRepository;
     }
 
-//    @ModelAttribute
-//    public void prepareContext(final Model model) {
-//        model.addAttribute("placeValues", placeRepository.findAll().stream().collect(
-//                Collectors.toMap(Place::getId, Place::getName)));
-//    }
+    @ModelAttribute
+    public void prepareContext(final Model model) {
+        model.addAttribute("placeValues", placeRepository.findAll().stream().collect(
+                Collectors.toMap(Place::getId, Place::getName)));
+    }
 
-    @GetMapping
-    @RequestMapping("/deals")
+    @GetMapping()
     public String list(final Model model) {
         model.addAttribute("deals", dealService.findAll());
         return "deal/list";
