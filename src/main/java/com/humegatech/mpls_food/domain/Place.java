@@ -1,32 +1,24 @@
 package com.humegatech.mpls_food.domain;
 
-import java.time.OffsetDateTime;
-import java.util.Set;
-import javax.persistence.*;
-
+import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.*;
+import java.time.OffsetDateTime;
+import java.util.Set;
+
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Place {
-
-    @Id
-    @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
-    private Long id;
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Place extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -34,13 +26,12 @@ public class Place {
     @Column(nullable = false, columnDefinition = "text")
     private String address;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "place_id")
     private Set<Deal> placeDeals;
 
     @Column
     private String website;
-
 
     @Column
     @Value("false")
@@ -58,64 +49,29 @@ public class Place {
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
 
-    public Long getId() {
-        return id;
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + address.hashCode();
+        result = 31 * result + (placeDeals != null ? placeDeals.hashCode() : 0);
+        result = 31 * result + (website != null ? website.hashCode() : 0);
+        result = 31 * result + (app ? 1 : 0);
+        result = 31 * result + (orderAhead ? 1 : 0);
+        return result;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Place place = (Place) o;
+
+        if (app != place.app) return false;
+        if (orderAhead != place.orderAhead) return false;
+        if (!name.equals(place.name)) return false;
+        if (!address.equals(place.address)) return false;
+        if (placeDeals != null ? !placeDeals.equals(place.placeDeals) : place.placeDeals != null) return false;
+        return website != null ? website.equals(place.website) : place.website == null;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(final String address) {
-        this.address = address;
-    }
-
-    public String getWebsite() { return website; }
-
-    public void setWebsite(String website) { this.website = website; }
-
-    public boolean isApp() { return app; }
-
-    public void setApp(boolean app) { this.app = app; }
-
-    public boolean isOrderAhead() { return orderAhead; }
-
-    public void setOrderAhead(boolean orderAhead) { this.orderAhead = orderAhead; }
-
-    public Set<Deal> getPlaceDeals() {
-        return placeDeals;
-    }
-
-    public void setPlaceDeals(final Set<Deal> placeDeals) {
-        this.placeDeals = placeDeals;
-    }
-
-    public OffsetDateTime getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(final OffsetDateTime dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public OffsetDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(final OffsetDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
-
 }

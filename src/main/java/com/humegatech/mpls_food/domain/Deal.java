@@ -1,40 +1,26 @@
 package com.humegatech.mpls_food.domain;
 
-import java.time.OffsetDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-
+import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.ManyToOne;
+import java.time.OffsetDateTime;
+
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Deal {
-
-    @Id
-    @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
-    private Long id;
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Deal extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "text")
     private String description;
@@ -78,72 +64,34 @@ public class Deal {
     @Value("false")
     private boolean saturday;
 
-    public Long getId() {
-        return id;
+    @Override
+    public int hashCode() {
+        // TODO: why is description ever null when I don't allow that
+        int result = description == null ? 31 : description.hashCode();
+        result = 31 * result + (sunday ? 1 : 0);
+        result = 31 * result + (monday ? 1 : 0);
+        result = 31 * result + (tuesday ? 1 : 0);
+        result = 31 * result + (wednesday ? 1 : 0);
+        result = 31 * result + (thursday ? 1 : 0);
+        result = 31 * result + (friday ? 1 : 0);
+        result = 31 * result + (saturday ? 1 : 0);
+        return result;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Deal deal = (Deal) o;
+
+        if (sunday != deal.sunday) return false;
+        if (monday != deal.monday) return false;
+        if (tuesday != deal.tuesday) return false;
+        if (wednesday != deal.wednesday) return false;
+        if (thursday != deal.thursday) return false;
+        if (friday != deal.friday) return false;
+        if (saturday != deal.saturday) return false;
+        return (description != null ? description.equals(deal.description) : deal.description != null);
     }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    public Place getPlace() {
-        return place;
-    }
-
-    public void setPlace(final Place place) {
-        this.place = place;
-    }
-
-    public OffsetDateTime getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(final OffsetDateTime dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public OffsetDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(final OffsetDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
-
-    public boolean isSunday() { return sunday; }
-
-    public void setSunday(final boolean sunday) { this.sunday = sunday; }
-
-    public boolean isMonday() { return monday; }
-
-    public void setMonday(final boolean monday) { this.monday = monday; }
-
-    public boolean isTuesday() { return tuesday; }
-
-    public void setTuesday(final boolean tuesday) { this.tuesday = tuesday; }
-
-    public boolean isWednesday() { return wednesday; }
-
-    public void setWednesday(final boolean wednesday) { this.wednesday = wednesday; }
-
-    public boolean isThursday() { return thursday; }
-
-    public void setThursday(final boolean thursday) { this.thursday = thursday; }
-
-    public boolean isFriday() { return friday; }
-
-    public void setFriday(final boolean friday) { this.friday = friday; }
-
-    public boolean isSaturday() { return saturday; }
-
-    public void setSaturday(final boolean saturday) { this.saturday = saturday; }
-
 }
