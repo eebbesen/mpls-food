@@ -1,10 +1,13 @@
 package com.humegatech.mpls_food.model;
 
 import com.humegatech.mpls_food.domain.Place;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-
+@Getter
+@Setter
 public class DealDTO {
 
     private Long id;
@@ -29,56 +32,12 @@ public class DealDTO {
 
     private boolean saturday;
 
-    public Long getId() {
-        return id;
-    }
+    private static String concat(final String text, final String newValue) {
+        if (text.length() > 0) {
+            return String.format("%s, %s", text, newValue);
+        }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    public boolean isSunday() { return sunday; }
-
-    public void setSunday(final boolean sunday) { this.sunday = sunday; }
-
-    public boolean isMonday() { return monday; }
-
-    public void setMonday(final boolean monday) { this.monday = monday; }
-
-    public boolean isTuesday() { return tuesday; }
-
-    public void setTuesday(final boolean tuesday) { this.tuesday = tuesday; }
-
-    public boolean isWednesday() { return wednesday; }
-
-    public void setWednesday(final boolean wednesday) { this.wednesday = wednesday; }
-
-    public boolean isThursday() { return thursday; }
-
-    public void setThursday(final boolean thursday) { this.thursday = thursday; }
-
-    public boolean isFriday() { return friday; }
-
-    public void setFriday(final boolean friday) { this.friday = friday; }
-
-    public boolean isSaturday() { return saturday; }
-
-    public void setSaturday(final boolean saturday) { this.saturday = saturday; }
-
-    public Place getPlace() {
-        return place;
-    }
-
-    public void setPlace(final Place place) {
-        this.place = place;
+        return newValue;
     }
 
     public String daysActive() {
@@ -113,14 +72,6 @@ public class DealDTO {
         }
 
         return daysActive;
-    }
-
-    private static String concat(final String text, final String newValue){
-        if (text.length() > 0) {
-            return String.format("%s, %s", text, newValue);
-        }
-
-        return newValue;
     }
 
 }
