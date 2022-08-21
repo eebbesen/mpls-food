@@ -40,7 +40,7 @@ public class TestObjects {
 
         final Deal deal = Deal.builder()
                 .description("$1.39 crispy taco")
-                .tuesday(true)
+//                .tuesday(true)
                 .place(tacoJohns).build();
         tacoJohns.getPlaceDeals().add(deal);
 
@@ -54,7 +54,7 @@ public class TestObjects {
     public static Deal deal() {
         return Deal.builder()
                 .description("$5.00 for two slices from 10:30 - 11:00")
-                .friday(true)
+//                .friday(true)
                 .build();
     }
 
@@ -63,35 +63,35 @@ public class TestObjects {
                 .description(description)
                 .place(place).build();
 
-        for (DayOfWeek day : days) {
-            if (day.equals(DayOfWeek.SUNDAY)) {
-                deal.setSunday(true);
-            }
-
-            if (day.equals(DayOfWeek.MONDAY)) {
-                deal.setMonday(true);
-            }
-
-            if (day.equals(DayOfWeek.TUESDAY)) {
-                deal.setTuesday(true);
-            }
-
-            if (day.equals(DayOfWeek.WEDNESDAY)) {
-                deal.setWednesday(true);
-            }
-
-            if (day.equals(DayOfWeek.THURSDAY)) {
-                deal.setThursday(true);
-            }
-
-            if (day.equals(DayOfWeek.FRIDAY)) {
-                deal.setFriday(true);
-            }
-
-            if (day.equals(DayOfWeek.SATURDAY)) {
-                deal.setSaturday(true);
-            }
-        }
+//        for (DayOfWeek day : days) {
+//            if (day.equals(DayOfWeek.SUNDAY)) {
+//                deal.setSunday(true);
+//            }
+//
+//            if (day.equals(DayOfWeek.MONDAY)) {
+//                deal.setMonday(true);
+//            }
+//
+//            if (day.equals(DayOfWeek.TUESDAY)) {
+//                deal.setTuesday(true);
+//            }
+//
+//            if (day.equals(DayOfWeek.WEDNESDAY)) {
+//                deal.setWednesday(true);
+//            }
+//
+//            if (day.equals(DayOfWeek.THURSDAY)) {
+//                deal.setThursday(true);
+//            }
+//
+//            if (day.equals(DayOfWeek.FRIDAY)) {
+//                deal.setFriday(true);
+//            }
+//
+//            if (day.equals(DayOfWeek.SATURDAY)) {
+//                deal.setSaturday(true);
+//            }
+//        }
 
         place.getPlaceDeals().add(deal);
 
@@ -106,13 +106,13 @@ public class TestObjects {
             dto.setDescription(deal.getDescription());
             dto.setPlace(deal.getPlace());
             dto.setId(deal.getId());
-            dto.setSunday(deal.isSunday());
-            dto.setMonday(deal.isMonday());
-            dto.setTuesday(deal.isTuesday());
-            dto.setWednesday(deal.isWednesday());
-            dto.setThursday(deal.isThursday());
-            dto.setFriday(deal.isFriday());
-            dto.setSaturday(deal.isSaturday());
+//            dto.setSunday(deal.isSunday());
+//            dto.setMonday(deal.isMonday());
+//            dto.setTuesday(deal.isTuesday());
+//            dto.setWednesday(deal.isWednesday());
+//            dto.setThursday(deal.isThursday());
+//            dto.setFriday(deal.isFriday());
+//            dto.setSaturday(deal.isSaturday());
 
             dtos.add(dto);
         }

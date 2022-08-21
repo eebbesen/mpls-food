@@ -3,30 +3,26 @@ package com.humegatech.mpls_food.domain;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.Set;
-
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Deal extends BaseEntity {
-
-    @Column(nullable = false, columnDefinition = "text")
-    private String description;
-
+public class DealDay extends BaseEntity {
     @ManyToOne
-    private Place place;
+    private Deal deal;
 
-    @OneToMany
-    private Set<DealDay> dealDays;
+    private DayOfWeek dayOfWeek;
+    private LocalDate date;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -35,6 +31,4 @@ public class Deal extends BaseEntity {
     @LastModifiedDate
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
-
-
 }

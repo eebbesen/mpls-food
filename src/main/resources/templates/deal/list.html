@@ -1,27 +1,27 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org">
     <head>
         <title th:text="#{deal.list.headline}" />
     </head>
     <body>
         <div layout:fragment="content">
             <div class="d-flex flex-wrap mb-4">
-                <h1 th:text="#{deal.list.headline}" class="flex-grow-1" />
+                <h1 class="flex-grow-1" th:text="#{deal.list.headline}" />
                 <div sec:authorize="isAuthenticated()">
                     <div sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a th:href="@{/deals/add}" th:text="#{deal.list.createNew}" class="btn btn-primary ms-2" />
+                        <a class="btn btn-primary ms-2" th:href="@{/deals/add}" th:text="#{deal.list.createNew}" />
                     </div>
                 </div>
             </div>
             <div th:if="${deals.empty}" th:text="#{deal.list.empty}" />
-            <div th:if="${!deals.empty}" class="table-responsive">
+            <div class="table-responsive" th:if="${!deals.empty}">
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th th:text="#{deal.description.label}" scope="col" />
-                            <th th:text="#{deal.place.label}" scope="col" />
-                            <th th:text="#{deal.days.label}" scope="col" />
+                            <th scope="col" th:text="#{deal.description.label}" />
+                            <th scope="col" th:text="#{deal.place.label}" />
+                            <th scope="col" th:text="#{deal.day.label}" />
                             <th><!-- --></th>
                         </tr>
                     </thead>
@@ -29,13 +29,13 @@
                         <tr th:each="deal : ${deals}">
                             <td th:text="${deal.description}" />
                             <td th:text="${deal.place.name}" />
-                            <td th:text="${deal.daysActive}" />
+<!--                            <td th:text="${dealDay.deal.daysActive}" />-->
                                 <td>
                                     <div sec:authorize="isAuthenticated()">
                                         <div sec:authorize="hasRole('ROLE_ADMIN')">
-                                        <form th:action="@{/deals/delete/{id}(id=${deal.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm float-end">
-                                            <a th:href="@{/deals/edit/{id}(id=${deal.id})}" th:text="#{deal.list.edit}" class="btn btn-sm btn-info" />
-                                            <button th:text="#{deal.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                        <form class="js-submit-confirm float-end" method="post" th:action="@{/deals/delete/{id}(id=${deal.id})}" th:data-confirm-message="#{delete.confirm}">
+                                            <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${deal.id})}" th:text="#{deal.list.edit}" />
+                                            <button class="btn btn-sm btn-danger" th:text="#{deal.list.delete}" type="submit" />
                                         </form>
                                     </div>
                                 </div>
