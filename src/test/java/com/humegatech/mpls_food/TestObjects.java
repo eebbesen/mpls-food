@@ -1,6 +1,7 @@
 package com.humegatech.mpls_food;
 
 import com.humegatech.mpls_food.domain.Deal;
+import com.humegatech.mpls_food.domain.DealDay;
 import com.humegatech.mpls_food.domain.Place;
 import com.humegatech.mpls_food.model.DealDTO;
 
@@ -54,7 +55,6 @@ public class TestObjects {
     public static Deal deal() {
         return Deal.builder()
                 .description("$5.00 for two slices from 10:30 - 11:00")
-//                .friday(true)
                 .build();
     }
 
@@ -63,39 +63,24 @@ public class TestObjects {
                 .description(description)
                 .place(place).build();
 
-//        for (DayOfWeek day : days) {
-//            if (day.equals(DayOfWeek.SUNDAY)) {
-//                deal.setSunday(true);
-//            }
-//
-//            if (day.equals(DayOfWeek.MONDAY)) {
-//                deal.setMonday(true);
-//            }
-//
-//            if (day.equals(DayOfWeek.TUESDAY)) {
-//                deal.setTuesday(true);
-//            }
-//
-//            if (day.equals(DayOfWeek.WEDNESDAY)) {
-//                deal.setWednesday(true);
-//            }
-//
-//            if (day.equals(DayOfWeek.THURSDAY)) {
-//                deal.setThursday(true);
-//            }
-//
-//            if (day.equals(DayOfWeek.FRIDAY)) {
-//                deal.setFriday(true);
-//            }
-//
-//            if (day.equals(DayOfWeek.SATURDAY)) {
-//                deal.setSaturday(true);
-//            }
-//        }
+        for (DayOfWeek day : days) {
+            dealDay(deal, day);
+        }
 
         place.getPlaceDeals().add(deal);
 
         return deal;
+    }
+
+
+    public static DealDay dealDay(final Deal deal, final DayOfWeek dayOfWeek) {
+        DealDay dealDay = DealDay.builder()
+                .dayOfWeek(dayOfWeek)
+                .deal(deal).build();
+
+        deal.getDealDays().add(dealDay);
+
+        return dealDay;
     }
 
     public static List<DealDTO> dealsToDtos(final List<Deal> deals) {
@@ -106,13 +91,6 @@ public class TestObjects {
             dto.setDescription(deal.getDescription());
             dto.setPlace(deal.getPlace());
             dto.setId(deal.getId());
-//            dto.setSunday(deal.isSunday());
-//            dto.setMonday(deal.isMonday());
-//            dto.setTuesday(deal.isTuesday());
-//            dto.setWednesday(deal.isWednesday());
-//            dto.setThursday(deal.isThursday());
-//            dto.setFriday(deal.isFriday());
-//            dto.setSaturday(deal.isSaturday());
 
             dtos.add(dto);
         }

@@ -20,7 +20,6 @@ import java.time.OffsetDateTime;
 public class DealDay extends BaseEntity {
     @ManyToOne
     private Deal deal;
-
     private DayOfWeek dayOfWeek;
     private LocalDate date;
 

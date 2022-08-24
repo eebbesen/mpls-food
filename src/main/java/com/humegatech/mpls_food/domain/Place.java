@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -28,7 +29,8 @@ public class Place extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "place_id")
-    private Set<Deal> placeDeals;
+    @Builder.Default
+    private Set<Deal> placeDeals = new HashSet<>();
 
     @Column
     private String website;

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -26,7 +27,8 @@ public class Deal extends BaseEntity {
     private Place place;
 
     @OneToMany
-    private Set<DealDay> dealDays;
+    @Builder.Default
+    private Set<DealDay> dealDays = new HashSet<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
