@@ -36,6 +36,8 @@ public class DealDayService {
     private DealDayDTO mapToDTO(final DealDay dealDay, final DealDayDTO dealDayDTO) {
         dealDayDTO.setId(dealDay.getId());
         dealDayDTO.setDeal(dealDay.getDeal());
+        dealDayDTO.setDayOfWeek(dealDay.getDayOfWeek());
+        dealDayDTO.setDate(dealDay.getDate());
 
         return dealDayDTO;
     }
