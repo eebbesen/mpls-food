@@ -1,6 +1,7 @@
 package com.humegatech.mpls_food.domain;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,7 +16,7 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Deal extends BaseEntity {
@@ -26,7 +27,7 @@ public class Deal extends BaseEntity {
     @ManyToOne
     private Place place;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
     @Builder.Default
     private Set<DealDay> dealDays = new HashSet<>();
 

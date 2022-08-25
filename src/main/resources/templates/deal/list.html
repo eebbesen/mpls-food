@@ -27,9 +27,10 @@
                     </thead>
                     <tbody>
                         <tr th:each="deal : ${deals}">
-                            <td th:text="${deal.deal.description}" />
-                            <td th:text="${deal.deal.place.name}" />
-                            <td th:text="${deal.dayOfWeek}" />
+                            <td th:text="${deal.description}" />
+                            <td th:text="${deal.place.name}" />
+<!--                            <td th:text="${deal.dayOfWeek}" />-->
+                            <td th:text="'stub'" />
                                 <td>
                                     <div sec:authorize="isAuthenticated()">
                                         <div sec:authorize="hasRole('ROLE_ADMIN')">

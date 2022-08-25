@@ -35,7 +35,7 @@ public class DealDayService {
 
     private DealDayDTO mapToDTO(final DealDay dealDay, final DealDayDTO dealDayDTO) {
         dealDayDTO.setId(dealDay.getId());
-        dealDayDTO.setDeal(dealDay.getDeal());
+        dealDayDTO.setDealId(dealDay.getDeal().getId());
         dealDayDTO.setDayOfWeek(dealDay.getDayOfWeek());
         dealDayDTO.setDate(dealDay.getDate());
 
@@ -43,7 +43,7 @@ public class DealDayService {
     }
 
     private DealDay mapToEntity(final DealDayDTO dealDayDTO, final DealDay dealDay) {
-        dealDay.setDeal(dealDayDTO.getDeal());
+//        dealDay.setDeal(dealDayDTO.getDealId());
         dealDay.setDayOfWeek(dealDay.getDayOfWeek());
         dealDay.setDate(dealDay.getDate());
         return dealDay;

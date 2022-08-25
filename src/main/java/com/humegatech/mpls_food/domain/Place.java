@@ -1,6 +1,7 @@
 package com.humegatech.mpls_food.domain;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,9 +17,9 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public class Place extends BaseEntity {
 
     @Column(nullable = false, unique = true)

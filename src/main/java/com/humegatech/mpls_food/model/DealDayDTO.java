@@ -1,6 +1,5 @@
 package com.humegatech.mpls_food.model;
 
-import com.humegatech.mpls_food.domain.Deal;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +14,7 @@ public class DealDayDTO {
     private Long id;
 
     @NotNull
-    private Deal deal;
+    private Long dealId;
 
     private DayOfWeek dayOfWeek;
     private LocalDate date;

@@ -5,13 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
-import java.time.DayOfWeek;
 
 @Getter
 @Setter
 public class DealDTO {
-
-    @NotNull
     private Long id;
 
     @NotNull
@@ -20,5 +17,11 @@ public class DealDTO {
     @NotNull
     private String description;
 
-    private DayOfWeek dayOfWeek;
+    private boolean monday;
+    private boolean sunday;
+    private boolean tuesday;
+    private boolean wednesday;
+    private boolean thursday;
+    private boolean friday;
+    private boolean saturday;
 }
