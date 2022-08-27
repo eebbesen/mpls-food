@@ -32,14 +32,14 @@
 <!--                            <td th:text="${deal.dayOfWeek}" />-->
                             <td th:text="'stub'" />
                                 <td>
-                                    <div sec:authorize="isAuthenticated()">
-                                        <div sec:authorize="hasRole('ROLE_ADMIN')">
+<!--                                    <div sec:authorize="isAuthenticated()">-->
+<!--                                        <div sec:authorize="hasRole('ROLE_ADMIN')">-->
                                         <form class="js-submit-confirm float-end" method="post" th:action="@{/deals/delete/{id}(id=${deal.id})}" th:data-confirm-message="#{delete.confirm}">
                                             <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${deal.id})}" th:text="#{deal.list.edit}" />
                                             <button class="btn btn-sm btn-danger" th:text="#{deal.list.delete}" type="submit" />
                                         </form>
-                                    </div>
-                                </div>
+<!--                                    </div>-->
+<!--                                </div>-->
                             </td>
                         </tr>
                     </tbody>

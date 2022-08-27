@@ -28,10 +28,9 @@ public class Place extends BaseEntity {
     @Column(nullable = false, columnDefinition = "text")
     private String address;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "place_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "place", orphanRemoval = true)
     @Builder.Default
-    private Set<Deal> placeDeals = new HashSet<>();
+    private Set<Deal> deals = new HashSet<>();
 
     @Column
     private String website;
@@ -56,7 +55,6 @@ public class Place extends BaseEntity {
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + address.hashCode();
-        result = 31 * result + (placeDeals != null ? placeDeals.hashCode() : 0);
         result = 31 * result + (website != null ? website.hashCode() : 0);
         result = 31 * result + (app ? 1 : 0);
         result = 31 * result + (orderAhead ? 1 : 0);
@@ -73,8 +71,6 @@ public class Place extends BaseEntity {
         if (app != place.app) return false;
         if (orderAhead != place.orderAhead) return false;
         if (!name.equals(place.name)) return false;
-        if (!address.equals(place.address)) return false;
-        if (placeDeals != null ? !placeDeals.equals(place.placeDeals) : place.placeDeals != null) return false;
-        return website != null ? website.equals(place.website) : place.website == null;
+        return !address.equals(place.address);
     }
 }

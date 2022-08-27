@@ -64,7 +64,7 @@ public class TestObjects {
                 .place(tacoJohns)
                 .id(dealId())
                 .build();
-        tacoJohns.getPlaceDeals().add(deal);
+        tacoJohns.getDeals().add(deal);
 
         final List<Place> places = new ArrayList<>();
         places.add(place());
@@ -91,7 +91,7 @@ public class TestObjects {
             dealDay(deal, day);
         }
 
-        place.getPlaceDeals().add(deal);
+        place.getDeals().add(deal);
 
         return deal;
     }

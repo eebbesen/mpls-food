@@ -25,6 +25,7 @@ public class Deal extends BaseEntity {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "place_id")
     private Place place;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
@@ -39,5 +40,21 @@ public class Deal extends BaseEntity {
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
 
+    @Override
+    public int hashCode() {
+        int result = description != null ? description.hashCode() : 0;
+        result = 31 * result + (place != null ? place.hashCode() : 0);
+        return result;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Deal deal = (Deal) o;
+
+        if (description != null ? !description.equals(deal.description) : deal.description != null) return false;
+        return place != null ? place.equals(deal.place) : deal.place == null;
+    }
 }

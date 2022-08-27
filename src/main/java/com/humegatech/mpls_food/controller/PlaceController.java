@@ -3,18 +3,13 @@ package com.humegatech.mpls_food.controller;
 import com.humegatech.mpls_food.model.PlaceDTO;
 import com.humegatech.mpls_food.service.PlaceService;
 import com.humegatech.mpls_food.util.WebUtils;
-import javax.validation.Valid;
-
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -34,15 +29,15 @@ public class PlaceController {
     }
 
     @GetMapping("/add")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String add(@ModelAttribute("place") final PlaceDTO placeDTO) {
         return "place/add";
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String add(@ModelAttribute("place") @Valid final PlaceDTO placeDTO,
-            final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (!bindingResult.hasFieldErrors("name") &&
                 placeService.nameExists(placeDTO.getName())) {
             bindingResult.rejectValue("name", "Exists.place.name");
@@ -56,17 +51,17 @@ public class PlaceController {
     }
 
     @GetMapping("/edit/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String edit(@PathVariable final Long id, final Model model) {
         model.addAttribute("place", placeService.get(id));
         return "place/edit";
     }
 
     @PostMapping("/edit/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String edit(@PathVariable final Long id,
-            @ModelAttribute("place") @Valid final PlaceDTO placeDTO,
-            final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+                       @ModelAttribute("place") @Valid final PlaceDTO placeDTO,
+                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (!bindingResult.hasFieldErrors("name") &&
                 !placeService.get(id).getName().equalsIgnoreCase(placeDTO.getName()) &&
                 placeService.nameExists(placeDTO.getName())) {
@@ -81,7 +76,7 @@ public class PlaceController {
     }
 
     @PostMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
         final String referencedWarning = placeService.getReferencedWarning(id);
         if (referencedWarning != null) {

@@ -4,13 +4,14 @@ import com.humegatech.mpls_food.domain.Place;
 import com.humegatech.mpls_food.model.PlaceDTO;
 import com.humegatech.mpls_food.repos.PlaceRepository;
 import com.humegatech.mpls_food.util.WebUtils;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -79,8 +80,8 @@ public class PlaceService {
     public String getReferencedWarning(final Long id) {
         final Place place = placeRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if (!place.getPlaceDeals().isEmpty()) {
-            return WebUtils.getMessage("place.deal.manyToOne.referenced", place.getPlaceDeals().iterator().next().getId());
+        if (!place.getDeals().isEmpty()) {
+            return WebUtils.getMessage("place.deal.manyToOne.referenced", place.getDeals().iterator().next().getId());
         }
         return null;
     }
