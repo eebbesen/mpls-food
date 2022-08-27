@@ -1,4 +1,4 @@
-INSERT INTO public.deal (date_created,description,last_updated,place_id) VALUES
+INSERT INTO public.deals (date_created,description,last_updated,place_id) VALUES
 	 ('2022-07-27 13:15:04.809267','$2.50 slices from 10:30 - 11:30','2022-07-27 13:15:04.809267',10000),
 	 ('2022-07-27 23:40:06.41481','$8.25 plain burger ($2.30 off).
 
@@ -21,7 +21,7 @@ Discount does not appear to be applied with online ordering.','2022-07-27 23:46:
 	 ('2022-07-27 23:56:35.586779','Buy one hot dog get another half off','2022-07-27 23:56:35.586779',10011),
 	 ('2022-07-27 23:16:36.873815','$1.10 crispy tacos (half price)','2022-07-28 00:10:04.276178',2),
 	 ('2022-07-27 23:59:01.748955','$4.50 for two Ball Park hot dogs','2022-07-28 00:10:22.400211',10011);
-INSERT INTO public.deal (date_created,description,last_updated,place_id) VALUES
+INSERT INTO public.deals (date_created,description,last_updated,place_id) VALUES
 	 ('2022-07-27 23:59:20.578794','$5.50 for two Ball Park chili dogs','2022-07-28 00:10:37.151898',10011),
 	 ('2022-07-28 00:00:17.810187','$4.95 for a Vienna Beef hot dog with chips and a 24 ounce fountain drink.
 $2.75 to add a beef hot dog.','2022-07-28 00:11:26.008014',10011),
