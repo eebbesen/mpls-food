@@ -1,4 +1,7 @@
 spring:
+  config:
+    activate:
+      on-profile: h2
   jpa:
     show-sql: true
     hibernate:
@@ -8,39 +11,42 @@ spring:
     username: sa
     driverClassName: org.h2.Driver
 
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/mpls-food}
+    username: ${JDBC_DATABASE_USERNAME:postgres}
+    password: ${JDBC_DATABASE_PASSWORD:<<YOUR_PASSWORD>>}
+    driver-class-name: org.postgresql.Driver
 
-#spring:
-#  datasource:
-#    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/mpls-food}
-#    username: ${JDBC_DATABASE_USERNAME:postgres}
-#    password: ${JDBC_DATABASE_PASSWORD:<<YOUR_PASSWORD>>}
-#    driver-class-name: org.postgresql.Driver
-#
-#    dbcp2:
-#      max-wait-millis: 30000
-#      validation-query: SELECT 1
-#      validation-query-timeout: 30
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#    open-in-view: false
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
-#        jdbc:
-#          lob:
-#            non_contextual_creation: true
-#        id:
-#          new_generator_mappings: true
-#  security:
-#    user:
-#      name: user
-#      password: user
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
-#springdoc:
-#  pathsToMatch: /api/**
+    dbcp2:
+      max-wait-millis: 30000
+      validation-query: SELECT 1
+      validation-query-timeout: 30
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        id:
+          new_generator_mappings: true
+  security:
+    user:
+      name: user
+      password: user
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+springdoc:
+  pathsToMatch: /api/**
