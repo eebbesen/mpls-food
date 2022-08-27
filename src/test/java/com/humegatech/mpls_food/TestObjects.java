@@ -1,9 +1,9 @@
 package com.humegatech.mpls_food;
 
-import com.humegatech.mpls_food.domain.Deal;
-import com.humegatech.mpls_food.domain.DealDay;
-import com.humegatech.mpls_food.domain.Place;
-import com.humegatech.mpls_food.model.DealDTO;
+import com.humegatech.mpls_food.domains.Day;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.models.DealDTO;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class TestObjects {
         return ++DEAL_ID;
     }
 
-    private static Long dealDayId() {
+    private static Long dayId() {
         return ++DEAL_DAY_ID;
     }
 
@@ -88,7 +88,7 @@ public class TestObjects {
                 .build();
 
         for (DayOfWeek day : days) {
-            dealDay(deal, day);
+            day(deal, day);
         }
 
         place.getDeals().add(deal);
@@ -97,16 +97,16 @@ public class TestObjects {
     }
 
 
-    public static DealDay dealDay(final Deal deal, final DayOfWeek dayOfWeek) {
-        DealDay dealDay = DealDay.builder()
+    public static Day day(final Deal deal, final DayOfWeek dayOfWeek) {
+        Day day = Day.builder()
                 .dayOfWeek(dayOfWeek)
                 .deal(deal)
-                .id(dealDayId())
+                .id(dayId())
                 .build();
 
-        deal.getDealDays().add(dealDay);
+        deal.getDays().add(day);
 
-        return dealDay;
+        return day;
     }
 
     public static List<DealDTO> dealsToDtos(final List<Deal> deals) {

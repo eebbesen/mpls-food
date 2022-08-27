@@ -1,21 +1,15 @@
 package com.humegatech.mpls_food.rest;
 
-import com.humegatech.mpls_food.model.DealDTO;
-import com.humegatech.mpls_food.service.DealService;
+import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.services.DealService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import java.util.List;
-import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -46,7 +40,7 @@ public class DealResource {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateDeal(@PathVariable final Long id,
-            @RequestBody @Valid final DealDTO dealDTO) {
+                                           @RequestBody @Valid final DealDTO dealDTO) {
         dealService.update(id, dealDTO);
         return ResponseEntity.ok().build();
     }
