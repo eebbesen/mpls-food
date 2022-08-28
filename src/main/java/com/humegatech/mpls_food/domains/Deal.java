@@ -32,7 +32,7 @@ public class Deal extends BaseEntity {
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     @Builder.Default
     private Set<Day> days = new LinkedHashSet<>();
