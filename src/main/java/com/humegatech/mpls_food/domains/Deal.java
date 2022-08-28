@@ -1,5 +1,6 @@
 package com.humegatech.mpls_food.domains;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -27,7 +28,7 @@ public class Deal extends BaseEntity {
     private String description;
 
     @ManyToOne
-//    @JsonBackReference
+    @JsonBackReference
     @JoinColumn(name = "place_id")
     private Place place;
 
