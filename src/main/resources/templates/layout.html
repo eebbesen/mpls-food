@@ -1,49 +1,49 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title th:text="#{app.title}" layout:title-pattern="$CONTENT_TITLE | $LAYOUT_TITLE" />
+        <title layout:title-pattern="$CONTENT_TITLE | $LAYOUT_TITLE" th:text="#{app.title}" />
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-                integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
-        <link th:href="@{/css/app.css}" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous" defer></script>
-        <script th:src="@{/js/app.js}" defer></script>
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+                integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet" />
+        <link rel="stylesheet" th:href="@{/css/app.css}" />
+        <script crossorigin="anonymous"
+                defer integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script defer th:src="@{/js/app.js}"></script>
     </head>
     <body>
         <header class="bg-light">
             <div class="container">
                 <nav class="navbar navbar-light navbar-expand-md">
-                    <a th:href="@{/}" class="navbar-brand">
-                        <img th:src="@{/images/logo.png}" th:alt="#{app.title}" width="30" height="30" class="d-inline-block align-top">
-                        <span th:text="#{app.title}" class="ps-1" />
+                    <a class="navbar-brand" th:href="@{/}">
+                        <img class="d-inline-block align-top" height="30" th:alt="#{app.title}" th:src="@{/images/logo.png}" width="30">
+                        <span class="ps-1" th:text="#{app.title}" />
                     </a>
-                    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggle"
-                            th:aria-label="#{navigation.toggle}" aria-controls="navbarToggle" aria-expanded="false">
+                    <button aria-controls="navbarToggle" aria-expanded="false" class="navbar-toggler" data-bs-target="#navbarToggle"
+                            data-bs-toggle="collapse" th:aria-label="#{navigation.toggle}" type="button">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarToggle">
                         <ul class="navbar-nav ms-auto">
                             <li class="navbar-item">
-                                <a th:href="@{/}" th:text="#{navigation.home}" class="nav-link" />
+                                <a class="nav-link" th:href="@{/}" th:text="#{navigation.home}" />
                             </li>
                             <li class="navbar-item dropdown">
-                                <a th:text="#{navigation.entities}" class="nav-link dropdown-toggle" href="#" id="navbarEntitiesLink" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false" />
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarEntitiesLink">
-                                    <li><a th:href="@{/places}" th:text="#{place.list.headline}" class="dropdown-item" /></li>
-                                    <li><a th:href="@{/deals}" th:text="#{deal.list.headline}" class="dropdown-item" /></li>
+                                <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="navbarEntitiesLink"
+                                        role="button" th:text="#{navigation.entities}" />
+                                <ul aria-labelledby="navbarEntitiesLink" class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" th:href="@{/places}" th:text="#{place.list.headline}" /></li>
+                                    <li><a class="dropdown-item" th:href="@{/deals}" th:text="#{deal.list.headline}" /></li>
                                 </ul>
                             </li>
                             <li class="navbar-item" sec:authorize="isAuthenticated()">
-                                <form th:action="@{/logout}" method="post">
-                                    <input type="submit" value="Logout" class="nav-link border-0 bg-transparent"/>
+                                <form method="post" th:action="@{/logout}">
+                                    <input class="nav-link border-0 bg-transparent" type="submit" value="Logout"/>
                                 </form>
                             </li>
                             <li class="navbar-item" sec:authorize="isAnonymous()">
-                                <a th:href="@{/login}" th:text="#{navigation.login}" class="nav-link" />
+                                <a class="nav-link" th:href="@{/login}" th:text="#{navigation.login}" />
                             </li>
                         </ul>
                     </div>
@@ -52,9 +52,9 @@
         </header>
         <main class="my-5">
             <div class="container">
-                <p th:if="${MSG_SUCCESS}" th:text="${MSG_SUCCESS}" class="alert alert-success mb-4" role="alert" />
-                <p th:if="${MSG_INFO}" th:text="${MSG_INFO}" class="alert alert-info mb-4" role="alert" />
-                <p th:if="${MSG_ERROR}" th:text="${MSG_ERROR}" class="alert alert-danger mb-4" role="alert" />
+                <p class="alert alert-success mb-4" role="alert" th:if="${MSG_SUCCESS}" th:text="${MSG_SUCCESS}" />
+                <p class="alert alert-info mb-4" role="alert" th:if="${MSG_INFO}" th:text="${MSG_INFO}" />
+                <p class="alert alert-danger mb-4" role="alert" th:if="${MSG_ERROR}" th:text="${MSG_ERROR}" />
                 <div layout:fragment="content" />
             </div>
         </main>

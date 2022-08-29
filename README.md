@@ -1,17 +1,19 @@
-## start
+## Start
 * make sure postgresql is running
 * run MplsFoodApplication.java
 * navigate to http://localhost:8080
 
-## add users
-* bcrypt a password using https://www.devglan.com/online-tools/bcrypt-hash-generator
-* insert users records
+### Start using gradle
 ```bash
-INSERT INTO users (username,password,enabled)
-VALUES ('user',
-'<BCRYPTED_PASSWORD>', true);
-
-INSERT INTO users (username,password,enabled)
-VALUES ('admin',
-'<BCRYPTED_PASSWORD>', true); 
+gradle bootRun --args='--spring.profiles.active=default'
 ```
+
+## tools
+### find dependencies
+```bash
+gradle -q dependencies
+```
+### add users
+Fixtures for all models can be found in test/test_data. The default password for the user and the admin is `retek01!`
+
+To generate your own credentials you'll need to bcrypt passwords, then assign your user to a role in `authorities`. You can bcrypt a password using https://www.devglan.com/online-tools/bcrypt-hash-generator.

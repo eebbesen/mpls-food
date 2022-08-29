@@ -1,16 +1,17 @@
-//package com.humegatech.mpls_food;
+//package com.humegatech.mpls_food.config;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 //
 //import javax.sql.DataSource;
 //
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.authentication.builders.*;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.*;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//
-//@Configuration
-//@EnableWebSecurity
+////@Configuration
+////@EnableWebSecurity
+////@EnableGlobalMethodSecurity(securedEnabled = true)
 //public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //
 //    @Autowired
@@ -32,6 +33,16 @@
 //                .and()
 //                .formLogin().permitAll()
 //                .and()
-//                .logout().permitAll();
+//                .logout().permitAll()
+//                .and()
+//                .requestMatcher(new RegexRequestMatcher("$.*/", "PUT")).authorizeRequests();
+////                .and()
+////                .requestMatcher(new RegexRequestMatcher("$.*/", "POST")).authorizeRequests();
+////                .and()
+////                .requestMatcher(new RegexRequestMatcher("$.*/", "PATCH")).authorizeRequests()
+////                .and()
+////                .requestMatcher(new RegexRequestMatcher("$.*/", "DELETE")).authorizeRequests();
+//        ;
+//        ;
 //    }
 //}

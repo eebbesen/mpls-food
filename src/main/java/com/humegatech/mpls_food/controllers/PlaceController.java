@@ -3,12 +3,15 @@ package com.humegatech.mpls_food.controllers;
 import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.util.WebUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 
@@ -22,20 +25,31 @@ public class PlaceController {
         this.placeService = placeService;
     }
 
+    private UsernamePasswordAuthenticationToken getUser(final HttpServletRequest request) {
+        UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken) request.getUserPrincipal();
+        if (null != user) {
+            System.out.println(String.format("USER: %s\nAUTHORITY: %s", user.getName(),
+                    user.getAuthorities().stream().findFirst().get().getAuthority()));
+        }
+
+        return user;
+    }
+
     @GetMapping
-    public String list(final Model model) {
+    public String list(final Model model, final HttpServletRequest request) {
         model.addAttribute("places", placeService.findAll());
+        getUser(request);
         return "place/list";
     }
 
     @GetMapping("/add")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public String add(@ModelAttribute("place") final PlaceDTO placeDTO) {
         return "place/add";
     }
 
     @PostMapping("/add")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public String add(@ModelAttribute("place") @Valid final PlaceDTO placeDTO,
                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (!bindingResult.hasFieldErrors("name") &&
@@ -50,6 +64,7 @@ public class PlaceController {
         return "redirect:/places";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/edit/{id}")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String edit(@PathVariable final Long id, final Model model) {
@@ -57,11 +72,12 @@ public class PlaceController {
         return "place/edit";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/edit/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String edit(@PathVariable final Long id,
                        @ModelAttribute("place") @Valid final PlaceDTO placeDTO,
-                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes, final HttpServletRequest request) {
+        System.out.println(getUser(request));
         if (!bindingResult.hasFieldErrors("name") &&
                 !placeService.get(id).getName().equalsIgnoreCase(placeDTO.getName()) &&
                 placeService.nameExists(placeDTO.getName())) {
@@ -76,7 +92,7 @@ public class PlaceController {
     }
 
     @PostMapping("/delete/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
         placeService.delete(id);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("place.delete.success"));
