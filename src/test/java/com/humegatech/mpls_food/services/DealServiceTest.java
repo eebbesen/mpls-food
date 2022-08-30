@@ -38,26 +38,34 @@ public class DealServiceTest {
     }
 
     @Test
+    void testCapitalizeFirst() {
+        assertEquals("Dealdto", ReflectionTestUtils.invokeMethod(DealService.class, "capitalizeFirst", "dealDTO"));
+
+        String nullString = null;
+        assertNull(ReflectionTestUtils.invokeMethod(DealService.class, "capitalizeFirst", nullString));
+    }
+
+    @Test
     void testConfirmOrAddDayDayExists() {
-        DealService.addDay(dealMonTues, DayOfWeek.MONDAY);
+        ReflectionTestUtils.invokeMethod(service.getClass(), "addDay", dealMonTues, DayOfWeek.MONDAY);
         assertEquals(2, dealMonTues.getDays().size());
     }
 
     @Test
     void testConfirmOrAddDayDayDoesNotExist() {
-        DealService.addDay(dealMonTues, DayOfWeek.WEDNESDAY);
+        ReflectionTestUtils.invokeMethod(service.getClass(), "addDay", dealMonTues, DayOfWeek.WEDNESDAY);
         assertEquals(3, dealMonTues.getDays().size());
     }
 
     @Test
     void testHasDay() {
-        assertNotNull(DealService.hasDay(dealMonTues, DayOfWeek.MONDAY));
-        assertNotNull(DealService.hasDay(dealMonTues, DayOfWeek.TUESDAY));
-        assertNull(DealService.hasDay(dealMonTues, DayOfWeek.WEDNESDAY));
-        assertNull(DealService.hasDay(dealMonTues, DayOfWeek.THURSDAY));
-        assertNull(DealService.hasDay(dealMonTues, DayOfWeek.FRIDAY));
-        assertNull(DealService.hasDay(dealMonTues, DayOfWeek.SATURDAY));
-        assertNull(DealService.hasDay(dealMonTues, DayOfWeek.SUNDAY));
+        assertNotNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.MONDAY));
+        assertNotNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.TUESDAY));
+        assertNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.WEDNESDAY));
+        assertNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.THURSDAY));
+        assertNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.FRIDAY));
+        assertNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.SATURDAY));
+        assertNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.SUNDAY));
     }
 
     @Test

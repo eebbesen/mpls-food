@@ -33,7 +33,7 @@ public class DealService {
         this.dayRepository = dayRepository;
     }
 
-    protected static Day hasDay(final Deal deal, final DayOfWeek dayOfWeek) {
+    private static Day hasDay(final Deal deal, final DayOfWeek dayOfWeek) {
         for (Day day : deal.getDays()) {
             if (day.getDayOfWeek() == dayOfWeek) {
                 return day;
@@ -43,7 +43,7 @@ public class DealService {
         return null;
     }
 
-    protected static void addDay(final Deal deal, final DayOfWeek day) {
+    private static void addDay(final Deal deal, final DayOfWeek day) {
         if (null == hasDay(deal, day)) {
             deal.getDays().add(Day.builder()
                     .deal(deal)
@@ -54,7 +54,7 @@ public class DealService {
         }
     }
 
-    protected static void removeDay(final Deal deal, final DayOfWeek day) {
+    private static void removeDay(final Deal deal, final DayOfWeek day) {
         final Day dealDay = hasDay(deal, day);
         if (dealDay != null) {
             deal.getDays().remove(dealDay);
@@ -62,6 +62,9 @@ public class DealService {
     }
 
     private static String capitalizeFirst(final String string) {
+        if (null == string) {
+            return null;
+        }
         return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 
