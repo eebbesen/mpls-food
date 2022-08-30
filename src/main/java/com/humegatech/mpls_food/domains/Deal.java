@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -67,5 +68,16 @@ public class Deal extends BaseEntity {
                 ", dateCreated=" + dateCreated +
                 ", lastUpdated=" + lastUpdated +
                 '}';
+    }
+
+
+    public Day hasDay(final DayOfWeek dayOfWeek) {
+        for (Day day : getDays()) {
+            if (day.getDayOfWeek() == dayOfWeek) {
+                return day;
+            }
+        }
+
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 package com.humegatech.mpls_food.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.humegatech.mpls_food.domains.Deal;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
@@ -9,12 +9,13 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DealDayDTO {
-    @NotNull
     private Long id;
-
     @NotNull
-    private Long dealId;
+    private Deal deal;
 
     private DayOfWeek dayOfWeek;
     private LocalDate date;

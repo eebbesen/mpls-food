@@ -4,6 +4,7 @@ import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.models.DealDayDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.DayOfWeek;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,17 +65,6 @@ public class DealServiceTest {
     void testConfirmOrAddDayDayDoesNotExist() {
         ReflectionTestUtils.invokeMethod(service.getClass(), "addDay", dealMonTues, DayOfWeek.WEDNESDAY);
         assertEquals(3, dealMonTues.getDays().size());
-    }
-
-    @Test
-    void testHasDay() {
-        assertNotNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.MONDAY));
-        assertNotNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.TUESDAY));
-        assertNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.WEDNESDAY));
-        assertNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.THURSDAY));
-        assertNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.FRIDAY));
-        assertNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.SATURDAY));
-        assertNull(ReflectionTestUtils.invokeMethod(service.getClass(), "hasDay", dealMonTues, DayOfWeek.SUNDAY));
     }
 
     @Test
@@ -156,4 +147,28 @@ public class DealServiceTest {
         assertFalse(dealDTO.isFriday());
         assertFalse(dealDTO.isSaturday());
     }
+
+    @Test
+    void testMapToDealDayDTO() {
+        List<DealDayDTO> dealDayDTOs = (List<DealDayDTO>) ReflectionTestUtils.invokeMethod(service, "mapToDealDayDTOs", dealMonTues);
+        dealDayDTOs.sort((a, b) -> a.getDayOfWeek().compareTo(b.getDayOfWeek()));
+
+        assertEquals(2, dealDayDTOs.size());
+        assertEquals(DayOfWeek.MONDAY, dealDayDTOs.get(0).getDayOfWeek());
+        assertEquals(dealMonTues, dealDayDTOs.get(0).getDeal());
+        assertEquals(DayOfWeek.TUESDAY, dealDayDTOs.get(1).getDayOfWeek());
+        assertEquals(dealMonTues, dealDayDTOs.get(1).getDeal());
+    }
+
+    @Test
+    void testFindAllDealDayDTOs() {
+        List<Deal> deals = TestObjects.deals();
+
+        when(dealRepository.findAll()).thenReturn(deals);
+
+        List<DealDayDTO> dealDayDTOs = service.findAllDealDayDTOs();
+
+        assertEquals(3, dealDayDTOs.size());
+    }
+
 }

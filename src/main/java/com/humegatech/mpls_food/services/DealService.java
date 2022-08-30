@@ -4,6 +4,7 @@ import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.models.DealDayDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import org.springframework.data.domain.Sort;
@@ -30,18 +31,8 @@ public class DealService {
         this.placeRepository = placeRepository;
     }
 
-    private static Day hasDay(final Deal deal, final DayOfWeek dayOfWeek) {
-        for (Day day : deal.getDays()) {
-            if (day.getDayOfWeek() == dayOfWeek) {
-                return day;
-            }
-        }
-
-        return null;
-    }
-
     private static void addDay(final Deal deal, final DayOfWeek day) {
-        if (null == hasDay(deal, day)) {
+        if (null == deal.hasDay(day)) {
             deal.getDays().add(Day.builder()
                     .deal(deal)
                     .dayOfWeek(day)
@@ -52,8 +43,8 @@ public class DealService {
     }
 
     private static void removeDay(final Deal deal, final DayOfWeek day) {
-        final Day dealDay = hasDay(deal, day);
-        if (dealDay != null) {
+        final Day dealDay = deal.hasDay(day);
+        if (null != dealDay) {
             deal.getDays().remove(dealDay);
         }
     }
@@ -69,6 +60,14 @@ public class DealService {
         return dealRepository.findAll(Sort.by("id"))
                 .stream()
                 .map(deal -> mapToDTO(deal, new DealDTO()))
+                .collect(Collectors.toList());
+    }
+
+    public List<DealDayDTO> findAllDealDayDTOs() {
+        return dealRepository.findAll()
+                .stream()
+                .map(deal -> mapToDealDayDTOs(deal))
+                .flatMap(dtos -> dtos.stream())
                 .collect(Collectors.toList());
     }
 
@@ -105,11 +104,19 @@ public class DealService {
         return dealDTO;
     }
 
+    private List<DealDayDTO> mapToDealDayDTOs(final Deal deal) {
+        return deal.getDays().stream().map(d -> {
+            return DealDayDTO.builder()
+                    .deal(deal)
+                    .dayOfWeek(d.getDayOfWeek()).build();
+        }).collect(Collectors.toList());
+    }
+
     // use reflection to reduce repetition
     private void applyDaysToDTO(final Deal deal, final DealDTO dealDTO) {
         Arrays.stream(DayOfWeek.values()).forEach(d -> {
             try {
-                if (null != hasDay(deal, d)) {
+                if (null != deal.hasDay(d)) {
                     final String methodName = "set" + capitalizeFirst(d.name());
                     final Method setDay = DealDTO.class.getDeclaredMethod(methodName, boolean.class);
                     setDay.invoke(dealDTO, true);

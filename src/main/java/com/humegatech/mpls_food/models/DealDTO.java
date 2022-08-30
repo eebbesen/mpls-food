@@ -24,4 +24,5 @@ public class DealDTO {
     private boolean thursday;
     private boolean friday;
     private boolean saturday;
+    private String daysDisplay;
 }
