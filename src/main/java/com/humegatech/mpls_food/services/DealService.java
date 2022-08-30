@@ -4,7 +4,6 @@ import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DealDTO;
-import com.humegatech.mpls_food.repositories.DayRepository;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import org.springframework.data.domain.Sort;
@@ -23,14 +22,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class DealService {
-    private final DayRepository dayRepository;
     private final DealRepository dealRepository;
     private final PlaceRepository placeRepository;
 
-    public DealService(final DealRepository dealRepository, final PlaceRepository placeRepository, final DayRepository dayRepository) {
+    public DealService(final DealRepository dealRepository, final PlaceRepository placeRepository) {
         this.dealRepository = dealRepository;
         this.placeRepository = placeRepository;
-        this.dayRepository = dayRepository;
     }
 
     private static Day hasDay(final Deal deal, final DayOfWeek dayOfWeek) {
