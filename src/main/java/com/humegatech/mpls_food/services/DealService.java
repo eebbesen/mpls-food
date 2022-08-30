@@ -12,8 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.DayOfWeek;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,6 +59,10 @@ public class DealService {
         if (dealDay != null) {
             deal.getDays().remove(dealDay);
         }
+    }
+
+    private static String capitalizeFirst(final String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 
     public List<DealDTO> findAll() {
@@ -104,53 +111,34 @@ public class DealService {
     }
 
     private Deal mapToEntity(final DealDTO dealDTO, final Deal deal) {
-        deal.setDescription(dealDTO.getDescription());
         final Place place = dealDTO.getPlace() == null ? null : placeRepository.findById(dealDTO.getPlace().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "place not found"));
+
+        deal.setDescription(dealDTO.getDescription());
+        deal.setId(dealDTO.getId());
         deal.setPlace(place);
-        if (dealDTO.isSunday()) {
-            addDay(deal, DayOfWeek.SUNDAY);
-        } else {
-            removeDay(deal, DayOfWeek.SUNDAY);
-        }
-
-        if (dealDTO.isMonday()) {
-            addDay(deal, DayOfWeek.MONDAY);
-        } else {
-            removeDay(deal, DayOfWeek.MONDAY);
-        }
-
-        if (dealDTO.isTuesday()) {
-            addDay(deal, DayOfWeek.TUESDAY);
-        } else {
-            removeDay(deal, DayOfWeek.TUESDAY);
-        }
-
-        if (dealDTO.isWednesday()) {
-            addDay(deal, DayOfWeek.WEDNESDAY);
-        } else {
-            removeDay(deal, DayOfWeek.WEDNESDAY);
-        }
-
-        if (dealDTO.isThursday()) {
-            addDay(deal, DayOfWeek.THURSDAY);
-        } else {
-            removeDay(deal, DayOfWeek.THURSDAY);
-        }
-
-        if (dealDTO.isFriday()) {
-            addDay(deal, DayOfWeek.FRIDAY);
-        } else {
-            removeDay(deal, DayOfWeek.FRIDAY);
-        }
-
-        if (dealDTO.isSaturday()) {
-            addDay(deal, DayOfWeek.SATURDAY);
-        } else {
-            removeDay(deal, DayOfWeek.SATURDAY);
-        }
+        handleDaysToEntity(dealDTO, deal);
 
         return deal;
+    }
+
+    // use reflection to reduce repetition
+    private void handleDaysToEntity(final DealDTO dealDTO, final Deal deal) {
+        Arrays.stream(DayOfWeek.values()).forEach(d -> {
+            String methodName = "is" + capitalizeFirst(d.name());
+            try {
+                Method isDay = DealDTO.class.getDeclaredMethod(methodName);
+                Boolean result = (Boolean) isDay.invoke(dealDTO);
+
+                if (result) {
+                    addDay(deal, d);
+                } else {
+                    removeDay(deal, d);
+                }
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
 }
