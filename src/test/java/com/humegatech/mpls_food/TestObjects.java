@@ -84,6 +84,10 @@ public class TestObjects {
         return deal;
     }
 
+    public static Deal dealMonTues() {
+        return deal(TestObjects.place(), "Monday / Tuesday Deal", DayOfWeek.MONDAY, DayOfWeek.TUESDAY);
+    }
+
     public static Deal deal(final Place place, final String description, final DayOfWeek... days) {
         Deal deal = Deal.builder()
                 .description(description)

@@ -15,7 +15,7 @@ public class DealTest {
 
     @BeforeEach
     void setUp() {
-        dealMonTues = TestObjects.deal(TestObjects.place(), "Monday / Tuesday Deal", DayOfWeek.MONDAY, DayOfWeek.TUESDAY);
+        dealMonTues = TestObjects.dealMonTues();
     }
 
     @Test
