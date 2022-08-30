@@ -31,10 +31,18 @@ public class DealServiceTest {
     @MockBean
     private DealRepository dealRepository;
     private Deal dealMonTues;
+    private DealDTO dealMonTuesDTO;
 
     @BeforeEach
     void setUp() {
         dealMonTues = TestObjects.deal(TestObjects.place(), "Monday / Tuesday Deal", DayOfWeek.MONDAY, DayOfWeek.TUESDAY);
+
+        dealMonTuesDTO = new DealDTO();
+        dealMonTuesDTO.setMonday(true);
+        dealMonTuesDTO.setTuesday(true);
+        dealMonTuesDTO.setDescription(dealMonTues.getDescription());
+        dealMonTuesDTO.setPlace(dealMonTues.getPlace());
+        dealMonTuesDTO.setId(dealMonTues.getId());
     }
 
     @Test
@@ -77,16 +85,12 @@ public class DealServiceTest {
             }
         }
 
-        DealDTO dealDTO = new DealDTO();
-        dealDTO.setTuesday(true);
-        dealDTO.setDescription(dealMonTues.getDescription());
-        dealDTO.setPlace(dealMonTues.getPlace());
-        dealDTO.setId(dealMonTues.getId());
+        dealMonTuesDTO.setMonday(false);
 
         when(placeRepository.findById(dealMonTues.getPlace().getId())).thenReturn(Optional.of(dealMonTues.getPlace()));
         when(dealRepository.findById(dealMonTues.getId())).thenReturn(Optional.of(dealMonTues));
 
-        service.update(dealMonTues.getId(), dealDTO);
+        service.update(dealMonTues.getId(), dealMonTuesDTO);
 
         verify(dealRepository, times(1)).findById(dealMonTues.getId());
         assertEquals(1, dealMonTues.getDays().size());
@@ -95,17 +99,10 @@ public class DealServiceTest {
 
     @Test
     void testMapToEntity() {
-        DealDTO dealDTO = new DealDTO();
-        dealDTO.setMonday(true);
-        dealDTO.setTuesday(true);
-        dealDTO.setDescription(dealMonTues.getDescription());
-        dealDTO.setPlace(dealMonTues.getPlace());
-        dealDTO.setId(dealMonTues.getId());
-
         when(placeRepository.findById(dealMonTues.getPlace().getId())).thenReturn(Optional.of(dealMonTues.getPlace()));
 
         Deal deal = new Deal();
-        ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, deal);
+        ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealMonTuesDTO, deal);
 
         assertEquals(dealMonTues.getPlace(), deal.getPlace());
         assertEquals(dealMonTues.getDescription(), deal.getDescription());
@@ -120,16 +117,9 @@ public class DealServiceTest {
     }
 
     @Test
-    void testHandleDaysToEntity() {
-        DealDTO dealDTO = new DealDTO();
-        dealDTO.setMonday(true);
-        dealDTO.setTuesday(true);
-        dealDTO.setDescription(dealMonTues.getDescription());
-        dealDTO.setPlace(dealMonTues.getPlace());
-        dealDTO.setId(dealMonTues.getId());
-
+    void testApplyDaysToEntity() {
         Deal deal = new Deal();
-        ReflectionTestUtils.invokeMethod(service, "handleDaysToEntity", dealDTO, deal);
+        ReflectionTestUtils.invokeMethod(service, "applyDaysToEntity", dealMonTuesDTO, deal);
 
         // confirm days
         Set<DayOfWeek> days = deal.getDays().stream().map(Day::getDayOfWeek)
@@ -140,17 +130,10 @@ public class DealServiceTest {
     }
 
     @Test
-    void testHandleDaysToEntityRemoveDays() {
-        DealDTO dealDTO = new DealDTO();
-        dealDTO.setMonday(true);
-        dealDTO.setTuesday(true);
-        dealDTO.setDescription(dealMonTues.getDescription());
-        dealDTO.setPlace(dealMonTues.getPlace());
-        dealDTO.setId(dealMonTues.getId());
-
+    void testApplyDaysToEntityRemoveDays() {
         Deal deal = new Deal();
         deal.getDays().add(Day.builder().deal(dealMonTues).dayOfWeek(DayOfWeek.SUNDAY).build());
-        ReflectionTestUtils.invokeMethod(service, "handleDaysToEntity", dealDTO, deal);
+        ReflectionTestUtils.invokeMethod(service, "applyDaysToEntity", dealMonTuesDTO, deal);
 
         // confirm days
         Set<DayOfWeek> days = deal.getDays().stream().map(Day::getDayOfWeek)
@@ -158,5 +141,19 @@ public class DealServiceTest {
         assertEquals(2, days.size());
         assertTrue(days.contains(DayOfWeek.MONDAY));
         assertTrue(days.contains(DayOfWeek.TUESDAY));
+    }
+
+    @Test
+    void testApplyDaysToDTO() {
+        DealDTO dealDTO = new DealDTO();
+        ReflectionTestUtils.invokeMethod(service, "applyDaysToDTO", dealMonTues, dealDTO);
+
+        assertFalse(dealDTO.isSunday());
+        assertTrue(dealDTO.isMonday());
+        assertTrue(dealDTO.isTuesday());
+        assertFalse(dealDTO.isWednesday());
+        assertFalse(dealDTO.isThursday());
+        assertFalse(dealDTO.isFriday());
+        assertFalse(dealDTO.isSaturday());
     }
 }

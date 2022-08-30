@@ -98,19 +98,29 @@ public class DealService {
         dealRepository.deleteById(id);
     }
 
+
     private DealDTO mapToDTO(final Deal deal, final DealDTO dealDTO) {
         dealDTO.setId(deal.getId());
         dealDTO.setDescription(deal.getDescription());
         dealDTO.setPlace(deal.getPlace() == null ? null : deal.getPlace());
-        dealDTO.setSunday(null != hasDay(deal, DayOfWeek.SUNDAY));
-        dealDTO.setMonday(null != hasDay(deal, DayOfWeek.MONDAY));
-        dealDTO.setTuesday(null != hasDay(deal, DayOfWeek.TUESDAY));
-        dealDTO.setWednesday(null != hasDay(deal, DayOfWeek.WEDNESDAY));
-        dealDTO.setThursday(null != hasDay(deal, DayOfWeek.THURSDAY));
-        dealDTO.setFriday(null != hasDay(deal, DayOfWeek.FRIDAY));
-        dealDTO.setSaturday(null != hasDay(deal, DayOfWeek.SATURDAY));
+        applyDaysToDTO(deal, dealDTO);
 
         return dealDTO;
+    }
+
+    // use reflection to reduce repetition
+    private void applyDaysToDTO(final Deal deal, final DealDTO dealDTO) {
+        Arrays.stream(DayOfWeek.values()).forEach(d -> {
+            try {
+                if (null != hasDay(deal, d)) {
+                    final String methodName = "set" + capitalizeFirst(d.name());
+                    final Method setDay = DealDTO.class.getDeclaredMethod(methodName, boolean.class);
+                    setDay.invoke(dealDTO, true);
+                }
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private Deal mapToEntity(final DealDTO dealDTO, final Deal deal) {
@@ -120,18 +130,18 @@ public class DealService {
         deal.setDescription(dealDTO.getDescription());
         deal.setId(dealDTO.getId());
         deal.setPlace(place);
-        handleDaysToEntity(dealDTO, deal);
+        applyDaysToEntity(dealDTO, deal);
 
         return deal;
     }
 
     // use reflection to reduce repetition
-    private void handleDaysToEntity(final DealDTO dealDTO, final Deal deal) {
+    private void applyDaysToEntity(final DealDTO dealDTO, final Deal deal) {
         Arrays.stream(DayOfWeek.values()).forEach(d -> {
-            String methodName = "is" + capitalizeFirst(d.name());
+            final String methodName = "is" + capitalizeFirst(d.name());
             try {
-                Method isDay = DealDTO.class.getDeclaredMethod(methodName);
-                Boolean result = (Boolean) isDay.invoke(dealDTO);
+                final Method isDay = DealDTO.class.getDeclaredMethod(methodName);
+                final Boolean result = (Boolean) isDay.invoke(dealDTO);
 
                 if (result) {
                     addDay(deal, d);
