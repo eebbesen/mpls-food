@@ -33,7 +33,7 @@
         <td>
           <div sec:authorize="isAuthenticated()">
             <div sec:authorize="hasRole('ROLE_ADMIN')">
-              <form class="js-submit-confirm float-end" method="post" th:action="@{/deals/delete/{id}(id=${day.deal.id})}" th:data-confirm-message="#{delete.confirm}">
+              <form class="js-submit-confirm float-end" method="post" th:action="@{/days/delete/{id}(id=${day.id})}" th:data-confirm-message="#{delete.confirm}">
                 <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${day.deal.id})}" th:text="#{deal.list.edit}" />
                 <button class="btn btn-sm btn-danger" th:text="#{deal.list.delete}" type="submit" />
               </form>

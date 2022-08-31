@@ -25,8 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication().passwordEncoder(new BCryptPasswordEncoder())
                 .dataSource(dataSource)
                 .usersByUsernameQuery("select username, password, enabled from users where username=?")
-                .authoritiesByUsernameQuery("select username, authority from authorities where username=?")
-        ;
+                .authoritiesByUsernameQuery("select username, authority from authorities where username=?");
     }
 
     @Override
@@ -35,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers("/css/**", "/places", "/deals", "/deals/deals", "/login", "/", "/js/**", "/images/**").permitAll()
                 .mvcMatchers("/deals/add", "/places/add").authenticated()
-                .mvcMatchers("/places/delete/*", "/*/edit/*", "/deals/delete/*", "").hasRole("ADMIN")
+                .mvcMatchers("/places/delete/*", "/*/edit/*", "/deals/delete/*", "/days/delete/*", "").hasRole("ADMIN")
                 .anyRequest().denyAll();
 //        http.httpBasic();
         http.formLogin();

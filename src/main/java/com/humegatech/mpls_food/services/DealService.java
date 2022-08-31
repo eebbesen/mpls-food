@@ -107,6 +107,7 @@ public class DealService {
                     return DealDayDTO.builder()
                             .deal(deal)
                             .dayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(d.getDayOfWeek().name()))
+                            .id(d.getId())
                             .dayOfWeek(d.getDayOfWeek()).build();
                 }).collect(Collectors.toList());
     }
