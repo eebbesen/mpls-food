@@ -89,7 +89,7 @@ public class DealController {
     public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
         dealService.delete(id);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("deal.delete.success"));
-        return "redirect:/deals";
+        return "redirect:/deals/deals";
     }
 
 }
