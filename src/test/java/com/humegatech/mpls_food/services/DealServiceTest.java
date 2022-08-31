@@ -160,7 +160,6 @@ public class DealServiceTest {
     @Test
     void testMapToDealDayDTO() {
         List<DealDayDTO> dealDayDTOs = (List<DealDayDTO>) ReflectionTestUtils.invokeMethod(service, "mapToDealDayDTOs", dealMonTues);
-        dealDayDTOs.sort((a, b) -> a.getDayOfWeek().compareTo(b.getDayOfWeek()));
 
         assertEquals(2, dealDayDTOs.size());
         assertEquals(DayOfWeek.MONDAY, dealDayDTOs.get(0).getDayOfWeek());
@@ -180,6 +179,12 @@ public class DealServiceTest {
         List<DealDayDTO> dealDayDTOs = service.findAllDealDays();
 
         assertEquals(3, dealDayDTOs.size());
+        assertEquals("Ginelli's Pizza", dealDayDTOs.get(0).getDeal().getPlace().getName());
+        assertEquals(DayOfWeek.THURSDAY, dealDayDTOs.get(0).getDayOfWeek());
+        assertEquals("Ginelli's Pizza", dealDayDTOs.get(1).getDeal().getPlace().getName());
+        assertEquals(DayOfWeek.FRIDAY, dealDayDTOs.get(1).getDayOfWeek());
+        assertEquals("Taco John's", dealDayDTOs.get(2).getDeal().getPlace().getName());
+        assertEquals(DayOfWeek.TUESDAY, dealDayDTOs.get(2).getDayOfWeek());
     }
 
 }

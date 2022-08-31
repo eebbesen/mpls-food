@@ -29,7 +29,6 @@
       <tr th:each="day : ${days}">
         <td th:text="${day.deal.description}" />
         <td th:text="${day.deal.place.name}" />
-        <!--                            <td th:text="${deal.dayOfWeek}" />-->
         <td th:text="${day.dayOfWeekDisplay}" />
         <td>
           <div sec:authorize="isAuthenticated()">

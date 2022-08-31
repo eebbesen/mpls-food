@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.time.DayOfWeek;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,10 +59,12 @@ public class DealService {
     }
 
     public List<DealDayDTO> findAllDealDays() {
-        return dealRepository.findAll(Sort.by("place.name", "days.dayOfWeek"))
+        return dealRepository.findAll()
                 .stream()
                 .map(deal -> mapToDealDayDTOs(deal))
                 .flatMap(dtos -> dtos.stream())
+                .sorted(Comparator.comparing((DealDayDTO c) -> c.getDeal().getPlace().getName())
+                        .thenComparing((DealDayDTO d) -> d.getDayOfWeek()))
                 .collect(Collectors.toList());
     }
 
