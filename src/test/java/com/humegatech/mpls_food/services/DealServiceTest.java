@@ -141,14 +141,33 @@ public class DealServiceTest {
     }
 
     @Test
+    void testMapToDTO() {
+        DealDTO dto = (DealDTO) ReflectionTestUtils.invokeMethod(service, "mapToDTO", dealMonTues, new DealDTO());
+
+        assertEquals(dealMonTues.getId(), dto.getId());
+        assertTrue(dto.isMonday());
+        assertTrue(dto.isTuesday());
+        assertFalse(dto.isWednesday());
+        assertFalse(dto.isThursday());
+        assertFalse(dto.isFriday());
+        assertFalse(dto.isSaturday());
+        assertFalse(dto.isSunday());
+        assertEquals(dealMonTues.getDescription(), dto.getDescription());
+        assertEquals(dealMonTues.getPlace(), dto.getPlace());
+        assertEquals("MT-----", dto.getDaysDisplay());
+    }
+
+    @Test
     void testMapToDealDayDTO() {
         List<DealDayDTO> dealDayDTOs = (List<DealDayDTO>) ReflectionTestUtils.invokeMethod(service, "mapToDealDayDTOs", dealMonTues);
         dealDayDTOs.sort((a, b) -> a.getDayOfWeek().compareTo(b.getDayOfWeek()));
 
         assertEquals(2, dealDayDTOs.size());
         assertEquals(DayOfWeek.MONDAY, dealDayDTOs.get(0).getDayOfWeek());
+        assertEquals("Monday", dealDayDTOs.get(0).getDayOfWeekDisplay());
         assertEquals(dealMonTues, dealDayDTOs.get(0).getDeal());
         assertEquals(DayOfWeek.TUESDAY, dealDayDTOs.get(1).getDayOfWeek());
+        assertEquals("Tuesday", dealDayDTOs.get(1).getDayOfWeekDisplay());
         assertEquals(dealMonTues, dealDayDTOs.get(1).getDeal());
     }
 

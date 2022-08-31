@@ -21,7 +21,7 @@
                         <tr>
                             <th scope="col" th:text="#{deal.description.label}" />
                             <th scope="col" th:text="#{deal.place.label}" />
-                            <th scope="col" th:text="#{deal.day.label}" />
+                            <th scope="col" th:text="#{deal.days.label}" />
                             <th><!-- --></th>
                         </tr>
                     </thead>
@@ -29,8 +29,7 @@
                         <tr th:each="deal : ${deals}">
                             <td th:text="${deal.description}" />
                             <td th:text="${deal.place.name}" />
-<!--                            <td th:text="${deal.dayOfWeek}" />-->
-                            <td th:text="'stub'" />
+                            <td th:text="${deal.daysDisplay}" />
                                 <td>
                                     <div sec:authorize="isAuthenticated()">
                                         <div sec:authorize="hasRole('ROLE_ADMIN')">

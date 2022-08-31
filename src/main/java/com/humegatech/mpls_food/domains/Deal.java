@@ -12,7 +12,9 @@ import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @EntityListeners(AuditingEntityListener.class)
@@ -72,12 +74,17 @@ public class Deal extends BaseEntity {
 
 
     public Day hasDay(final DayOfWeek dayOfWeek) {
-        for (Day day : getDays()) {
+        for (Day day : days) {
             if (day.getDayOfWeek() == dayOfWeek) {
                 return day;
             }
         }
 
         return null;
+    }
+
+    public List<DayOfWeek> getDaysOfWeek() {
+        return days.stream().map(day -> day.getDayOfWeek())
+                .collect(Collectors.toList());
     }
 }

@@ -19,4 +19,5 @@ public class DealDayDTO {
 
     private DayOfWeek dayOfWeek;
     private LocalDate date;
+    private String dayOfWeekDisplay;
 }

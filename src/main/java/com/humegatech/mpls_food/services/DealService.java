@@ -92,6 +92,7 @@ public class DealService {
         dealDTO.setId(deal.getId());
         dealDTO.setDescription(deal.getDescription());
         dealDTO.setPlace(deal.getPlace() == null ? null : deal.getPlace());
+        dealDTO.setDaysDisplay(MplsFoodUtils.condensedDays(deal.getDaysOfWeek()));
         applyDaysToDTO(deal, dealDTO);
 
         return dealDTO;
@@ -101,6 +102,7 @@ public class DealService {
         return deal.getDays().stream().map(d -> {
             return DealDayDTO.builder()
                     .deal(deal)
+                    .dayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(d.getDayOfWeek().name()))
                     .dayOfWeek(d.getDayOfWeek()).build();
         }).collect(Collectors.toList());
     }

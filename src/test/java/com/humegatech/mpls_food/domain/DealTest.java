@@ -6,9 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.DayOfWeek;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DealTest {
     private Deal dealMonTues;
@@ -27,5 +27,14 @@ public class DealTest {
         assertNull(dealMonTues.hasDay(DayOfWeek.FRIDAY));
         assertNull(dealMonTues.hasDay(DayOfWeek.SATURDAY));
         assertNull(dealMonTues.hasDay(DayOfWeek.SUNDAY));
+    }
+
+    @Test
+    void testGetDaysOfWeek() {
+        List<DayOfWeek> dows = dealMonTues.getDaysOfWeek();
+
+        assertEquals(2, dows.size());
+        assertTrue(dows.contains(DayOfWeek.MONDAY));
+        assertTrue(dows.contains(DayOfWeek.TUESDAY));
     }
 }
