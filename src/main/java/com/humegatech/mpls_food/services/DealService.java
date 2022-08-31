@@ -7,6 +7,7 @@ import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.models.DealDayDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,13 @@ public class DealService {
         this.placeRepository = placeRepository;
     }
 
+    private static void removeDay(final Deal deal, final DayOfWeek day) {
+        final Day dealDay = deal.hasDay(day);
+        if (null != dealDay) {
+            deal.getDays().remove(dealDay);
+        }
+    }
+
     private static void addDay(final Deal deal, final DayOfWeek day) {
         if (null == deal.hasDay(day)) {
             deal.getDays().add(Day.builder()
@@ -40,20 +48,6 @@ public class DealService {
                     .dateCreated(OffsetDateTime.now())
                     .build());
         }
-    }
-
-    private static void removeDay(final Deal deal, final DayOfWeek day) {
-        final Day dealDay = deal.hasDay(day);
-        if (null != dealDay) {
-            deal.getDays().remove(dealDay);
-        }
-    }
-
-    private static String capitalizeFirst(final String string) {
-        if (null == string) {
-            return null;
-        }
-        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 
     public List<DealDTO> findAll() {
@@ -94,7 +88,6 @@ public class DealService {
         dealRepository.deleteById(id);
     }
 
-
     private DealDTO mapToDTO(final Deal deal, final DealDTO dealDTO) {
         dealDTO.setId(deal.getId());
         dealDTO.setDescription(deal.getDescription());
@@ -117,7 +110,7 @@ public class DealService {
         Arrays.stream(DayOfWeek.values()).forEach(d -> {
             try {
                 if (null != deal.hasDay(d)) {
-                    final String methodName = "set" + capitalizeFirst(d.name());
+                    final String methodName = "set" + MplsFoodUtils.capitalizeFirst(d.name());
                     final Method setDay = DealDTO.class.getDeclaredMethod(methodName, boolean.class);
                     setDay.invoke(dealDTO, true);
                 }
@@ -142,7 +135,7 @@ public class DealService {
     // use reflection to reduce repetition
     private void applyDaysToEntity(final DealDTO dealDTO, final Deal deal) {
         Arrays.stream(DayOfWeek.values()).forEach(d -> {
-            final String methodName = "is" + capitalizeFirst(d.name());
+            final String methodName = "is" + MplsFoodUtils.capitalizeFirst(d.name());
             try {
                 final Method isDay = DealDTO.class.getDeclaredMethod(methodName);
                 final Boolean result = (Boolean) isDay.invoke(dealDTO);

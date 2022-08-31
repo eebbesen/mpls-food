@@ -48,14 +48,6 @@ public class DealServiceTest {
     }
 
     @Test
-    void testCapitalizeFirst() {
-        assertEquals("Dealdto", ReflectionTestUtils.invokeMethod(DealService.class, "capitalizeFirst", "dealDTO"));
-
-        String nullString = null;
-        assertNull(ReflectionTestUtils.invokeMethod(DealService.class, "capitalizeFirst", nullString));
-    }
-
-    @Test
     void testConfirmOrAddDayDayExists() {
         ReflectionTestUtils.invokeMethod(service.getClass(), "addDay", dealMonTues, DayOfWeek.MONDAY);
         assertEquals(2, dealMonTues.getDays().size());
