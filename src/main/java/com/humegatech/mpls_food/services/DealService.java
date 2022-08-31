@@ -63,7 +63,7 @@ public class DealService {
                 .collect(Collectors.toList());
     }
 
-    public List<DealDayDTO> findAllDealDayDTOs() {
+    public List<DealDayDTO> findAllDealDays() {
         return dealRepository.findAll()
                 .stream()
                 .map(deal -> mapToDealDayDTOs(deal))

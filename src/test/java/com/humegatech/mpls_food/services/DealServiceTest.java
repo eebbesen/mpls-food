@@ -161,12 +161,12 @@ public class DealServiceTest {
     }
 
     @Test
-    void testFindAllDealDayDTOs() {
+    void testFindAllDealDays() {
         List<Deal> deals = TestObjects.deals();
 
         when(dealRepository.findAll()).thenReturn(deals);
 
-        List<DealDayDTO> dealDayDTOs = service.findAllDealDayDTOs();
+        List<DealDayDTO> dealDayDTOs = service.findAllDealDays();
 
         assertEquals(3, dealDayDTOs.size());
     }

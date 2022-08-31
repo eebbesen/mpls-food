@@ -34,6 +34,13 @@ public class DealController {
     }
 
     @GetMapping
+    public String listDealDays(final Model model) {
+        model.addAttribute("days", dealService.findAllDealDays());
+
+        return "deal/days";
+    }
+
+    @GetMapping("/deals")
     public String list(final Model model) {
         model.addAttribute("deals", dealService.findAll());
         return "deal/list";
