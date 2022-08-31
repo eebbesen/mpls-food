@@ -22,7 +22,7 @@ public class PlaceService {
     }
 
     public List<PlaceDTO> findAll() {
-        return placeRepository.findAll(Sort.by("id"))
+        return placeRepository.findAll(Sort.by("name"))
                 .stream()
                 .map(place -> mapToDTO(place, new PlaceDTO()))
                 .collect(Collectors.toList());

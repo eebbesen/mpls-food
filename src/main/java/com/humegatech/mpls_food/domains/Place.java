@@ -32,6 +32,7 @@ public class Place extends BaseEntity {
 
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true)
+    @OrderBy(value = "name")
     @Builder.Default
     private Set<Deal> deals = new LinkedHashSet<>();
 

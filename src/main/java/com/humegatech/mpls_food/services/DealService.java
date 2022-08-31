@@ -51,14 +51,14 @@ public class DealService {
     }
 
     public List<DealDTO> findAll() {
-        return dealRepository.findAll(Sort.by("id"))
+        return dealRepository.findAll(Sort.by("place.name"))
                 .stream()
                 .map(deal -> mapToDTO(deal, new DealDTO()))
                 .collect(Collectors.toList());
     }
 
     public List<DealDayDTO> findAllDealDays() {
-        return dealRepository.findAll()
+        return dealRepository.findAll(Sort.by("place.name", "days.dayOfWeek"))
                 .stream()
                 .map(deal -> mapToDealDayDTOs(deal))
                 .flatMap(dtos -> dtos.stream())
@@ -99,12 +99,13 @@ public class DealService {
     }
 
     private List<DealDayDTO> mapToDealDayDTOs(final Deal deal) {
-        return deal.getDays().stream().map(d -> {
-            return DealDayDTO.builder()
-                    .deal(deal)
-                    .dayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(d.getDayOfWeek().name()))
-                    .dayOfWeek(d.getDayOfWeek()).build();
-        }).collect(Collectors.toList());
+        return deal.getDays().stream()
+                .map(d -> {
+                    return DealDayDTO.builder()
+                            .deal(deal)
+                            .dayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(d.getDayOfWeek().name()))
+                            .dayOfWeek(d.getDayOfWeek()).build();
+                }).collect(Collectors.toList());
     }
 
     // use reflection to reduce repetition
