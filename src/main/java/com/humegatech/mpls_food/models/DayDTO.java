@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DealDayDTO {
+public class DayDTO {
     private Long id;
     @NotNull
     private Deal deal;

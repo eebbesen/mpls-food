@@ -2,7 +2,7 @@ package com.humegatech.mpls_food.services;
 
 import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.models.DealDayDTO;
+import com.humegatech.mpls_food.models.DayDTO;
 import com.humegatech.mpls_food.repositories.DayRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +29,16 @@ public class DayServiceTest {
 
         when(dayRepository.findAll()).thenReturn(days);
 
-        List<DealDayDTO> dealDayDTOs = service.findAll();
+        List<DayDTO> dayDTOs = service.findAll();
 
-        assertEquals(4, dealDayDTOs.size());
-        assertEquals("Ginelli's Pizza", dealDayDTOs.get(0).getDeal().getPlace().getName());
-        assertEquals(DayOfWeek.MONDAY, dealDayDTOs.get(0).getDayOfWeek());
-        assertEquals("Ginelli's Pizza", dealDayDTOs.get(1).getDeal().getPlace().getName());
-        assertEquals(DayOfWeek.TUESDAY, dealDayDTOs.get(1).getDayOfWeek());
-        assertEquals("Ginelli's Pizza", dealDayDTOs.get(2).getDeal().getPlace().getName());
-        assertEquals(DayOfWeek.WEDNESDAY, dealDayDTOs.get(2).getDayOfWeek());
-        assertEquals("Taco John's", dealDayDTOs.get(3).getDeal().getPlace().getName());
-        assertEquals(DayOfWeek.TUESDAY, dealDayDTOs.get(3).getDayOfWeek());
+        assertEquals(4, dayDTOs.size());
+        assertEquals("Ginelli's Pizza", dayDTOs.get(0).getDeal().getPlace().getName());
+        assertEquals(DayOfWeek.MONDAY, dayDTOs.get(0).getDayOfWeek());
+        assertEquals("Ginelli's Pizza", dayDTOs.get(1).getDeal().getPlace().getName());
+        assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(1).getDayOfWeek());
+        assertEquals("Ginelli's Pizza", dayDTOs.get(2).getDeal().getPlace().getName());
+        assertEquals(DayOfWeek.WEDNESDAY, dayDTOs.get(2).getDayOfWeek());
+        assertEquals("Taco John's", dayDTOs.get(3).getDeal().getPlace().getName());
+        assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(3).getDayOfWeek());
     }
 }

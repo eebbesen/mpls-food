@@ -1,7 +1,7 @@
 package com.humegatech.mpls_food.services;
 
 import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.models.DealDayDTO;
+import com.humegatech.mpls_food.models.DayDTO;
 import com.humegatech.mpls_food.repositories.DayRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.springframework.http.HttpStatus;
@@ -21,33 +21,33 @@ public class DayService {
         this.dayRepository = dayRepository;
     }
 
-    public Long create(final DealDayDTO dealDayDTO) {
+    public Long create(final DayDTO dayDTO) {
         final Day day = new Day();
-        mapToEntity(dealDayDTO, day);
+        mapToEntity(dayDTO, day);
         return dayRepository.save(day).getId();
     }
 
 
-    public List<DealDayDTO> findAll() {
+    public List<DayDTO> findAll() {
         return dayRepository.findAll()
                 .stream()
-                .map(day -> mapToDTO(day, new DealDayDTO()))
-                .sorted(Comparator.comparing((DealDayDTO c) -> c.getDeal().getPlace().getName())
-                        .thenComparing((DealDayDTO d) -> d.getDayOfWeek()))
+                .map(day -> mapToDTO(day, new DayDTO()))
+                .sorted(Comparator.comparing((DayDTO c) -> c.getDeal().getPlace().getName())
+                        .thenComparing((DayDTO d) -> d.getDayOfWeek()))
                 .collect(Collectors.toList());
     }
 
-    private DealDayDTO mapToDTO(final Day day, final DealDayDTO dealDayDTO) {
-        dealDayDTO.setId(day.getId());
-        dealDayDTO.setDeal(day.getDeal());
-        dealDayDTO.setDayOfWeek(day.getDayOfWeek());
-        dealDayDTO.setDate(day.getDate());
-        dealDayDTO.setDayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(day.getDayOfWeek().name()));
+    private DayDTO mapToDTO(final Day day, final DayDTO dayDTO) {
+        dayDTO.setId(day.getId());
+        dayDTO.setDeal(day.getDeal());
+        dayDTO.setDayOfWeek(day.getDayOfWeek());
+        dayDTO.setDate(day.getDate());
+        dayDTO.setDayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(day.getDayOfWeek().name()));
 
-        return dealDayDTO;
+        return dayDTO;
     }
 
-    private Day mapToEntity(final DealDayDTO dealDayDTO, final Day day) {
+    private Day mapToEntity(final DayDTO dayDTO, final Day day) {
         Day.builder()
                 .deal(day.getDeal())
                 .dayOfWeek(day.getDayOfWeek())
@@ -55,16 +55,16 @@ public class DayService {
         return day;
     }
 
-    public DealDayDTO get(final Long id) {
+    public DayDTO get(final Long id) {
         return dayRepository.findById(id)
-                .map(deal -> mapToDTO(deal, new DealDayDTO()))
+                .map(deal -> mapToDTO(deal, new DayDTO()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public void update(final Long id, final DealDayDTO dealDayDTO) {
+    public void update(final Long id, final DayDTO dayDTO) {
         final Day day = dayRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        mapToEntity(dealDayDTO, day);
+        mapToEntity(dayDTO, day);
         dayRepository.save(day);
     }
 
