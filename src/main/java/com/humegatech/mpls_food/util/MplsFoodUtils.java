@@ -44,4 +44,12 @@ public class MplsFoodUtils {
                 .map(day -> days.contains(day) ? dowAbbreviation(day) : dowSeparator)
                 .collect(Collectors.joining(""));
     }
+
+    public static String truncateAddress(final String address) {
+        if (!address.contains("\n")) {
+            return address;
+        }
+
+        return address.substring(0, address.lastIndexOf("\n")).replaceAll("\n", " ");
+    }
 }

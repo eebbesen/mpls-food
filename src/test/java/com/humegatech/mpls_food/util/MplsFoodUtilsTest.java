@@ -34,4 +34,19 @@ public class MplsFoodUtilsTest {
         assertEquals("MT-----", MplsFoodUtils.condensedDays(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY)));
         assertEquals("-TWt-Ss", MplsFoodUtils.condensedDays(Arrays.asList(DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)));
     }
+
+    @Test
+    public void truncateAddress() {
+        assertEquals("123 Marquette Ave", MplsFoodUtils.truncateAddress("123 Marquette Ave\nMinneapolis, MN 55402"));
+    }
+
+    @Test
+    public void truncateAddressMultipleCarriageReturns() {
+        assertEquals("123 Marquette Ave Minneapolis, MN", MplsFoodUtils.truncateAddress("123 Marquette Ave\nMinneapolis, MN\n55402"));
+    }
+
+    @Test
+    public void truncateAddressNoCarriageReturns() {
+        assertEquals("123 Marquette Ave Minneapolis, MN 55402", MplsFoodUtils.truncateAddress("123 Marquette Ave Minneapolis, MN 55402"));
+    }
 }

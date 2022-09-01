@@ -19,18 +19,9 @@ public class PlaceDTO {
     @NotNull
     private String address;
 
+    private String truncatedAddress;
     private String website;
-
     private boolean app;
-
     private boolean orderAhead;
-
-    public String truncatedAddress() {
-        if (!address.contains("\n")) {
-            return address;
-        }
-
-        return address.substring(0, address.lastIndexOf("\n")).replaceAll("\n", " ");
-    }
 
 }

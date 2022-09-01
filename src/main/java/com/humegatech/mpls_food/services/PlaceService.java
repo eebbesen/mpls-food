@@ -3,6 +3,7 @@ package com.humegatech.mpls_food.services;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,7 @@ public class PlaceService {
         placeDTO.setWebsite(place.getWebsite());
         placeDTO.setApp(place.isApp());
         placeDTO.setOrderAhead(place.isOrderAhead());
+        placeDTO.setTruncatedAddress(MplsFoodUtils.truncateAddress(place.getAddress()));
         return placeDTO;
     }
 
