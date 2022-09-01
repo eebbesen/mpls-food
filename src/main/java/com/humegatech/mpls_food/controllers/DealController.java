@@ -34,13 +34,6 @@ public class DealController {
     }
 
     @GetMapping
-    public String listDealDays(final Model model) {
-        model.addAttribute("days", dealService.findAllDealDays());
-
-        return "deal/days";
-    }
-
-    @GetMapping("/deals")
     public String list(final Model model) {
         model.addAttribute("deals", dealService.findAll());
         return "deal/list";
@@ -89,7 +82,7 @@ public class DealController {
     public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
         dealService.delete(id);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("deal.delete.success"));
-        return "redirect:/deals/deals";
+        return "redirect:/deals";
     }
 
 }

@@ -3,10 +3,12 @@ package com.humegatech.mpls_food.services;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.models.DealDayDTO;
 import com.humegatech.mpls_food.repositories.DayRepository;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,8 @@ public class DayService {
         return dayRepository.findAll()
                 .stream()
                 .map(day -> mapToDTO(day, new DealDayDTO()))
+                .sorted(Comparator.comparing((DealDayDTO c) -> c.getDeal().getPlace().getName())
+                        .thenComparing((DealDayDTO d) -> d.getDayOfWeek()))
                 .collect(Collectors.toList());
     }
 
@@ -38,14 +42,16 @@ public class DayService {
         dealDayDTO.setDeal(day.getDeal());
         dealDayDTO.setDayOfWeek(day.getDayOfWeek());
         dealDayDTO.setDate(day.getDate());
+        dealDayDTO.setDayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(day.getDayOfWeek().name()));
 
         return dealDayDTO;
     }
 
     private Day mapToEntity(final DealDayDTO dealDayDTO, final Day day) {
-//        day.setDeal(dealDayDTO.getDealId());
-        day.setDayOfWeek(day.getDayOfWeek());
-        day.setDate(day.getDate());
+        Day.builder()
+                .deal(day.getDeal())
+                .dayOfWeek(day.getDayOfWeek())
+                .date(day.getDate());
         return day;
     }
 

@@ -4,7 +4,6 @@ import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DealDTO;
-import com.humegatech.mpls_food.models.DealDayDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
@@ -18,7 +17,6 @@ import java.lang.reflect.Method;
 import java.time.DayOfWeek;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,16 +56,6 @@ public class DealService {
                 .collect(Collectors.toList());
     }
 
-    public List<DealDayDTO> findAllDealDays() {
-        return dealRepository.findAll()
-                .stream()
-                .map(deal -> mapToDealDayDTOs(deal))
-                .flatMap(dtos -> dtos.stream())
-                .sorted(Comparator.comparing((DealDayDTO c) -> c.getDeal().getPlace().getName())
-                        .thenComparing((DealDayDTO d) -> d.getDayOfWeek()))
-                .collect(Collectors.toList());
-    }
-
     public DealDTO get(final Long id) {
         return dealRepository.findById(id)
                 .map(deal -> mapToDTO(deal, new DealDTO()))
@@ -99,17 +87,6 @@ public class DealService {
         applyDaysToDTO(deal, dealDTO);
 
         return dealDTO;
-    }
-
-    private List<DealDayDTO> mapToDealDayDTOs(final Deal deal) {
-        return deal.getDays().stream()
-                .map(d -> {
-                    return DealDayDTO.builder()
-                            .deal(deal)
-                            .dayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(d.getDayOfWeek().name()))
-                            .id(d.getId())
-                            .dayOfWeek(d.getDayOfWeek()).build();
-                }).collect(Collectors.toList());
     }
 
     // use reflection to reduce repetition

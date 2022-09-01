@@ -26,10 +26,41 @@ public class TestObjects {
         return ++DEAL_DAY_ID;
     }
 
+    public static Place tacoJohns() {
+        return Place.builder()
+                .name("Taco John's")
+                .address("'607 Marquette Ave.\n" +
+                        "        Minneapolis, MN 55402")
+                .website("https://locations.tacojohns.com/mn/minneapolis/607-marquette-ave/")
+                .orderAhead(false)
+                .app(true)
+                .id(placeId())
+                .build();
+    }
+
+    public static Deal tacoTuesday() {
+        Place tacoJohns = tacoJohns();
+        Deal deal = Deal.builder()
+                .description("$1.39 crispy taco")
+                .place(tacoJohns)
+                .id(dealId())
+                .build();
+
+        deal.getDays().add(Day.builder()
+                .deal(deal)
+                .dayOfWeek(DayOfWeek.TUESDAY)
+                .id(dayId()).build());
+
+        tacoJohns.getDeals().add(deal);
+
+        return deal;
+    }
+
     public static Place place() {
-        return Place.builder().address("121 S 8th Street #235\n" +
-                        "Minneapolis, MN 55402")
+        return Place.builder()
                 .name("Ginelli's Pizza")
+                .address("121 S 8th Street #235\n" +
+                        "Minneapolis, MN 55402")
                 .app(false)
                 .orderAhead(false)
                 .website("https://www.ginellispizza.com/")
@@ -48,26 +79,12 @@ public class TestObjects {
     }
 
     public static List<Place> places() {
-        final Place tacoJohns = Place.builder()
-                .address("'607 Marquette Ave.\n" +
-                        "        Minneapolis, MN 55402")
-                .name("Taco John's")
-                .website("https://locations.tacojohns.com/mn/minneapolis/607-marquette-ave/")
-                .orderAhead(false)
-                .app(true)
-                .id(placeId())
-                .build();
-
-        final Deal deal = Deal.builder()
-                .description("$1.39 crispy taco")
-                .place(tacoJohns)
-                .id(dealId())
-                .build();
-        tacoJohns.getDeals().add(deal);
+        final Deal deal = tacoTuesday();
+        final Place place = deal().getPlace();
 
         final List<Place> places = new ArrayList<>();
         places.add(place());
-        places.add(tacoJohns);
+        places.add(place);
 
         return places;
     }
@@ -76,6 +93,7 @@ public class TestObjects {
         Deal deal = Deal.builder()
                 .description("$5.00 for two slices from 10:30 - 11:00")
                 .id(dealId())
+                .place(place())
                 .build();
 
         Day day = day(deal, DayOfWeek.THURSDAY);
@@ -116,6 +134,17 @@ public class TestObjects {
         return deals;
     }
 
+    public static List<Day> days() {
+        List<Day> days = new ArrayList<>();
+
+        for (Day day : dealMonTues().getDays()) {
+            days.add(day);
+        }
+        days.add(day(deal(), DayOfWeek.WEDNESDAY));
+        days.addAll(tacoTuesday().getDays());
+
+        return days;
+    }
 
     public static Day day(final Deal deal, final DayOfWeek dayOfWeek) {
         Day day = Day.builder()

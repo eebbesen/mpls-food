@@ -4,6 +4,8 @@ import com.humegatech.mpls_food.services.DayService;
 import com.humegatech.mpls_food.util.WebUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +20,19 @@ public class DayController {
         this.dayService = dayService;
     }
 
+    @GetMapping
+    public String list(final Model model) {
+        model.addAttribute("days", dayService.findAll());
+
+        return "days/list";
+    }
+
     @PostMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
         dayService.delete(id);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("day.delete.success"));
-        return "redirect:/deals";
+        return "redirect:/days";
     }
 
 

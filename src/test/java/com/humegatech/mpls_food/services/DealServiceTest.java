@@ -4,7 +4,6 @@ import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.models.DealDTO;
-import com.humegatech.mpls_food.models.DealDayDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.DayOfWeek;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -155,36 +153,6 @@ public class DealServiceTest {
         assertEquals(dealMonTues.getDescription(), dto.getDescription());
         assertEquals(dealMonTues.getPlace(), dto.getPlace());
         assertEquals("MT-----", dto.getDaysDisplay());
-    }
-
-    @Test
-    void testMapToDealDayDTO() {
-        List<DealDayDTO> dealDayDTOs = (List<DealDayDTO>) ReflectionTestUtils.invokeMethod(service, "mapToDealDayDTOs", dealMonTues);
-
-        assertEquals(2, dealDayDTOs.size());
-        assertEquals(DayOfWeek.MONDAY, dealDayDTOs.get(0).getDayOfWeek());
-        assertEquals("Monday", dealDayDTOs.get(0).getDayOfWeekDisplay());
-        assertEquals(dealMonTues, dealDayDTOs.get(0).getDeal());
-        assertEquals(DayOfWeek.TUESDAY, dealDayDTOs.get(1).getDayOfWeek());
-        assertEquals("Tuesday", dealDayDTOs.get(1).getDayOfWeekDisplay());
-        assertEquals(dealMonTues, dealDayDTOs.get(1).getDeal());
-    }
-
-    @Test
-    void testFindAllDealDays() {
-        List<Deal> deals = TestObjects.deals();
-
-        when(dealRepository.findAll()).thenReturn(deals);
-
-        List<DealDayDTO> dealDayDTOs = service.findAllDealDays();
-
-        assertEquals(3, dealDayDTOs.size());
-        assertEquals("Ginelli's Pizza", dealDayDTOs.get(0).getDeal().getPlace().getName());
-        assertEquals(DayOfWeek.THURSDAY, dealDayDTOs.get(0).getDayOfWeek());
-        assertEquals("Ginelli's Pizza", dealDayDTOs.get(1).getDeal().getPlace().getName());
-        assertEquals(DayOfWeek.FRIDAY, dealDayDTOs.get(1).getDayOfWeek());
-        assertEquals("Taco John's", dealDayDTOs.get(2).getDeal().getPlace().getName());
-        assertEquals(DayOfWeek.TUESDAY, dealDayDTOs.get(2).getDayOfWeek());
     }
 
 }

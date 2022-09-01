@@ -1,17 +1,18 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org">
     <head>
         <title th:text="#{home.index.headline}" />
     </head>
     <body>
         <div layout:fragment="content">
-            <h1 th:text="#{home.index.headline}" class="mb-4" />
+            <h1 class="mb-4" th:text="#{home.index.headline}" />
             <p th:utext="#{home.index.text}" />
             <div class="col-md-4 mb-5">
                 <div class="list-group">
-                    <a th:href="@{/places}" th:text="#{place.list.headline}" class="list-group-item list-group-item-action" />
-                    <a th:href="@{/deals}" th:text="#{deal.list.headline}" class="list-group-item list-group-item-action" />
+                    <a class="list-group-item list-group-item-action" th:href="@{/places}" th:text="#{place.list.headline}" />
+                    <a class="list-group-item list-group-item-action" th:href="@{/deals}" th:text="#{deal.list.headline}" />
+                    <a class="list-group-item list-group-item-action" th:href="@{/days}" th:text="#{day.list.headline}" />
                 </div>
             </div>
         </div>
