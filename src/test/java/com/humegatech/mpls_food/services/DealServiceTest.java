@@ -59,13 +59,9 @@ public class DealServiceTest {
 
     @Test
     void testUpdateRemoveDays() {
-        Day deletedDay = null;
-        for (Day day : dealMonTues.getDays()) {
-            if (day.getDayOfWeek() == DayOfWeek.MONDAY) {
-                deletedDay = day;
-            }
-        }
-
+        final Day deletedDay = dealMonTues.getDays().stream()
+                .filter(day -> day.getDayOfWeek() == DayOfWeek.MONDAY)
+                .findFirst().orElse(null);
         dealMonTuesDTO.setMonday(false);
 
         when(placeRepository.findById(dealMonTues.getPlace().getId())).thenReturn(Optional.of(dealMonTues.getPlace()));

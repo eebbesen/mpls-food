@@ -8,6 +8,8 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TestObjects {
     private static Long PLACE_ID = 1L;
@@ -135,15 +137,10 @@ public class TestObjects {
     }
 
     public static List<Day> days() {
-        List<Day> days = new ArrayList<>();
-
-        for (Day day : dealMonTues().getDays()) {
-            days.add(day);
-        }
-        days.add(day(deal(), DayOfWeek.WEDNESDAY));
-        days.addAll(tacoTuesday().getDays());
-
-        return days;
+        return Stream.concat(Stream.concat(
+                        dealMonTues().getDays().stream(),
+                        tacoTuesday().getDays().stream()),
+                Stream.of(day(deal(), DayOfWeek.WEDNESDAY))).collect(Collectors.toList());
     }
 
     public static Day day(final Deal deal, final DayOfWeek dayOfWeek) {

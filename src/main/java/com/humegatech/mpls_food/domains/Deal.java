@@ -72,15 +72,10 @@ public class Deal extends BaseEntity {
                 '}';
     }
 
-
     public Day hasDay(final DayOfWeek dayOfWeek) {
-        for (Day day : days) {
-            if (day.getDayOfWeek() == dayOfWeek) {
-                return day;
-            }
-        }
-
-        return null;
+        return days.stream()
+                .filter(d -> d.getDayOfWeek() == dayOfWeek)
+                .findFirst().orElse(null);
     }
 
     public List<DayOfWeek> getDaysOfWeek() {
