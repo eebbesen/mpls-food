@@ -82,7 +82,8 @@ public class DealService {
     private DealDTO mapToDTO(final Deal deal, final DealDTO dealDTO) {
         dealDTO.setId(deal.getId());
         dealDTO.setDescription(deal.getDescription());
-        dealDTO.setPlace(deal.getPlace() == null ? null : deal.getPlace());
+        dealDTO.setPlace(deal.getPlace() == null ? null : deal.getPlace().getId());
+        dealDTO.setPlaceName(deal.getPlace() == null ? null : deal.getPlace().getName());
         dealDTO.setDaysDisplay(MplsFoodUtils.condensedDays(deal.getDaysOfWeek()));
         applyDaysToDTO(deal, dealDTO);
 
@@ -105,7 +106,7 @@ public class DealService {
     }
 
     private Deal mapToEntity(final DealDTO dealDTO, final Deal deal) {
-        final Place place = dealDTO.getPlace() == null ? null : placeRepository.findById(dealDTO.getPlace().getId())
+        final Place place = dealDTO.getPlace() == null ? null : placeRepository.findById(dealDTO.getPlace())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "place not found"));
 
         deal.setDescription(dealDTO.getDescription());

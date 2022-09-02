@@ -41,7 +41,8 @@ public class DealServiceTest {
         dealMonTuesDTO.setMonday(true);
         dealMonTuesDTO.setTuesday(true);
         dealMonTuesDTO.setDescription(dealMonTues.getDescription());
-        dealMonTuesDTO.setPlace(dealMonTues.getPlace());
+        dealMonTuesDTO.setPlace(dealMonTues.getPlace().getId());
+        dealMonTuesDTO.setPlaceName(dealMonTues.getPlace().getName());
         dealMonTuesDTO.setId(dealMonTues.getId());
     }
 
@@ -147,7 +148,8 @@ public class DealServiceTest {
         assertFalse(dto.isSaturday());
         assertFalse(dto.isSunday());
         assertEquals(dealMonTues.getDescription(), dto.getDescription());
-        assertEquals(dealMonTues.getPlace(), dto.getPlace());
+        assertEquals(dealMonTues.getPlace().getId(), dto.getPlace());
+        assertEquals(dealMonTues.getPlace().getName(), dto.getPlaceName());
         assertEquals("MT-----", dto.getDaysDisplay());
     }
 
