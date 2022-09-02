@@ -1,6 +1,5 @@
 package com.humegatech.mpls_food.models;
 
-import com.humegatech.mpls_food.domains.Deal;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -14,8 +13,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class DayDTO {
     private Long id;
+
+    // using 'deal' instead of 'deal_id' for compatibility with thymeleaf dropdown
+    // if desired fragments/forms could be modified to use 'deal_id' but display 'deal', it just isn't baked in by default
     @NotNull
-    private Deal deal;
+    private Long deal;
+    private String dealDescription;
+    private String placeName;
 
     private DayOfWeek dayOfWeek;
     private LocalDate date;

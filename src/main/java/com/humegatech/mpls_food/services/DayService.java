@@ -1,8 +1,10 @@
 package com.humegatech.mpls_food.services;
 
 import com.humegatech.mpls_food.domains.Day;
+import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.models.DayDTO;
 import com.humegatech.mpls_food.repositories.DayRepository;
+import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,11 @@ import java.util.stream.Collectors;
 public class DayService {
 
     private final DayRepository dayRepository;
+    private final DealRepository dealRepository;
 
-    public DayService(DayRepository dayRepository) {
+    public DayService(DayRepository dayRepository, DealRepository dealRepository) {
         this.dayRepository = dayRepository;
+        this.dealRepository = dealRepository;
     }
 
     public Long create(final DayDTO dayDTO) {
@@ -32,27 +36,32 @@ public class DayService {
         return dayRepository.findAll()
                 .stream()
                 .map(day -> mapToDTO(day, new DayDTO()))
-                .sorted(Comparator.comparing((DayDTO c) -> c.getDeal().getPlace().getName())
+                .sorted(Comparator.comparing((DayDTO c) -> c.getPlaceName())
                         .thenComparing((DayDTO d) -> d.getDayOfWeek()))
                 .collect(Collectors.toList());
     }
 
     private DayDTO mapToDTO(final Day day, final DayDTO dayDTO) {
         dayDTO.setId(day.getId());
-        dayDTO.setDeal(day.getDeal());
+        dayDTO.setDeal(day.getDeal().getId());
         dayDTO.setDayOfWeek(day.getDayOfWeek());
         dayDTO.setDate(day.getDate());
+        dayDTO.setDealDescription(day.getDeal().getDescription());
+        dayDTO.setPlaceName(day.getDeal().getPlace().getName());
         dayDTO.setDayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(day.getDayOfWeek().name()));
 
         return dayDTO;
     }
 
     private Day mapToEntity(final DayDTO dayDTO, final Day day) {
-        Day.builder()
-                .deal(day.getDeal())
-                .dayOfWeek(day.getDayOfWeek())
-                .date(day.getDate());
-        return day;
+        final Deal deal = dayDTO.getDeal() == null ? null : dealRepository.findById(dayDTO.getDeal())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
+
+        return Day.builder()
+                .deal(deal)
+                .dayOfWeek(dayDTO.getDayOfWeek())
+                .id(dayDTO.getId())
+                .date(dayDTO.getDate()).build();
     }
 
     public DayDTO get(final Long id) {

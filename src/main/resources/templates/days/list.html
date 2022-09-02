@@ -27,14 +27,14 @@
       </thead>
       <tbody>
       <tr th:each="day : ${days}">
-        <td th:text="${day.deal.description}" />
-        <td th:text="${day.deal.place.name}" />
+        <td th:text="${day.dealDescription}" />
+        <td th:text="${day.placeName}" />
         <td th:text="${day.dayOfWeekDisplay}" />
         <td>
           <div sec:authorize="isAuthenticated()">
             <div sec:authorize="hasRole('ROLE_ADMIN')">
               <form class="js-submit-confirm float-end" method="post" th:action="@{/days/delete/{id}(id=${day.id})}" th:data-confirm-message="#{delete.confirm}">
-                <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${day.deal.id})}" th:text="#{deal.list.edit}" />
+                <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${day.deal})}" th:text="#{deal.list.edit}" />
                 <button class="btn btn-sm btn-danger" th:text="#{deal.list.delete}" type="submit" />
               </form>
             </div>
