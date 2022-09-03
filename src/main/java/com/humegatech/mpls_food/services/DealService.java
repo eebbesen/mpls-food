@@ -85,6 +85,7 @@ public class DealService {
         dealDTO.setPlace(deal.getPlace() == null ? null : deal.getPlace().getId());
         dealDTO.setPlaceName(deal.getPlace() == null ? null : deal.getPlace().getName());
         dealDTO.setDaysDisplay(MplsFoodUtils.condensedDays(deal.getDaysOfWeek()));
+        dealDTO.setDish(deal.getDish());
         applyDaysToDTO(deal, dealDTO);
 
         return dealDTO;
@@ -112,6 +113,7 @@ public class DealService {
         deal.setDescription(dealDTO.getDescription());
         deal.setId(dealDTO.getId());
         deal.setPlace(place);
+        deal.setDish(dealDTO.getDish());
         applyDaysToEntity(dealDTO, deal);
 
         return deal;

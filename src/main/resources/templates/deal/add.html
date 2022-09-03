@@ -1,20 +1,21 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org">
     <head>
         <title th:text="#{deal.add.headline}" />
     </head>
     <body>
         <div layout:fragment="content">
             <div class="d-flex flex-wrap mb-4">
-                <h1 th:text="#{deal.add.headline}" class="flex-grow-1" />
+                <h1 class="flex-grow-1" th:text="#{deal.add.headline}" />
                 <div>
-                    <a th:href="@{/deals}" th:text="#{deal.add.back}" class="btn btn-secondary" />
+                    <a class="btn btn-secondary" th:href="@{/deals}" th:text="#{deal.add.back}" />
                 </div>
             </div>
             <div th:replace="fragments/forms::globalErrors('deal')" />
-            <form th:action="${#httpServletRequest.requestURI}" method="post">
+            <form method="post" th:action="${#httpServletRequest.requestURI}">
                 <div th:replace="fragments/forms::inputRow(object='deal', field='description', type='textarea')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='dish', type='textarea')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='sunday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='monday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='tuesday', type='checkbox')" />
@@ -23,7 +24,7 @@
                 <div th:replace="fragments/forms::inputRow(object='deal', field='friday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='saturday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='place', type='select')" />
-                <input type="submit" th:value="#{deal.add.headline}" class="btn btn-primary mt-4" />
+                <input class="btn btn-primary mt-4" th:value="#{deal.add.headline}" type="submit" />
             </form>
         </div>
     </body>

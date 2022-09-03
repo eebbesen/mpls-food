@@ -27,4 +27,5 @@ public class DealDTO {
     private boolean friday;
     private boolean saturday;
     private String daysDisplay;
+    private String dish;
 }

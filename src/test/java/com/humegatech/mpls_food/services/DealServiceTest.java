@@ -43,6 +43,7 @@ public class DealServiceTest {
         dealMonTuesDTO.setDescription(dealMonTues.getDescription());
         dealMonTuesDTO.setPlace(dealMonTues.getPlace().getId());
         dealMonTuesDTO.setPlaceName(dealMonTues.getPlace().getName());
+        dealMonTuesDTO.setDish(dealMonTues.getDish());
         dealMonTuesDTO.setId(dealMonTues.getId());
     }
 
@@ -85,6 +86,7 @@ public class DealServiceTest {
         assertEquals(dealMonTues.getPlace(), deal.getPlace());
         assertEquals(dealMonTues.getDescription(), deal.getDescription());
         assertEquals(dealMonTues.getId(), deal.getId());
+        assertEquals(dealMonTues.getDish(), deal.getDish());
 
         // confirm days
         Set<DayOfWeek> days = deal.getDays().stream().map(Day::getDayOfWeek)
@@ -151,6 +153,7 @@ public class DealServiceTest {
         assertEquals(dealMonTues.getPlace().getId(), dto.getPlace());
         assertEquals(dealMonTues.getPlace().getName(), dto.getPlaceName());
         assertEquals("MT-----", dto.getDaysDisplay());
+        assertEquals("Pizza", dto.getDish());
     }
 
 }

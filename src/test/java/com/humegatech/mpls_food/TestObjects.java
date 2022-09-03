@@ -96,6 +96,7 @@ public class TestObjects {
                 .description("$5.00 for two slices from 10:30 - 11:00")
                 .id(dealId())
                 .place(place())
+                .dish("Pizza")
                 .build();
 
         Day day = day(deal, DayOfWeek.THURSDAY);
@@ -113,6 +114,7 @@ public class TestObjects {
                 .description(description)
                 .place(place)
                 .id(dealId())
+                .dish("Pizza")
                 .build();
 
         for (DayOfWeek day : days) {

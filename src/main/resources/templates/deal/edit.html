@@ -15,6 +15,7 @@
             <div th:replace="fragments/forms::globalErrors('deal')" />
             <form method="post" th:action="${#httpServletRequest.requestURI}">
                 <div th:replace="fragments/forms::inputRow(object='deal', field='description', type='textarea')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='dish', type='textarea')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='place', type='select')" />
                 <div>Days Deal is Active</div>
                 <div th:replace="fragments/forms::inputRow(object='deal', field='sunday', type='checkbox')" />
