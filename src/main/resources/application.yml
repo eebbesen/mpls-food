@@ -16,12 +16,18 @@ spring:
   config:
     activate:
       on-profile: default
+  devtools:
+    livereload:
+      enabled: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 25MB
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/mpls-food}
     username: ${JDBC_DATABASE_USERNAME:postgres}
     password: ${JDBC_DATABASE_PASSWORD:<<YOUR_PASSWORD>>}
     driver-class-name: org.postgresql.Driver
-
     dbcp2:
       max-wait-millis: 30000
       validation-query: SELECT 1
