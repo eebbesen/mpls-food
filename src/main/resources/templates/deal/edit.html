@@ -27,12 +27,11 @@
                 <div th:replace="fragments/forms::inputRow(object='deal', field='saturday', type='checkbox')" />
                 <input class="btn btn-primary mt-4" th:value="#{deal.save.headline}" type="submit" />
             </form>
+            </p>
             <div class="d-flex flex-wrap mb-4">
                 <form enctype="multipart/form-data" method="post" th:action="@{/deals/upload/{id}(id=${deal.id})}">
-                    </p>
-                    <div th:text="#{deal.upload}" />
-                    <input class="form-control btn btn-secondary" id="formFile" type="file" name="file">
-                    <input class="btn btn-primary mt-4" th:value="#{deal.upload}" type="submit" />
+                    <input class="form-control btn btn-secondary" id="formFile" name="file" type="file">
+                    <input class="btn btn-primary mt-4" th:value="#{deal.upload}" type="submit"  id="fileUploadButton"/>
                 </form>
             </div>
         </div>
