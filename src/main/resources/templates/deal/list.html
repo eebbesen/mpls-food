@@ -19,18 +19,18 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
+                            <th scope="col" th:text="#{deal.dish.label}" />
                             <th scope="col" th:text="#{deal.description.label}" />
                             <th scope="col" th:text="#{deal.place.label}" />
                             <th scope="col" th:text="#{deal.days.label}" />
-                            <th scope="col" th:text="#{deal.dish.label}" />
                             <th><!-- --></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="deal : ${deals}">
+                            <td th:text="${deal.daysDisplay}" />
                             <td th:text="${deal.description}" />
                             <td th:text="${deal.placeName}" />
-                            <td th:text="${deal.daysDisplay}" />
                             <td th:text="${deal.dish}" />
                                 <td>
                                     <div sec:authorize="isAuthenticated()">
