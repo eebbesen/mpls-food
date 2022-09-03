@@ -15,7 +15,7 @@
             <div th:replace="fragments/forms::globalErrors('deal')" />
             <form method="post" th:action="${#httpServletRequest.requestURI}">
                 <div th:replace="fragments/forms::inputRow(object='deal', field='description', type='textarea')" />
-                <div th:replace="fragments/forms::inputRow(object='deal', field='dish', type='textarea')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='dish', type='text')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='place', type='select')" />
                 <div>Days Deal is Active</div>
                 <div th:replace="fragments/forms::inputRow(object='deal', field='sunday', type='checkbox')" />
@@ -27,6 +27,13 @@
                 <div th:replace="fragments/forms::inputRow(object='deal', field='saturday', type='checkbox')" />
                 <input class="btn btn-primary mt-4" th:value="#{deal.save.headline}" type="submit" />
             </form>
+            <div class="d-flex flex-wrap mb-4">
+                <form enctype="multipart/form-data" method="post" th:action="@{/deals/upload/{id}(id=${deal.id})}">
+                    </p>
+                    <div th:text="#{deal.upload}" />
+                    <input class="form-control btn btn-secondary" id="formFile" type="file">
+                </form>
+            </div>
         </div>
     </body>
 </html>

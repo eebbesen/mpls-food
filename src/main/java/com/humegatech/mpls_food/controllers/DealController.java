@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -56,6 +57,15 @@ public class DealController {
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.create.success"));
         return "redirect:/deals";
     }
+
+    @PostMapping("/upload/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public void upload(@PathVariable final Long id,
+                       @RequestParam("file") final MultipartFile file,
+                       final RedirectAttributes attributes) {
+
+    }
+
 
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ADMIN')")
