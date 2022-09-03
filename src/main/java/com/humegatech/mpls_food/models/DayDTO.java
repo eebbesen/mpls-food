@@ -20,8 +20,8 @@ public class DayDTO {
     private Long deal;
     private String dealDescription;
     private String placeName;
-
     private DayOfWeek dayOfWeek;
     private LocalDate date;
     private String dayOfWeekDisplay;
+    private String dish;
 }

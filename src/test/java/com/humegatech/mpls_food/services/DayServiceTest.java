@@ -62,6 +62,7 @@ public class DayServiceTest {
         assertEquals(deal.getDescription(), dto.getDealDescription());
         assertEquals(deal.getPlace().getName(), dto.getPlaceName());
         assertEquals(DayOfWeek.WEDNESDAY, dto.getDayOfWeek());
+        assertEquals(deal.getDish(), dto.getDish());
         assertEquals(MplsFoodUtils.capitalizeFirst(DayOfWeek.WEDNESDAY.name()), dto.getDayOfWeekDisplay());
     }
 

@@ -49,6 +49,7 @@ public class DayService {
         dayDTO.setDealDescription(day.getDeal().getDescription());
         dayDTO.setPlaceName(day.getDeal().getPlace().getName());
         dayDTO.setDayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(day.getDayOfWeek().name()));
+        dayDTO.setDish(day.getDeal().getDish());
 
         return dayDTO;
     }
