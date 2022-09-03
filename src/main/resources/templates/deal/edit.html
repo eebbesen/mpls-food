@@ -31,7 +31,8 @@
                 <form enctype="multipart/form-data" method="post" th:action="@{/deals/upload/{id}(id=${deal.id})}">
                     </p>
                     <div th:text="#{deal.upload}" />
-                    <input class="form-control btn btn-secondary" id="formFile" type="file">
+                    <input class="form-control btn btn-secondary" id="formFile" type="file" name="file">
+                    <input class="btn btn-primary mt-4" th:value="#{deal.upload}" type="submit" />
                 </form>
             </div>
         </div>

@@ -46,15 +46,24 @@ public class Deal extends BaseEntity {
     @Builder.Default
     private Set<Day> days = new LinkedHashSet<>();
 
+
     @CreatedDate
     private OffsetDateTime dateCreated;
 
     @LastModifiedDate
     private OffsetDateTime lastUpdated;
 
+    @OneToMany(mappedBy = "deal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<Upload> uploads = new LinkedHashSet<>();
+
     @Override
     public int hashCode() {
-        return description != null ? description.hashCode() : 0;
+        int result = place != null ? place.hashCode() : 0;
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (dish != null ? dish.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -64,7 +73,9 @@ public class Deal extends BaseEntity {
 
         Deal deal = (Deal) o;
 
-        return description != null ? !description.equals(deal.description) : deal.description != null;
+        if (!place.equals(deal.getPlace())) return false;
+        if (!dish.equals(deal.getDish())) return false;
+        return description.equals(deal.description);
     }
 
     @Override
@@ -73,6 +84,7 @@ public class Deal extends BaseEntity {
                 "description='" + description + '\'' +
                 ", place=" + place.getId() +
                 ", dealDays=" + days +
+                ", dish=" + dish +
                 ", dateCreated=" + dateCreated +
                 ", lastUpdated=" + lastUpdated +
                 '}';

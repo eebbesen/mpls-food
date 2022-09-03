@@ -2,8 +2,10 @@ package com.humegatech.mpls_food.controllers;
 
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.models.UploadDTO;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import com.humegatech.mpls_food.services.DealService;
+import com.humegatech.mpls_food.services.UploadService;
 import com.humegatech.mpls_food.util.WebUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.stream.Collectors;
 
 
@@ -21,9 +24,11 @@ import java.util.stream.Collectors;
 @Controller
 public class DealController {
     private final DealService dealService;
+    private final UploadService uploadService;
     private final PlaceRepository placeRepository;
 
-    public DealController(final DealService dealService, final PlaceRepository placeRepository) {
+    public DealController(final DealService dealService, UploadService uploadService, final PlaceRepository placeRepository) {
+        this.uploadService = uploadService;
         this.placeRepository = placeRepository;
         this.dealService = dealService;
     }
@@ -60,10 +65,28 @@ public class DealController {
 
     @PostMapping("/upload/{id}")
     @PreAuthorize("isAuthenticated()")
-    public void upload(@PathVariable final Long id,
-                       @RequestParam("file") final MultipartFile file,
-                       final RedirectAttributes attributes) {
+    public String upload(@PathVariable final Long id,
+                         @RequestParam("file") final MultipartFile file,
+                         final RedirectAttributes attributes) {
+        if (null != file) {
+            byte[] image = null;
 
+            try {
+                image = file.getBytes();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            final UploadDTO uploadDTO = UploadDTO.builder()
+                    .dealId(id)
+                    .image(image)
+                    .build();
+            uploadService.create(uploadDTO);
+
+            return "redirect:/deals";
+        }
+
+        return "deal/edit";
     }
 
 

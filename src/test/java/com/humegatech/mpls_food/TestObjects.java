@@ -3,7 +3,13 @@ package com.humegatech.mpls_food;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.domains.Upload;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
@@ -180,5 +186,35 @@ public class TestObjects {
         deal.getDays().add(day);
 
         return day;
+    }
+
+    public static Upload upload(final Deal deal) {
+        final Upload upload = Upload.builder()
+                .deal(deal)
+                .image(image())
+                .build();
+
+        deal.getUploads().add(upload);
+
+        return upload;
+    }
+
+    public static byte[] image() {
+        BufferedImage image = null;
+        final String path = String.format("%s/src/test/resources/taco_johns_specials_lunch.jpeg", System.getProperty("user.dir"));
+        try {
+            image = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "jpg", baos);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return baos.toByteArray();
     }
 }
