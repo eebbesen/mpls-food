@@ -14,9 +14,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.DayOfWeek;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -57,6 +59,27 @@ public class DealServiceTest {
     void testConfirmOrAddDayDayDoesNotExist() {
         ReflectionTestUtils.invokeMethod(service.getClass(), "addDay", dealMonTues, DayOfWeek.WEDNESDAY);
         assertEquals(3, dealMonTues.getDays().size());
+    }
+
+    @Test
+    void testFindAll() {
+        final Deal tt = TestObjects.tacoTuesday();
+        final Deal mt = TestObjects.dealMonTues();
+        final Deal ft = TestObjects.fridayTwofer();
+        final List<Deal> deals = Stream.of(tt, ft, mt)
+                .collect(Collectors.toList());
+
+        when(dealRepository.findAll()).thenReturn(deals);
+
+        final List<DealDTO> dealDTOs = service.findAll();
+
+        assertEquals(3, dealDTOs.size());
+        assertEquals(mt.getPlace().getId(), dealDTOs.get(0).getPlace());
+        assertEquals("MT-----", dealDTOs.get(0).getDaysDisplay());
+        assertEquals(ft.getPlace().getId(), dealDTOs.get(1).getPlace());
+        assertEquals("----F--", dealDTOs.get(1).getDaysDisplay());
+        assertEquals(tt.getPlace().getId(), dealDTOs.get(2).getPlace());
+        assertEquals("-T-----", dealDTOs.get(2).getDaysDisplay());
     }
 
     @Test

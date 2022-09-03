@@ -7,7 +7,6 @@ import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,6 +16,7 @@ import java.lang.reflect.Method;
 import java.time.DayOfWeek;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,10 +49,15 @@ public class DealService {
         }
     }
 
+    // Sorts by place name, then by the earliest day of the weak the deal is active.
+    // Replacing '-' with '~' for the sorting because '~' is the last character alphabetically and '-' is before all letters.
+    // I prefer to display '-' so I'm taking the hit on the replace
     public List<DealDTO> findAll() {
-        return dealRepository.findAll(Sort.by("place.name"))
+        return dealRepository.findAll()
                 .stream()
                 .map(deal -> mapToDTO(deal, new DealDTO()))
+                .sorted(Comparator.comparing((DealDTO c) -> c.getPlaceName())
+                        .thenComparing((DealDTO c) -> c.getDaysDisplay().replaceAll("-", "~")))
                 .collect(Collectors.toList());
     }
 

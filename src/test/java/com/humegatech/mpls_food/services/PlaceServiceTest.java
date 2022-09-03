@@ -23,7 +23,7 @@ public class PlaceServiceTest {
 
     @Test
     void testMapToDTO() {
-        Place place = TestObjects.place();
+        Place place = TestObjects.ginellis();
 
         PlaceDTO placeDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", place, new PlaceDTO());
 

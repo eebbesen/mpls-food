@@ -30,6 +30,6 @@ Discount does not appear to be applied with online ordering.','2022-09-03 07:53:
 	 (60,'2022-07-27 23:59:20.578794','$5.50 for two Ball Park chili dogs','2022-09-03 07:53:39.386668',10011,NULL,'Hot Dog'),
 	 (61,'2022-07-28 00:00:17.810187','$4.95 for a Vienna Beef hot dog with chips and a 24 ounce fountain drink.
 $2.75 to add a beef hot dog.','2022-09-03 07:53:44.621828',10011,NULL,'Hot Dog'),
-	 (63,'2022-07-28 00:03:39.268623','$3.00 (tax included) for any flavor small malt or root beer float.','2022-09-03 07:53:49.367803',10011,NULL,'Hot Dog'),
+	 (63,'2022-07-28 00:03:39.268623','$3.00 (tax included) for any flavor small malt or root beer float.','2022-09-03 07:53:49.367803',10011,NULL,'Beverage'),
 	 (62,'2022-07-28 00:01:23.103103','$4.55 for a Ball Park hot dog with chips and a 24 ounce fountain drink.
 $2.25 to add a dog.','2022-09-03 07:53:54.866891',10011,NULL,'Hot Dog');

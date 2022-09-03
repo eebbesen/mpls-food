@@ -41,11 +41,12 @@ public class TestObjects {
     }
 
     public static Deal tacoTuesday() {
-        Place tacoJohns = tacoJohns();
-        Deal deal = Deal.builder()
+        final Place tacoJohns = tacoJohns();
+        final Deal deal = Deal.builder()
                 .description("$1.39 crispy taco")
                 .place(tacoJohns)
                 .id(dealId())
+                .dish("Taco")
                 .build();
 
         deal.getDays().add(Day.builder()
@@ -58,7 +59,7 @@ public class TestObjects {
         return deal;
     }
 
-    public static Place place() {
+    public static Place ginellis() {
         return Place.builder()
                 .name("Ginelli's Pizza")
                 .address("121 S 8th Street #235\n" +
@@ -70,6 +71,30 @@ public class TestObjects {
                 .build();
     }
 
+    public static Deal fridayTwofer() {
+        final Place ginellis = ginellis();
+
+        final Deal deal = Deal.builder()
+                .description("$5.00 for two slices from 10:30 - 11:00")
+                .id(dealId())
+                .place(ginellis)
+                .dish("Pizza").build();
+
+        deal.getDays().add(Day.builder()
+                .dayOfWeek(DayOfWeek.FRIDAY)
+                .deal(deal).build());
+
+        ginellis.getDeals().add(deal);
+
+        return deal;
+    }
+
+    /**
+     * Returns place with unique ID,address and website
+     *
+     * @param name
+     * @return Place
+     */
     public static Place place(final String name) {
         Integer random = ThreadLocalRandom.current().nextInt(5, 100);
         return Place.builder()
@@ -85,7 +110,7 @@ public class TestObjects {
         final Place place = deal().getPlace();
 
         final List<Place> places = new ArrayList<>();
-        places.add(place());
+        places.add(ginellis());
         places.add(place);
 
         return places;
@@ -95,7 +120,7 @@ public class TestObjects {
         Deal deal = Deal.builder()
                 .description("$5.00 for two slices from 10:30 - 11:00")
                 .id(dealId())
-                .place(place())
+                .place(ginellis())
                 .dish("Pizza")
                 .build();
 
@@ -106,7 +131,7 @@ public class TestObjects {
     }
 
     public static Deal dealMonTues() {
-        return deal(TestObjects.place(), "Monday / Tuesday Deal", DayOfWeek.MONDAY, DayOfWeek.TUESDAY);
+        return deal(TestObjects.ginellis(), "Monday / Tuesday Deal", DayOfWeek.MONDAY, DayOfWeek.TUESDAY);
     }
 
     public static Deal deal(final Place place, final String description, final DayOfWeek... days) {
