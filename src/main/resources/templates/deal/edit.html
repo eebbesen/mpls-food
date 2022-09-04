@@ -29,13 +29,13 @@
             </form>
             </p>
             <div class="d-flex flex-wrap mb-4">
-                <form enctype="multipart/form-data" method="post" th:action="@{/deals/upload/{id}(id=${deal.id})}">
+                <form enctype="multipart/form-data" method="post" th:action="@{/uploads/{id}(id=${deal.id})}">
                     <input class="form-control btn btn-secondary" id="formFile" name="file" type="file">
                     <input class="btn btn-primary mt-4" th:value="#{deal.upload}" type="submit"  id="fileUploadButton"/>
                 </form>
             </div>
             <div th:each="upload : ${deal.uploads}">
-                <img th:src="@{${'/images/'+ upload.id}}" style="width:300px" alt=""/>
+                <img th:src="@{/uploads/{id}(id=${upload.id})}" style="width:300px" alt=""/>
             </div>
         </div>
     </body>

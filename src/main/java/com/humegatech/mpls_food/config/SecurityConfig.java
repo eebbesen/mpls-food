@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .mvcMatchers("/css/**", "/places", "/deals", "/days", "/login", "/", "/js/**", "/images/**").permitAll()
-                .mvcMatchers("/deals/add", "/places/add", "/deals/upload/*").authenticated()
+                .mvcMatchers("/deals/add", "/places/add", "/uploads/**").authenticated()
                 .mvcMatchers("/places/delete/*", "/*/edit/*", "/deals/delete/*", "/days/delete/*", "").hasRole("ADMIN")
                 .anyRequest().denyAll();
 //        http.httpBasic();

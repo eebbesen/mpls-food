@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Controller
-@RequestMapping("/images")
+@RequestMapping("/uploads")
 public class UploadController {
     private final UploadService uploadService;
 

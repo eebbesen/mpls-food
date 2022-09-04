@@ -2,7 +2,6 @@ package com.humegatech.mpls_food.controllers;
 
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.models.PlaceDTO;
-import com.humegatech.mpls_food.models.UploadDTO;
 import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.services.UploadService;
@@ -12,11 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.stream.Collectors;
 
 
@@ -62,33 +59,6 @@ public class DealController {
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.create.success"));
         return "redirect:/deals";
     }
-
-    @PostMapping("/upload/{id}")
-    @PreAuthorize("isAuthenticated()")
-    public String upload(@PathVariable final Long id,
-                         @RequestParam("file") final MultipartFile file,
-                         final RedirectAttributes attributes) {
-        if (null != file) {
-            byte[] image = null;
-
-            try {
-                image = file.getBytes();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            final UploadDTO uploadDTO = UploadDTO.builder()
-                    .dealId(id)
-                    .image(image)
-                    .build();
-            uploadService.create(uploadDTO);
-
-            return "redirect:/deals";
-        }
-
-        return "deal/edit";
-    }
-
 
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ADMIN')")
