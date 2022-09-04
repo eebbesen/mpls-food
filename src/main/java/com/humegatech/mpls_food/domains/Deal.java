@@ -46,17 +46,16 @@ public class Deal extends BaseEntity {
     @Builder.Default
     private Set<Day> days = new LinkedHashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<Upload> uploads = new LinkedHashSet<>();
 
     @CreatedDate
     private OffsetDateTime dateCreated;
 
     @LastModifiedDate
     private OffsetDateTime lastUpdated;
-
-    @OneToMany(mappedBy = "deal", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    @Builder.Default
-    private Set<Upload> uploads = new LinkedHashSet<>();
 
     @Override
     public int hashCode() {

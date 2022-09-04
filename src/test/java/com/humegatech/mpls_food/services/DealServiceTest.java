@@ -3,6 +3,7 @@ package com.humegatech.mpls_food.services;
 import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Upload;
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
@@ -162,6 +163,8 @@ public class DealServiceTest {
 
     @Test
     void testMapToDTO() {
+        final Upload upload = TestObjects.upload(dealMonTues);
+
         DealDTO dto = (DealDTO) ReflectionTestUtils.invokeMethod(service, "mapToDTO", dealMonTues, new DealDTO());
 
         assertEquals(dealMonTues.getId(), dto.getId());
@@ -177,6 +180,29 @@ public class DealServiceTest {
         assertEquals(dealMonTues.getPlace().getName(), dto.getPlaceName());
         assertEquals("MT-----", dto.getDaysDisplay());
         assertEquals("Pizza", dto.getDish());
+        assertEquals(1, dto.getUploads().size());
+        assertEquals(upload.getImage(), dto.getUploads().get(0).getImage());
+        assertEquals(upload.getDeal().getId(), dto.getUploads().get(0).getDealId());
+        assertEquals(upload.getId(), dto.getUploads().get(0).getId());
+        assertEquals(upload.isVerified(), dto.getUploads().get(0).isVerified());
+    }
+
+    @Test
+    void testApplyUploadsToDTO() {
+        final Upload upload = TestObjects.upload(dealMonTues);
+        final Upload upload2 = Upload.builder()
+                .deal(dealMonTues)
+                .id(2l)
+                .verified(true)
+                .image(new byte['a']).build();
+
+        List<Upload> uploads = Stream.of(upload, upload2).collect(Collectors.toList());
+        dealMonTues.getUploads().addAll(uploads);
+
+        final DealDTO dto = new DealDTO();
+        ReflectionTestUtils.invokeMethod(service, "applyUploadsToDTO", dealMonTues, dto);
+
+        assertEquals(2, dto.getUploads().size());
     }
 
 }

@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UploadService {
     private final UploadRepository uploadRepository;
@@ -23,6 +26,18 @@ public class UploadService {
         final Upload upload = new Upload();
         mapToEntity(uploadDTO, upload);
         return uploadRepository.save(upload).getId();
+    }
+
+    public UploadDTO get(final Long id) {
+        return uploadRepository.findById(id)
+                .map(upload -> mapToDTO(upload, new UploadDTO()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public List<UploadDTO> findByDealId(final Long dealId) {
+        return uploadRepository.findByDealId(dealId)
+                .stream().map(upload -> mapToDTO(upload, new UploadDTO()))
+                .collect(Collectors.toList());
     }
 
     private UploadDTO mapToDTO(final Upload upload, final UploadDTO uploadDTO) {

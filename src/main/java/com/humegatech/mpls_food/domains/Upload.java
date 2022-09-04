@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -18,12 +19,13 @@ import java.util.Arrays;
 @AllArgsConstructor
 @Table(name = "uploads")
 public class Upload extends BaseEntity {
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "deal_id", nullable = false)
     @JsonBackReference
     private Deal deal;
 
     @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] image;
 
     @Column

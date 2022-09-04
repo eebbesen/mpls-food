@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,4 +30,5 @@ public class DealDTO {
     private boolean saturday;
     private String daysDisplay;
     private String dish;
+    private List<UploadDTO> uploads = new ArrayList<>();
 }

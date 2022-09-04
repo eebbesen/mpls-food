@@ -4,6 +4,7 @@ import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.models.UploadDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
@@ -92,6 +93,7 @@ public class DealService {
         dealDTO.setDaysDisplay(MplsFoodUtils.condensedDays(deal.getDaysOfWeek()));
         dealDTO.setDish(deal.getDish());
         applyDaysToDTO(deal, dealDTO);
+        applyUploadsToDTO(deal, dealDTO);
 
         return dealDTO;
     }
@@ -108,6 +110,17 @@ public class DealService {
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
+        });
+    }
+
+    // todo refactor to use UploadService
+    private void applyUploadsToDTO(final Deal deal, final DealDTO dealDTO) {
+        deal.getUploads().forEach(u -> {
+            dealDTO.getUploads().add(UploadDTO.builder()
+                    .id(u.getId())
+                    .dealId(u.getDeal().getId())
+                    .verified(u.isVerified())
+                    .image(u.getImage()).build());
         });
     }
 

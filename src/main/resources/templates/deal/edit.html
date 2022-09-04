@@ -34,6 +34,9 @@
                     <input class="btn btn-primary mt-4" th:value="#{deal.upload}" type="submit"  id="fileUploadButton"/>
                 </form>
             </div>
+            <div th:each="upload : ${deal.uploads}">
+                <img th:src="data:image/jpeg,#{upload.image}" />
+            </div>
         </div>
     </body>
 </html>

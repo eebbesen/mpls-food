@@ -21,6 +21,7 @@ public class TestObjects {
     private static Long PLACE_ID = 1L;
     private static Long DEAL_ID = 1L;
     private static Long DEAL_DAY_ID = 1L;
+    private static Long UPLOAD_ID = 1L;
 
     private static Long placeId() {
         return ++PLACE_ID;
@@ -192,6 +193,8 @@ public class TestObjects {
         final Upload upload = Upload.builder()
                 .deal(deal)
                 .image(image())
+                .verified(false)
+                .id(UPLOAD_ID++)
                 .build();
 
         deal.getUploads().add(upload);
