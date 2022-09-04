@@ -35,7 +35,7 @@
                 </form>
             </div>
             <div th:each="upload : ${deal.uploads}">
-                <img th:src="data:image/jpeg,#{upload.image}" />
+                <img th:src="@{${'/images/'+ upload.id}}" style="width:300px" alt=""/>
             </div>
         </div>
     </body>
