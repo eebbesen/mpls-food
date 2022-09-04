@@ -1,10 +1,10 @@
 package com.humegatech.mpls_food.controllers;
 
-import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.models.UploadDTO;
-import com.humegatech.mpls_food.repositories.PlaceRepository;
 import com.humegatech.mpls_food.services.DealService;
+import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.services.UploadService;
 import com.humegatech.mpls_food.util.WebUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,19 +24,19 @@ import java.util.stream.Collectors;
 @Controller
 public class DealController {
     private final DealService dealService;
+    private final PlaceService placeService;
     private final UploadService uploadService;
-    private final PlaceRepository placeRepository;
 
-    public DealController(final DealService dealService, UploadService uploadService, final PlaceRepository placeRepository) {
-        this.uploadService = uploadService;
-        this.placeRepository = placeRepository;
+    public DealController(final DealService dealService, final PlaceService placeService, final UploadService uploadService) {
+        this.placeService = placeService;
         this.dealService = dealService;
+        this.uploadService = uploadService;
     }
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        model.addAttribute("placeValues", placeRepository.findAll().stream().collect(
-                Collectors.toMap(Place::getId, Place::getName)));
+        model.addAttribute("placeValues", placeService.findAll().stream().collect(
+                Collectors.toMap(PlaceDTO::getId, PlaceDTO::getName)));
     }
 
     @GetMapping
