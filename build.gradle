@@ -17,6 +17,15 @@ repositories {
     mavenCentral()
 }
 
+gradleEnterprise {
+    buildScan {
+        // Connecting to scans.gradle.com by agreeing to the terms of service
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+        publishAlways()
+    }
+}
+
 dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'

@@ -3,7 +3,7 @@
 * run MplsFoodApplication.java
 * navigate to http://localhost:8080
 
-### Start using gradle
+### Start via gradle
 ```bash
 gradle bootRun --args='--spring.profiles.active=default'
 ```
@@ -17,3 +17,10 @@ gradle -q dependencies
 Fixtures for all models can be found in test/test_data. The default password for the user and the admin is `retek01!`
 
 To generate your own credentials you'll need to bcrypt passwords, then assign your user to a role in `authorities`. You can bcrypt a password using https://www.devglan.com/online-tools/bcrypt-hash-generator.
+
+### CI
+#### gradle build scan
+If using GitHub Actions you may need to initialize the project's gradle scan by running locally and accepting the terms
+```bash
+gradle build --scan
+```
