@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{place.edit.headline}" />
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:replace="fragments/forms::inputRow(object='place', field='name', disabled='true')" />
+    <div th:replace="fragments/forms::inputRow(object='place', field='address', type='textarea', disabled='true')" />
+    <div th:replace="fragments/forms::inputRow(object='place', field='website', disabled='true')" />
+    <div th:replace="fragments/forms::inputRow(object='place', field='app', type='checkbox', disabled='true')" />
+    <div th:replace="fragments/forms::inputRow(object='place', field='orderAhead', type='checkbox', disabled='true')" />
+
+    <div th:if="${deals.empty}" th:text="#{deal.list.empty}" />
+    <div class="table-responsive" th:if="${!deals.empty}">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th scope="col" th:text="#{deal.days.label}" />
+                <th scope="col" th:text="#{deal.description.label}" />
+                <th scope="col" th:text="#{deal.dish.label}" />
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="deal : ${deals}">
+                <td th:text="${deal.daysDisplay}" />
+                <td th:text="${deal.description}" />
+                <td th:text="${deal.dish}" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

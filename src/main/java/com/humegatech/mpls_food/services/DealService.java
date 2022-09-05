@@ -62,6 +62,14 @@ public class DealService {
                 .collect(Collectors.toList());
     }
 
+    public List<DealDTO> findByPlaceId(final Long placeId) {
+        return dealRepository.findByPlaceId(placeId)
+                .stream()
+                .map(deal -> mapToDTO(deal, new DealDTO()))
+                .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replaceAll("-", "~")))
+                .collect(Collectors.toList());
+    }
+
     public DealDTO get(final Long id) {
         return dealRepository.findById(id)
                 .map(deal -> mapToDTO(deal, new DealDTO()))

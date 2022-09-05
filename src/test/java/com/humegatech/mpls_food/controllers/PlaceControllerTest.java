@@ -1,6 +1,7 @@
 package com.humegatech.mpls_food.controllers;
 
 import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,10 @@ public class PlaceControllerTest extends MFControllerTest {
 
     @BeforeEach
     void setUp() {
-        place = placeRepository.save(TestObjects.ginellis());
+        final Deal deal = TestObjects.fridayTwofer();
+        place = placeRepository.save(deal.getPlace());
+        deal.setPlace(place);
+        dealRepository.save(deal);
     }
 
     @Test
@@ -156,6 +160,14 @@ public class PlaceControllerTest extends MFControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
         assertEquals(Optional.empty(), placeRepository.findById(place.getId()));
+    }
+
+    @Test
+    void testShow() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get(String.format("/places/show/%s", place.getId())).accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Login")))
+                .andExpect(content().string(containsString("slices")));
     }
 
 }
