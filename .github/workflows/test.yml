@@ -33,6 +33,6 @@ jobs:
         with:
           arguments: test
       - name: Upload build reports
-          uses: actions/upload-artifact@v3
-          with:
-            name: build/reports/tests/test
+        uses: actions/upload-artifact@v3
+        with:
+          name: build/reports/tests/test
