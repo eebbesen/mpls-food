@@ -2,17 +2,13 @@ package com.humegatech.mpls_food.controllers;
 
 import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.repositories.PlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -26,16 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class PlaceControllerTest {
-    @Autowired
-    PlaceRepository placeRepository;
-
-    @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
+public class PlaceControllerTest extends MFControllerTest {
     private Place place;
 
     @BeforeEach
