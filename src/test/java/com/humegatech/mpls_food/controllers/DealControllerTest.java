@@ -72,17 +72,6 @@ public class DealControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
-    void testListAdmin() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/deals").accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Logout")))
-                .andExpect(content().string(containsString("Create new Deal")))
-                .andExpect(content().string(containsString("slices")))
-                .andExpect(content().string(containsString("Ginelli&#39;s")));
-    }
-
-    @Test
     void testGetAdd() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/deals/add").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().is3xxRedirection());
@@ -97,29 +86,8 @@ public class DealControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
-    void testGetAddAdmin() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/deals/add").accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Add Deal")));
-    }
-
-    @Test
     @WithMockUser
     void testPostAddUser() throws Exception {
-        final int dealCount = dealRepository.findAll().size();
-        mvc.perform(MockMvcRequestBuilders.post("/deals/add")
-                        .with(csrf())
-                        .param("description", "Test deal")
-                        .param("friday", "true")
-                        .param("place", place.getId().toString()))
-                .andExpect(status().is3xxRedirection());
-        assertEquals(dealCount + 1, dealRepository.findAll().size());
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void testPostAddAdmin() throws Exception {
         final int dealCount = dealRepository.findAll().size();
         mvc.perform(MockMvcRequestBuilders.post("/deals/add")
                         .with(csrf())

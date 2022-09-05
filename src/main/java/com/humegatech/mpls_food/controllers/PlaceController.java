@@ -64,9 +64,8 @@ public class PlaceController {
         return "redirect:/places";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/edit/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String edit(@PathVariable final Long id, final Model model) {
         model.addAttribute("place", placeService.get(id));
         return "place/edit";
