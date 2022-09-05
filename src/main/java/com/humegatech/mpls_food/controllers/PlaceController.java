@@ -35,6 +35,12 @@ public class PlaceController {
         return user;
     }
 
+    @GetMapping("/show/{id}")
+    public String show(@PathVariable final Long id, final Model model) {
+        model.addAttribute("place", placeService.get(id));
+        return "place/show";
+    }
+
     @GetMapping
     public String list(final Model model, final HttpServletRequest request) {
         model.addAttribute("places", placeService.findAll());

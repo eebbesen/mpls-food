@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{place.edit.headline}" />
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:replace="fragments/forms::inputRow(object='place', field='name', disabled='true')" />
+    <div th:replace="fragments/forms::inputRow(object='place', field='address', type='textarea', disabled='true')" />
+    <div th:replace="fragments/forms::inputRow(object='place', field='website', disabled='true')" />
+    <div th:replace="fragments/forms::inputRow(object='place', field='app', type='checkbox', disabled='true')" />
+    <div th:replace="fragments/forms::inputRow(object='place', field='orderAhead', type='checkbox', disabled='true')" />
+</div>
+</body>
+</html>
