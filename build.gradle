@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'org.flywaydb.flyway' version '9.0.2'
+    id 'com.gradle.build-scan'
 }
 
 group = 'com.humegatech'
@@ -15,6 +16,15 @@ bootRun {
 
 repositories {
     mavenCentral()
+}
+
+gradleEnterprise {
+    buildScan {
+        // Connecting to scans.gradle.com by agreeing to the terms of service
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+        publishAlways()
+    }
 }
 
 dependencies {
