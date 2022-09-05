@@ -1,6 +1,7 @@
 package com.humegatech.mpls_food.controllers;
 
 import com.humegatech.mpls_food.models.PlaceDTO;
+import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.util.WebUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,9 +21,11 @@ import javax.validation.Valid;
 public class PlaceController {
 
     private final PlaceService placeService;
+    private final DealService dealService;
 
-    public PlaceController(final PlaceService placeService) {
+    public PlaceController(final PlaceService placeService, DealService dealService) {
         this.placeService = placeService;
+        this.dealService = dealService;
     }
 
     private UsernamePasswordAuthenticationToken getUser(final HttpServletRequest request) {
@@ -38,6 +41,7 @@ public class PlaceController {
     @GetMapping("/show/{id}")
     public String show(@PathVariable final Long id, final Model model) {
         model.addAttribute("place", placeService.get(id));
+        model.addAttribute("deals", dealService.findByPlaceId(id));
         return "place/show";
     }
 

@@ -22,7 +22,8 @@
             </label>
             <div class="col-md-10" th:if="${type != 'checkbox'}">
                 <input class="form-control" th:classappend="${#fields.hasErrors(field)}? is-invalid"
-                       th:field="*{__${field}__}" th:if="${type == 'text' || type == 'password'}" th:type="${type}" />
+                       th:disabled="${disabled}" th:field="*{__${field}__}" th:if="${type == 'text' || type == 'password'}"
+                       th:type="${type}" />
                 <textarea class="form-control"
                           th:classappend="${#fields.hasErrors(field) || #fields.hasErrors(field + '.*')}? is-invalid"
                         th:disabled="${disabled}" th:field="*{__${field}__}"  th:if="${type == 'textarea'}" />
