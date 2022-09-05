@@ -1,5 +1,6 @@
 package com.humegatech.mpls_food.controllers;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,8 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.NestedServletException;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -18,6 +22,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DealControllerTest {
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     @Test
     void testList() throws Exception {
@@ -73,13 +80,41 @@ public class DealControllerTest {
 
     @Test
     @WithMockUser
-    void testPostAddUser() {
+    void testPostAddUser() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post("/deals/add")
+                        .with(csrf())
+                        .param("description", "Test deal")
+                        .param("friday", "true")
+                        .param("place", "2")
+                        .param("place_id", "true"))
+                .andExpect(status().is3xxRedirection());
 
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void testPostAddAdmin() {
+    void testPostAddAdmin() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post("/deals/add")
+                        .with(csrf())
+                        .param("description", "Test deal")
+                        .param("friday", "true")
+                        .param("place", "2")
+                        .param("place_id", "true"))
+                .andExpect(status().is3xxRedirection());
 
+    }
+
+    // todo this test will fail once the app handles bad payloads better
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testPostAddAdminBadPayload() throws Exception {
+        Assertions.assertThrows(NestedServletException.class, () -> {
+            mvc.perform(MockMvcRequestBuilders.post("/deals/add")
+                            .with(csrf())
+                            .param("friday", "true")
+                            .param("place", "2")
+                            .param("place_id", "true"))
+                    .andExpect(status().is4xxClientError());
+        });
     }
 }
