@@ -4,7 +4,6 @@ import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
-import com.humegatech.mpls_food.services.UploadService;
 import com.humegatech.mpls_food.util.WebUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,12 +21,10 @@ import java.util.stream.Collectors;
 public class DealController {
     private final DealService dealService;
     private final PlaceService placeService;
-    private final UploadService uploadService;
 
-    public DealController(final DealService dealService, final PlaceService placeService, final UploadService uploadService) {
+    public DealController(final DealService dealService, final PlaceService placeService) {
         this.placeService = placeService;
         this.dealService = dealService;
-        this.uploadService = uploadService;
     }
 
     @ModelAttribute
