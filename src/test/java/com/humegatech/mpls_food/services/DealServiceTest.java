@@ -148,10 +148,10 @@ public class DealServiceTest {
             assertEquals(3, dealDTOs.size());
             assertEquals(mt.getPlace().getId(), dealDTOs.get(0).getPlace());
             assertEquals("MT-----", dealDTOs.get(0).getDaysDisplay());
-            assertEquals(ft.getPlace().getId(), dealDTOs.get(1).getPlace());
-            assertEquals("----F--", dealDTOs.get(1).getDaysDisplay());
-            assertEquals(tt.getPlace().getId(), dealDTOs.get(2).getPlace());
-            assertEquals("-T-----", dealDTOs.get(2).getDaysDisplay());
+            assertEquals(tt.getPlace().getId(), dealDTOs.get(1).getPlace());
+            assertEquals("-T-----", dealDTOs.get(1).getDaysDisplay());
+            assertEquals(ft.getPlace().getId(), dealDTOs.get(2).getPlace());
+            assertEquals("----F--", dealDTOs.get(2).getDaysDisplay());
         }
 
         final LocalDateTime fri = LocalDateTime.of(2022, Month.SEPTEMBER, 9, 12, 12);
