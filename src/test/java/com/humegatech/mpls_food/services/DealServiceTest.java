@@ -3,18 +3,23 @@ package com.humegatech.mpls_food.services;
 import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.domains.Upload;
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -63,6 +68,69 @@ public class DealServiceTest {
     }
 
     @Test
+    void testFindByPlaceId() {
+        final Place place = TestObjects.ginellis();
+        final Deal deal1 = Deal.builder()
+                .place(place)
+                .id(1l)
+                .description("BB").build();
+        final Day day1_1 = Day.builder().deal(deal1).dayOfWeek(DayOfWeek.WEDNESDAY).build();
+        final Day day1_2 = Day.builder().deal(deal1).dayOfWeek(DayOfWeek.FRIDAY).build();
+        deal1.setDays(Stream.of(day1_1, day1_2).collect(Collectors.toSet()));
+
+        final Deal deal2 = Deal.builder()
+                .place(place)
+                .id(2l)
+                .description("AA").build();
+        final Day day2_1 = Day.builder().deal(deal2).dayOfWeek(DayOfWeek.WEDNESDAY).build();
+        final Day day2_2 = Day.builder().deal(deal2).dayOfWeek(DayOfWeek.FRIDAY).build();
+        deal2.setDays(Stream.of(day2_1, day2_2).collect(Collectors.toSet()));
+
+        final Deal deal3 = Deal.builder()
+                .place(place)
+                .id(3l)
+                .description("Z").build();
+        final Day day3_1 = Day.builder().deal(deal3).dayOfWeek(DayOfWeek.WEDNESDAY).build();
+        final Day day3_2 = Day.builder().deal(deal3).dayOfWeek(DayOfWeek.FRIDAY).build();
+        deal3.setDays(Stream.of(day3_1, day3_2).collect(Collectors.toSet()));
+
+        final Deal deal4 = Deal.builder()
+                .place(place)
+                .id(4l)
+                .description("C").build();
+        final Day day4_1 = Day.builder().deal(deal4).dayOfWeek(DayOfWeek.MONDAY).build();
+        final Day day4_2 = Day.builder().deal(deal4).dayOfWeek(DayOfWeek.FRIDAY).build();
+        deal4.setDays(Stream.of(day4_1, day4_2).collect(Collectors.toSet()));
+
+        final List<Deal> deals = Stream.of(deal1, deal2, deal3, deal4).collect(Collectors.toList());
+        when(dealRepository.findByPlaceId(place.getId())).thenReturn(deals);
+
+        final LocalDateTime wed = LocalDateTime.of(2022, Month.AUGUST, 31, 12, 12);
+        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
+            ldt.when(LocalDateTime::now).thenReturn(wed);
+
+            final List<DealDTO> dtos = service.findByPlaceId(place.getId());
+
+            assertEquals(deal2.getId(), dtos.get(0).getId());
+            assertEquals(deal1.getId(), dtos.get(1).getId());
+            assertEquals(deal3.getId(), dtos.get(2).getId());
+            assertEquals(deal4.getId(), dtos.get(3).getId());
+        }
+
+        final LocalDateTime sat = LocalDateTime.of(2022, Month.SEPTEMBER, 3, 12, 12);
+        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
+            ldt.when(LocalDateTime::now).thenReturn(sat);
+
+            final List<DealDTO> dtos = service.findByPlaceId(place.getId());
+
+            assertEquals(deal4.getId(), dtos.get(0).getId());
+            assertEquals(deal2.getId(), dtos.get(1).getId());
+            assertEquals(deal1.getId(), dtos.get(2).getId());
+            assertEquals(deal3.getId(), dtos.get(3).getId());
+        }
+    }
+
+    @Test
     void testFindAll() {
         final Deal tt = TestObjects.tacoTuesday();
         final Deal mt = TestObjects.dealMonTues();
@@ -72,15 +140,33 @@ public class DealServiceTest {
 
         when(dealRepository.findAll()).thenReturn(deals);
 
-        final List<DealDTO> dealDTOs = service.findAll();
+        final LocalDateTime mon = LocalDateTime.of(2022, Month.SEPTEMBER, 5, 12, 12);
+        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
+            ldt.when(LocalDateTime::now).thenReturn(mon);
+            final List<DealDTO> dealDTOs = service.findAll();
 
-        assertEquals(3, dealDTOs.size());
-        assertEquals(mt.getPlace().getId(), dealDTOs.get(0).getPlace());
-        assertEquals("MT-----", dealDTOs.get(0).getDaysDisplay());
-        assertEquals(ft.getPlace().getId(), dealDTOs.get(1).getPlace());
-        assertEquals("----F--", dealDTOs.get(1).getDaysDisplay());
-        assertEquals(tt.getPlace().getId(), dealDTOs.get(2).getPlace());
-        assertEquals("-T-----", dealDTOs.get(2).getDaysDisplay());
+            assertEquals(3, dealDTOs.size());
+            assertEquals(mt.getPlace().getId(), dealDTOs.get(0).getPlace());
+            assertEquals("MT-----", dealDTOs.get(0).getDaysDisplay());
+            assertEquals(tt.getPlace().getId(), dealDTOs.get(1).getPlace());
+            assertEquals("-T-----", dealDTOs.get(1).getDaysDisplay());
+            assertEquals(ft.getPlace().getId(), dealDTOs.get(2).getPlace());
+            assertEquals("----F--", dealDTOs.get(2).getDaysDisplay());
+        }
+
+        final LocalDateTime fri = LocalDateTime.of(2022, Month.SEPTEMBER, 9, 12, 12);
+        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
+            ldt.when(LocalDateTime::now).thenReturn(fri);
+            final List<DealDTO> dealDTOs = service.findAll();
+
+            assertEquals(3, dealDTOs.size());
+            assertEquals(ft.getPlace().getId(), dealDTOs.get(0).getPlace());
+            assertEquals("F------", dealDTOs.get(0).getDaysDisplay());
+            assertEquals(mt.getPlace().getId(), dealDTOs.get(1).getPlace());
+            assertEquals("---MT--", dealDTOs.get(1).getDaysDisplay());
+            assertEquals(tt.getPlace().getId(), dealDTOs.get(2).getPlace());
+            assertEquals("----T--", dealDTOs.get(2).getDaysDisplay());
+        }
     }
 
     @Test
@@ -165,26 +251,30 @@ public class DealServiceTest {
     void testMapToDTO() {
         final Upload upload = TestObjects.upload(dealMonTues);
 
-        DealDTO dto = (DealDTO) ReflectionTestUtils.invokeMethod(service, "mapToDTO", dealMonTues, new DealDTO());
+        final LocalDateTime mon = LocalDateTime.of(2022, Month.SEPTEMBER, 5, 12, 12);
+        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
+            ldt.when(LocalDateTime::now).thenReturn(mon);
+            DealDTO dto = (DealDTO) ReflectionTestUtils.invokeMethod(service, "mapToDTO", dealMonTues, new DealDTO());
 
-        assertEquals(dealMonTues.getId(), dto.getId());
-        assertTrue(dto.isMonday());
-        assertTrue(dto.isTuesday());
-        assertFalse(dto.isWednesday());
-        assertFalse(dto.isThursday());
-        assertFalse(dto.isFriday());
-        assertFalse(dto.isSaturday());
-        assertFalse(dto.isSunday());
-        assertEquals(dealMonTues.getDescription(), dto.getDescription());
-        assertEquals(dealMonTues.getPlace().getId(), dto.getPlace());
-        assertEquals(dealMonTues.getPlace().getName(), dto.getPlaceName());
-        assertEquals("MT-----", dto.getDaysDisplay());
-        assertEquals("Pizza", dto.getDish());
-        assertEquals(1, dto.getUploads().size());
-        assertEquals(upload.getImage(), dto.getUploads().get(0).getImage());
-        assertEquals(upload.getDeal().getId(), dto.getUploads().get(0).getDealId());
-        assertEquals(upload.getId(), dto.getUploads().get(0).getId());
-        assertEquals(upload.isVerified(), dto.getUploads().get(0).isVerified());
+            assertEquals(dealMonTues.getId(), dto.getId());
+            assertTrue(dto.isMonday());
+            assertTrue(dto.isTuesday());
+            assertFalse(dto.isWednesday());
+            assertFalse(dto.isThursday());
+            assertFalse(dto.isFriday());
+            assertFalse(dto.isSaturday());
+            assertFalse(dto.isSunday());
+            assertEquals(dealMonTues.getDescription(), dto.getDescription());
+            assertEquals(dealMonTues.getPlace().getId(), dto.getPlace());
+            assertEquals(dealMonTues.getPlace().getName(), dto.getPlaceName());
+            assertEquals("MT-----", dto.getDaysDisplay());
+            assertEquals("Pizza", dto.getDish());
+            assertEquals(1, dto.getUploads().size());
+            assertEquals(upload.getImage(), dto.getUploads().get(0).getImage());
+            assertEquals(upload.getDeal().getId(), dto.getUploads().get(0).getDealId());
+            assertEquals(upload.getId(), dto.getUploads().get(0).getId());
+            assertEquals(upload.isVerified(), dto.getUploads().get(0).isVerified());
+        }
     }
 
     @Test
