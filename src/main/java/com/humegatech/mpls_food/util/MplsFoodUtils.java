@@ -52,4 +52,14 @@ public class MplsFoodUtils {
 
         return address.substring(0, address.lastIndexOf("\n")).replaceAll("\n", " ");
     }
+
+    /**
+     * @return sorted DayOfWeek map with the passed-in day at position 0
+     */
+    public static Map<DayOfWeek, Integer> getSortOrderFromDay(final DayOfWeek t) {
+        return Arrays.stream(DayOfWeek.values())
+                .collect(Collectors.toMap(
+                        v -> v,
+                        v -> v.getValue() >= t.getValue() ? (v.getValue() - t.getValue()) : (v.getValue() + 7 - t.getValue())));
+    }
 }
