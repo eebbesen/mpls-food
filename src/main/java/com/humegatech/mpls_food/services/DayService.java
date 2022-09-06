@@ -10,8 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,11 +36,12 @@ public class DayService {
 
 
     public List<DayDTO> findAll() {
+        final Map<DayOfWeek, Integer> order = MplsFoodUtils.getSortOrderFromDay(LocalDateTime.now().getDayOfWeek());
         return dayRepository.findAll()
                 .stream()
                 .map(day -> mapToDTO(day, new DayDTO()))
-                .sorted(Comparator.comparing((DayDTO c) -> c.getPlaceName())
-                        .thenComparing((DayDTO d) -> d.getDayOfWeek()))
+                .sorted(Comparator.comparing((DayDTO d) -> order.get(d.getDayOfWeek()))
+                        .thenComparing((DayDTO c) -> c.getPlaceName()))
                 .collect(Collectors.toList());
     }
 

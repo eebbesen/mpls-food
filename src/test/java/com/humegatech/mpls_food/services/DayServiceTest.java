@@ -8,12 +8,16 @@ import com.humegatech.mpls_food.repositories.DayRepository;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,17 +43,37 @@ public class DayServiceTest {
 
         when(dayRepository.findAll()).thenReturn(days);
 
-        final List<DayDTO> dayDTOs = service.findAll();
+        final LocalDateTime mon = LocalDateTime.of(2022, Month.SEPTEMBER, 5, 12, 12);
+        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
+            ldt.when(LocalDateTime::now).thenReturn(mon);
+            final List<DayDTO> dayDTOs = service.findAll();
 
-        assertEquals(4, dayDTOs.size());
-        assertEquals("Ginelli's Pizza", dayDTOs.get(0).getPlaceName());
-        assertEquals(DayOfWeek.MONDAY, dayDTOs.get(0).getDayOfWeek());
-        assertEquals("Ginelli's Pizza", dayDTOs.get(1).getPlaceName());
-        assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(1).getDayOfWeek());
-        assertEquals("Ginelli's Pizza", dayDTOs.get(2).getPlaceName());
-        assertEquals(DayOfWeek.WEDNESDAY, dayDTOs.get(2).getDayOfWeek());
-        assertEquals("Taco John's", dayDTOs.get(3).getPlaceName());
-        assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(3).getDayOfWeek());
+            assertEquals(4, dayDTOs.size());
+            assertEquals("Ginelli's Pizza", dayDTOs.get(0).getPlaceName());
+            assertEquals(DayOfWeek.MONDAY, dayDTOs.get(0).getDayOfWeek());
+            assertEquals("Ginelli's Pizza", dayDTOs.get(1).getPlaceName());
+            assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(1).getDayOfWeek());
+            assertEquals("Taco John's", dayDTOs.get(2).getPlaceName());
+            assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(2).getDayOfWeek());
+            assertEquals("Ginelli's Pizza", dayDTOs.get(3).getPlaceName());
+            assertEquals(DayOfWeek.WEDNESDAY, dayDTOs.get(3).getDayOfWeek());
+        }
+
+        final LocalDateTime wed = LocalDateTime.of(2022, Month.AUGUST, 31, 12, 12);
+        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
+            ldt.when(LocalDateTime::now).thenReturn(wed);
+            final List<DayDTO> dayDTOs = service.findAll();
+
+            assertEquals(4, dayDTOs.size());
+            assertEquals("Ginelli's Pizza", dayDTOs.get(0).getPlaceName());
+            assertEquals(DayOfWeek.WEDNESDAY, dayDTOs.get(0).getDayOfWeek());
+            assertEquals("Ginelli's Pizza", dayDTOs.get(1).getPlaceName());
+            assertEquals(DayOfWeek.MONDAY, dayDTOs.get(1).getDayOfWeek());
+            assertEquals("Ginelli's Pizza", dayDTOs.get(2).getPlaceName());
+            assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(2).getDayOfWeek());
+            assertEquals("Taco John's", dayDTOs.get(3).getPlaceName());
+            assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(3).getDayOfWeek());
+        }
     }
 
     @Test

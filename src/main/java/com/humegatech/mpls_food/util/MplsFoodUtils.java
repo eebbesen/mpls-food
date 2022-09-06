@@ -46,7 +46,7 @@ public class MplsFoodUtils {
     }
 
     public static String condensedDaysFromDay(final List<DayOfWeek> days, final DayOfWeek fromDay) {
-        Map<DayOfWeek, Integer> order = MplsFoodUtils.getSortOrderFromDay(fromDay);
+        final Map<DayOfWeek, Integer> order = MplsFoodUtils.getSortOrderFromDay(fromDay);
         return Arrays.stream(DayOfWeek.values()).sorted(Comparator.comparing((DayOfWeek d) -> order.get(d)))
                 .map(day -> days.contains(day) ? dowAbbreviation(day) : dowSeparator)
                 .collect(Collectors.joining(""));
