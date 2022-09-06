@@ -66,7 +66,8 @@ public class DealService {
         return dealRepository.findByPlaceId(placeId)
                 .stream()
                 .map(deal -> mapToDTO(deal, new DealDTO()))
-                .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replaceAll("-", "~")))
+                .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replaceAll("-", "~"))
+                        .thenComparing((DealDTO c) -> c.getDescription()))
                 .collect(Collectors.toList());
     }
 
