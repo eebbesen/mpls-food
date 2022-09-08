@@ -58,14 +58,14 @@ public class DealController {
     }
 
     @GetMapping("/edit/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public String edit(@PathVariable final Long id, final Model model) {
         model.addAttribute("deal", dealService.get(id));
         return "deal/edit";
     }
 
     @PostMapping("/edit/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public String edit(@PathVariable final Long id,
                        @ModelAttribute("deal") @Valid final DealDTO DealDTO, final BindingResult bindingResult,
                        final RedirectAttributes redirectAttributes) {
