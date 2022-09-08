@@ -98,22 +98,21 @@ public class DealControllerTest extends MFControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
-    void testGetEditAdmin() throws Exception {
+    @WithMockUser(roles = "USER")
+    void testGetEditUser() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get(String.format("/deals/edit/%d", deal.getId())).accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Edit Deal")));
     }
 
     @Test
-    @WithMockUser
-    void testGetEditUserNotAllowed() throws Exception {
+    void testGetEditNotAllowed() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get(String.format("/deals/edit/%d", deal.getId())).accept(MediaType.APPLICATION_XML))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = {"ADMIN", "USER"})
     void testPostEditAdmin() throws Exception {
         final String updatedDescription = LocalDateTime.now().toString();
         mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/edit/%d", deal.getId()))
@@ -132,8 +131,8 @@ public class DealControllerTest extends MFControllerTest {
                         .with(csrf())
                         .param("description", "Test deal updated")
                         .param("place", place.getId().toString()))
-                .andExpect(status().is4xxClientError());
-        assertEquals(originalDescription, dealRepository.findById(deal.getId()).get().getDescription());
+                .andExpect(status().is3xxRedirection());
+        assertEquals("Test deal updated", dealRepository.findById(deal.getId()).get().getDescription());
     }
 
     @Test
@@ -153,6 +152,4 @@ public class DealControllerTest extends MFControllerTest {
                 .andExpect(status().is4xxClientError());
         assertNotNull(dealRepository.findById(deal.getId()));
     }
-
-
 }
