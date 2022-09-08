@@ -1,4 +1,7 @@
-Created with https://bootify.io.
+# MPLS-FOOD
+
+Created with https://bootify.io
+Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Minneapolis.svg
 
 ## Start
 * modify application.yml to point to a running database instance
