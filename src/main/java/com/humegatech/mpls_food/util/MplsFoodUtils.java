@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MplsFoodUtils {
-    private static Map<DayOfWeek, String> dowAbbreviationMap = Map.of(
+    private static final String DOW_SEPARATOR = "-";
+    private static final Map<DayOfWeek, String> DOW_ABBREVIATION_MAP = Map.of(
             DayOfWeek.MONDAY, "M",
             DayOfWeek.TUESDAY, "T",
             DayOfWeek.WEDNESDAY, "W",
@@ -18,8 +19,6 @@ public class MplsFoodUtils {
             DayOfWeek.SATURDAY, "S",
             DayOfWeek.SUNDAY, "s"
     );
-
-    private static String dowSeparator = "-";
 
     public static String capitalizeFirst(final String string) {
         if (null == string) {
@@ -34,7 +33,7 @@ public class MplsFoodUtils {
      * @return String representing abbreviations for the days of the week.
      */
     public static String dowAbbreviation(final DayOfWeek dayOfWeek) {
-        return dowAbbreviationMap.get(dayOfWeek);
+        return DOW_ABBREVIATION_MAP.get(dayOfWeek);
     }
 
     /**
@@ -48,7 +47,7 @@ public class MplsFoodUtils {
     public static String condensedDaysFromDay(final List<DayOfWeek> days, final DayOfWeek fromDay) {
         final Map<DayOfWeek, Integer> order = MplsFoodUtils.getSortOrderFromDay(fromDay);
         return Arrays.stream(DayOfWeek.values()).sorted(Comparator.comparing((DayOfWeek d) -> order.get(d)))
-                .map(day -> days.contains(day) ? dowAbbreviation(day) : dowSeparator)
+                .map(day -> days.contains(day) ? dowAbbreviation(day) : DOW_SEPARATOR)
                 .collect(Collectors.joining(""));
     }
 
