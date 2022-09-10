@@ -10,6 +10,14 @@
     <h1 class="flex-grow-1" th:text="#{day.list.headline}" />
   </div>
   <div th:if="${days.empty}" th:text="#{deal.list.empty}" />
+  <form method="get" th:action="${#httpServletRequest.requestURI}">
+    <select class="form-select" name="dayOfWeek">
+      <option th:text="#{day.empty.label}" value=""/>
+      <option th:each="dow : ${T(java.time.DayOfWeek).values()}"
+              th:text="${T(com.humegatech.mpls_food.util.MplsFoodUtils).capitalizeFirst(dow)}" th:value="${dow}"></option>
+    </select>
+    <input class="btn btn-primary mt-4" th:value="#{day.filter}" type="submit" />
+  </form>
   <div class="table-responsive" th:if="${!days.empty}">
     <table class="table table-striped table-hover">
       <thead>
