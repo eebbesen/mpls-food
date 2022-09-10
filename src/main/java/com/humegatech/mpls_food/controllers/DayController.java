@@ -49,6 +49,7 @@ public class DayController {
 
         if (null != dayOfWeek) {
             model.addAttribute("days", dayService.findByDayOfWeek(dayOfWeek));
+            model.addAttribute("selectedDay", dayOfWeek);
         } else {
             model.addAttribute("days", dayService.findAll());
         }

@@ -11,10 +11,12 @@
   </div>
   <div th:if="${days.empty}" th:text="#{deal.list.empty}" />
   <form method="get" th:action="${#httpServletRequest.requestURI}">
-    <select class="form-select" name="dayOfWeek">
+    <select class="form-select w-auto" name="dayOfWeek">
       <option th:text="#{day.empty.label}" value=""/>
       <option th:each="dow : ${T(java.time.DayOfWeek).values()}"
-              th:text="${T(com.humegatech.mpls_food.util.MplsFoodUtils).capitalizeFirst(dow)}" th:value="${dow}"></option>
+              th:selected="${dow == selectedDay}"
+              th:text="${T(com.humegatech.mpls_food.util.MplsFoodUtils).capitalizeFirst(dow)}"
+              th:value="${dow}"></option>
     </select>
     <input class="btn btn-primary mt-4" th:value="#{day.filter}" type="submit" />
   </form>
