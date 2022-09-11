@@ -28,7 +28,7 @@ public class DayController {
     }
 
     private static DayOfWeek handleDayOfWeekFilter(final String dayOfWeekString) {
-        if (ObjectUtils.isEmpty(dayOfWeekString)) {
+        if (null == handleFilter(dayOfWeekString)) {
             return null;
         }
 
@@ -45,27 +45,19 @@ public class DayController {
         return dayOfWeek;
     }
 
-    private static String handleDishFilter(final String dish) {
-        if (ObjectUtils.isEmpty(dish)) {
+    private static String handleFilter(final String filter) {
+        if (ObjectUtils.isEmpty(filter)) {
             return null;
         }
 
-        return dish;
-    }
-
-    private static String handlePlaceFilter(final String place) {
-        if (ObjectUtils.isEmpty(place)) {
-            return null;
-        }
-
-        return place;
+        return filter;
     }
 
     @GetMapping
     public String list(final Model model, final HttpServletRequest request) {
         final DayOfWeek dayOfWeekFilter = handleDayOfWeekFilter(request.getParameter("dayOfWeek"));
-        final String dishFilter = handleDishFilter(request.getParameter("dish"));
-        final String placeFilter = handlePlaceFilter(request.getParameter("place"));
+        final String dishFilter = handleFilter(request.getParameter("dish"));
+        final String placeFilter = handleFilter(request.getParameter("place"));
         final List<DayDTO> days = dayService.findAll();
 
         model.addAttribute("selectedDay", dayOfWeekFilter);

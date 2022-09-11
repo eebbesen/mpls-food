@@ -75,7 +75,7 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithDayOfInvalidDay() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/days?dayOfWeek=BLAH").accept(MediaType.APPLICATION_XML))
+        mvc.perform(MockMvcRequestBuilders.get("/days?dayOfWeek=BLORTSDAY").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
                 .andExpect(content().string(containsString("slices")))
@@ -167,40 +167,22 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void handleDishFilter() throws Exception {
-        final String dish = ReflectionTestUtils.invokeMethod(controller, "handleDishFilter", "Pizza");
+    void handleFilter() throws Exception {
+        final String dish = ReflectionTestUtils.invokeMethod(controller, "handleFilter", "Pizza");
         assertEquals("Pizza", dish);
     }
 
     @Test
-    void handleDishFilterNullFilter() throws Exception {
+    void handleFilterNullFilter() throws Exception {
         final String nullString = null;
-        final String dish = ReflectionTestUtils.invokeMethod(controller, "handleDishFilter", "Samosas");
+        final String dish = ReflectionTestUtils.invokeMethod(controller, "handleFilter", "Samosas");
         assertEquals("Samosas", dish);
     }
 
     @Test
-    void handleDishFilterEmptyFilter() throws Exception {
-        final String dish = ReflectionTestUtils.invokeMethod(controller, "handleDishFilter", "");
+    void handleFilterEmptyFilter() throws Exception {
+        final String dish = ReflectionTestUtils.invokeMethod(controller, "handleFilter", "");
         assertNull(dish);
     }
 
-    @Test
-    void handlePlaceFilter() throws Exception {
-        final String place = ReflectionTestUtils.invokeMethod(controller, "handlePlaceFilter", "Ginelli&#39;s");
-        assertEquals("Ginelli&#39;s", place);
-    }
-
-    @Test
-    void handlePlaceFilterEmptyString() throws Exception {
-        final String place = ReflectionTestUtils.invokeMethod(controller, "handlePlaceFilter", "");
-        assertNull(place);
-    }
-
-    @Test
-    void handlePlaceFilterNullString() throws Exception {
-        final String nullString = null;
-        final String place = ReflectionTestUtils.invokeMethod(controller, "handlePlaceFilter", nullString);
-        assertNull(place);
-    }
 }
