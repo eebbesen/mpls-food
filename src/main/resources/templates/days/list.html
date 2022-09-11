@@ -18,6 +18,13 @@
               th:text="${T(com.humegatech.mpls_food.util.MplsFoodUtils).capitalizeFirst(dow)}"
               th:value="${dow}"></option>
     </select>
+    <select class="form-select w-auto" name="dish">
+      <option th:text="#{dish.empty.label}" value=""/>
+      <option th:each="dish : ${dishes}"
+              th:selected="${dish == selectedDish}"
+              th:text="${T(com.humegatech.mpls_food.util.MplsFoodUtils).capitalizeFirst(dish)}"
+              th:value="${dish}"></option>
+    </select>
     <input class="btn btn-primary mt-4" th:value="#{day.filter}" type="submit" />
   </form>
   <div class="table-responsive" th:if="${!days.empty}">

@@ -18,6 +18,7 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -83,6 +84,24 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
+    void testListWithDish() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/days?dish=Pizza").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Login")))
+                .andExpect(content().string(containsString("slices")))
+                .andExpect(content().string(containsString("Ginelli&#39;s")));
+    }
+
+    @Test
+    void testListWithDishNoRecords() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/days?dish=Curry").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Login")))
+                .andExpect(content().string(not(containsString("slices"))))
+                .andExpect(content().string(not(containsString("Ginelli&#39;s"))));
+    }
+
+    @Test
     @WithMockUser
     void testListUser() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
@@ -138,8 +157,7 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testHandleDayOfWeekEmptyDow() throws Exception {
-        final String emptyString = "";
-        final DayOfWeek dow = ReflectionTestUtils.invokeMethod(controller, "handleDayOfWeekFilter", emptyString);
+        final DayOfWeek dow = ReflectionTestUtils.invokeMethod(controller, "handleDayOfWeekFilter", "");
         assertEquals(null, dow);
     }
 
@@ -148,5 +166,24 @@ public class DayControllerTest extends MFControllerTest {
         final String invalid = "BLORTSDAY";
         final DayOfWeek dow = ReflectionTestUtils.invokeMethod(controller, "handleDayOfWeekFilter", invalid);
         assertEquals(null, dow);
+    }
+
+    @Test
+    void handleDishFilter() throws Exception {
+        final String dish = ReflectionTestUtils.invokeMethod(controller, "handleDishFilter", "Pizza");
+        assertEquals("Pizza", dish);
+    }
+
+    @Test
+    void handleDishFilterNullFilter() throws Exception {
+        final String nullString = null;
+        final String dish = ReflectionTestUtils.invokeMethod(controller, "handleDishFilter", "Samosas");
+        assertEquals("Samosas", dish);
+    }
+
+    @Test
+    void handleDishFiltErmptyFilter() throws Exception {
+        final String dish = ReflectionTestUtils.invokeMethod(controller, "handleDishFilter", "");
+        assertNull(dish);
     }
 }

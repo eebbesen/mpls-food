@@ -1,5 +1,6 @@
 package com.humegatech.mpls_food.controllers;
 
+import com.humegatech.mpls_food.models.DayDTO;
 import com.humegatech.mpls_food.services.DayService;
 import com.humegatech.mpls_food.util.WebUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.DayOfWeek;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/days")
@@ -42,17 +45,34 @@ public class DayController {
         return dayOfWeek;
     }
 
+    public static String handleDishFilter(final String dish) {
+        if (ObjectUtils.isEmpty(dish)) {
+            return null;
+        }
+
+        return dish;
+    }
+
     @GetMapping
     public String list(final Model model, final HttpServletRequest request) {
-        final String dayOfWeekFilter = request.getParameter("dayOfWeek");
-        final DayOfWeek dayOfWeek = handleDayOfWeekFilter(dayOfWeekFilter);
+        final DayOfWeek dayOfWeekFilter = handleDayOfWeekFilter(request.getParameter("dayOfWeek"));
+        final String dishFilter = handleDishFilter(request.getParameter("dish"));
+        final List<DayDTO> days = dayService.findAll();
 
-        if (null != dayOfWeek) {
-            model.addAttribute("days", dayService.findByDayOfWeek(dayOfWeek));
-            model.addAttribute("selectedDay", dayOfWeek);
-        } else {
-            model.addAttribute("days", dayService.findAll());
-        }
+        model.addAttribute("selectedDay", dayOfWeekFilter);
+        model.addAttribute("selectedDish", dishFilter);
+        model.addAttribute("dishes",
+                days.stream().map(dayDTO -> dayDTO.getDish()).distinct().collect(Collectors.toList()));
+
+        model.addAttribute("days", days.stream()
+                .filter(d -> {
+                    return null == dayOfWeekFilter || d.getDayOfWeek().equals(dayOfWeekFilter);
+                })
+                .filter(d -> {
+                    return null == dishFilter || d.getDish().equals(dishFilter);
+                })
+                .collect(Collectors.toList()));
+
 
         return "days/list";
     }
