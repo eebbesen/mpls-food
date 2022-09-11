@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: h2
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: create-drop
   datasource:

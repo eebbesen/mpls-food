@@ -34,6 +34,13 @@ public class DayService {
         return dayRepository.save(day).getId();
     }
 
+    public List<DayDTO> findByDayOfWeek(final DayOfWeek dayOfWeek) {
+        return dayRepository.findByDayOfWeek(dayOfWeek)
+                .stream()
+                .map(day -> mapToDTO(day, new DayDTO()))
+                .sorted(Comparator.comparing((DayDTO c) -> c.getPlaceName()))
+                .collect(Collectors.toList());
+    }
 
     public List<DayDTO> findAll() {
         final Map<DayOfWeek, Integer> order = MplsFoodUtils.getSortOrderFromDay(LocalDateTime.now().getDayOfWeek());
