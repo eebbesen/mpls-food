@@ -61,8 +61,7 @@ public class DayControllerTest extends MFControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/days?dayOfWeek=MONDAY").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
-                .andExpect(content().string(not(containsString("slices"))))
-                .andExpect(content().string(not(containsString("Ginelli&#39;s"))));
+                .andExpect(content().string(not(containsString("slices"))));
     }
 
     @Test
@@ -97,8 +96,7 @@ public class DayControllerTest extends MFControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/days?dish=Curry").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
-                .andExpect(content().string(not(containsString("slices"))))
-                .andExpect(content().string(not(containsString("Ginelli&#39;s"))));
+                .andExpect(content().string(not(containsString("slices"))));
     }
 
     @Test
@@ -182,8 +180,27 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void handleDishFiltErmptyFilter() throws Exception {
+    void handleDishFilterEmptyFilter() throws Exception {
         final String dish = ReflectionTestUtils.invokeMethod(controller, "handleDishFilter", "");
         assertNull(dish);
+    }
+
+    @Test
+    void handlePlaceFilter() throws Exception {
+        final String place = ReflectionTestUtils.invokeMethod(controller, "handlePlaceFilter", "Ginelli&#39;s");
+        assertEquals("Ginelli&#39;s", place);
+    }
+
+    @Test
+    void handlePlaceFilterEmptyString() throws Exception {
+        final String place = ReflectionTestUtils.invokeMethod(controller, "handlePlaceFilter", "");
+        assertNull(place);
+    }
+
+    @Test
+    void handlePlaceFilterNullString() throws Exception {
+        final String nullString = null;
+        final String place = ReflectionTestUtils.invokeMethod(controller, "handlePlaceFilter", nullString);
+        assertNull(place);
     }
 }

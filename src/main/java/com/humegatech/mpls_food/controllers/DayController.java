@@ -45,7 +45,7 @@ public class DayController {
         return dayOfWeek;
     }
 
-    public static String handleDishFilter(final String dish) {
+    private static String handleDishFilter(final String dish) {
         if (ObjectUtils.isEmpty(dish)) {
             return null;
         }
@@ -53,16 +53,28 @@ public class DayController {
         return dish;
     }
 
+    private static String handlePlaceFilter(final String place) {
+        if (ObjectUtils.isEmpty(place)) {
+            return null;
+        }
+
+        return place;
+    }
+
     @GetMapping
     public String list(final Model model, final HttpServletRequest request) {
         final DayOfWeek dayOfWeekFilter = handleDayOfWeekFilter(request.getParameter("dayOfWeek"));
         final String dishFilter = handleDishFilter(request.getParameter("dish"));
+        final String placeFilter = handlePlaceFilter(request.getParameter("place"));
         final List<DayDTO> days = dayService.findAll();
 
         model.addAttribute("selectedDay", dayOfWeekFilter);
         model.addAttribute("selectedDish", dishFilter);
         model.addAttribute("dishes",
                 days.stream().map(dayDTO -> dayDTO.getDish()).distinct().collect(Collectors.toList()));
+        model.addAttribute("selectedPlace", placeFilter);
+        model.addAttribute("places",
+                days.stream().map(dayDTO -> dayDTO.getPlaceName()).distinct().collect(Collectors.toList()));
 
         model.addAttribute("days", days.stream()
                 .filter(d -> {
@@ -70,6 +82,9 @@ public class DayController {
                 })
                 .filter(d -> {
                     return null == dishFilter || d.getDish().equals(dishFilter);
+                })
+                .filter(d -> {
+                    return null == placeFilter || d.getPlaceName().equals(placeFilter);
                 })
                 .collect(Collectors.toList()));
 
