@@ -16,6 +16,6 @@ public class MplsFoodControllerIntegrationTest {
     @Test
     public void getRoot() throws Exception {
         ResponseEntity<String> response = template.getForEntity("/", String.class);
-        assertThat(response.getBody()).contains("There are no Deals yet.");
+        assertThat(response.getBody()).contains("Tuesday");
     }
 }
