@@ -1,5 +1,7 @@
 INSERT INTO public.deals (id,date_created,description,last_updated,place_id,cuisine,dish) VALUES
-	 (50,'2022-07-27 13:15:04.809267','$2.50 slices from 10:30 - 11:30','2022-09-03 07:50:36.052304',10000,NULL,'Pizza'),
+	 (50,'2022-07-27 13:15:04.809267','Discounted slices from 10:30 - 11:30.
+
+                                       Verified two supreme slices for $7.09 (tax included) which is $1.20 discount per slice over menu price.','2022-09-03 07:50:36.052304',10000,NULL,'Pizza'),
 	 (58,'2022-07-27 23:16:36.873815','$1.10 crispy tacos (half price)','2022-09-03 07:50:55.368952',2,NULL,'Taco'),
 	 (65,'2022-07-27 23:16:57.658109','$1.00 off Taco Bravo','2022-09-03 07:51:11.750559',2,NULL,'Taco'),
 	 (64,'2022-07-28 00:14:24.973642','$5.00 for two slices from 10:30 - 11:00.','2022-09-03 07:51:27.245722',10000,NULL,'Pizza'),
