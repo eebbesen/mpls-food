@@ -34,7 +34,7 @@ public class DealDTO {
     private Double minDiscountPercent;
     private Double maxDiscountPercent;
     private boolean verified;
-    private boolean isTaxIncluded;
+    private boolean taxIncluded;
     @Builder.Default
     private List<UploadDTO> uploads = new ArrayList<>();
 }
