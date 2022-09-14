@@ -2,11 +2,11 @@ INSERT INTO public.deals (id,date_created,description,last_updated,place_id,cuis
 	 (64,'2022-07-28 00:14:24.973642','$5.00 for two slices from 10:30 - 11:00.
 
 Verified $7.09 (tax included) for two supreme slices on 09/13/2022.','2022-09-14 14:21:16.201131',10000,NULL,'Pizza',NULL,'admin',NULL,NULL,NULL,NULL,NULL,NULL,false,false),
-	 (58,'2022-07-27 23:16:36.873815','$1.10 crispy tacos (half price)','2022-09-03 07:50:55.368952',2,NULL,'Taco',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,false,false),
-	 (65,'2022-07-27 23:16:57.658109','$1.00 off Taco Bravo','2022-09-03 07:51:11.750559',2,NULL,'Taco',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,false,false),
+	 (66,'2022-08-10 17:11:39.566796','$1.00 off Meat and Potato Burrito ($5.21 tax included)','2022-09-14 16:06:13.1968',2,NULL,'Burrito',NULL,'admin',1.0,NULL,5.21,1.0,NULL,5.21,true,true),
+	 (65,'2022-07-27 23:16:57.658109','$1.00 off Taco Bravo','2022-09-14 16:06:34.59445',2,NULL,'Taco',NULL,'admin',1.0,NULL,NULL,1.0,NULL,NULL,false,true),
+	 (67,'2022-08-10 17:23:55.716542','$1.00 off taco salad','2022-09-14 16:07:42.187979',2,NULL,'Taco',NULL,'admin',1.0,NULL,NULL,1.0,NULL,NULL,false,true),
+	 (58,'2022-07-27 23:16:36.873815','$1.10 crispy tacos (half price)','2022-09-14 16:08:14.917878',2,NULL,'Taco',NULL,'admin',1.1,50.0,1.1,1.1,50.0,1.1,false,true),
 	 (68,'2022-08-10 17:24:21.696795','$1.39 softshell taco','2022-09-03 07:51:40.114854',2,NULL,'Taco',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,false,false),
-	 (66,'2022-08-10 17:11:39.566796','$1.00 off Meat and Potato Burrito ($5.21 tax included)','2022-09-03 07:51:59.729095',2,NULL,'Burrito',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,false,false),
-	 (67,'2022-08-10 17:23:55.716542','$1.00 off taco salad','2022-09-03 07:52:09.648306',2,NULL,'Taco',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,false,false),
 	 (53,'2022-07-27 23:42:17.849534','$8.95 cajun cheeseburger ($2.30 off).
 
 Discount does not appear to be applied with online ordering.','2022-09-03 07:52:38.375949',10004,NULL,'Burger',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,false,false),
