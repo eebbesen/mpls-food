@@ -16,6 +16,15 @@
             <form method="post" th:action="${#httpServletRequest.requestURI}">
                 <div th:replace="fragments/forms::inputRow(object='deal', field='description', type='textarea')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='dish', type='textarea')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='place', type='select')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='minPrice', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='maxPrice', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='minDiscount', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='maxDiscount', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='minDiscountPercent', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='maxDiscountPercent', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='verified', type='checkbox')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='taxIncluded', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='sunday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='monday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='tuesday', type='checkbox')" />
@@ -23,7 +32,6 @@
                 <div th:replace="fragments/forms::inputRow(object='deal', field='thursday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='friday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='saturday', type='checkbox')" />
-                <div th:replace="fragments/forms::inputRow(object='deal', field='place', type='select')" />
                 <input class="btn btn-primary mt-4" th:value="#{deal.add.headline}" type="submit" />
             </form>
         </div>

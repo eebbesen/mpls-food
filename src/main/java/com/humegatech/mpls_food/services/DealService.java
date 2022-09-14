@@ -32,6 +32,31 @@ public class DealService {
         this.placeRepository = placeRepository;
     }
 
+    private static String getRange(final Double min, final Double max, final String type) {
+        if (null == min && null == max) {
+            return null;
+        }
+
+        if (null == min || null == max || min.equals(max)) {
+            final Double val = null == min ? max : min;
+            return decorateValue(val, type);
+        }
+
+        return String.format("%s - %s", decorateValue(min, type), decorateValue(max, type));
+    }
+
+    private static String decorateValue(final Double value, final String punctuation) {
+        if (null == value) {
+            return null;
+        }
+
+        if (null == punctuation) {
+            return String.valueOf(value);
+        }
+
+        return punctuation.equals("$") ? String.format("%s%.2f", punctuation, value) : String.format("%.0f%s", value, punctuation);
+    }
+
     private static void removeDay(final Deal deal, final DayOfWeek day) {
         final Day dealDay = deal.hasDay(day);
         if (null != dealDay) {
@@ -108,6 +133,9 @@ public class DealService {
         dealDTO.setMaxDiscount(deal.getMaxDiscount());
         dealDTO.setMinDiscountPercent(deal.getMinDiscountPercent());
         dealDTO.setMaxDiscountPercent(deal.getMaxDiscountPercent());
+        dealDTO.setPriceRange(getRange(deal.getMinPrice(), deal.getMaxPrice(), "$"));
+        dealDTO.setDiscountRange(getRange(deal.getMinDiscount(), deal.getMaxDiscount(), "$"));
+        dealDTO.setDiscountPercentRange(getRange(deal.getMinDiscountPercent(), deal.getMaxDiscountPercent(), "%"));
         dealDTO.setTaxIncluded(deal.isTaxIncluded());
         dealDTO.setVerified(deal.isVerified());
         applyDaysToDTO(deal, dealDTO);
