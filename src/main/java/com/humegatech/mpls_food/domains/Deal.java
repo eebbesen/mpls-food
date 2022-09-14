@@ -4,13 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
-import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,11 +49,14 @@ public class Deal extends BaseEntity {
     @Builder.Default
     private Set<Upload> uploads = new LinkedHashSet<>();
 
-    @CreatedDate
-    private OffsetDateTime dateCreated;
+    @Column
+    private BigDecimal minPrice;
 
-    @LastModifiedDate
-    private OffsetDateTime lastUpdated;
+    @Column
+    private BigDecimal maxPrice;
+
+    @Column
+    private BigDecimal discount;
 
     @Override
     public int hashCode() {
@@ -84,8 +85,11 @@ public class Deal extends BaseEntity {
                 ", place=" + place.getId() +
                 ", dealDays=" + days +
                 ", dish=" + dish +
-                ", dateCreated=" + dateCreated +
-                ", lastUpdated=" + lastUpdated +
+                ", minPrice=" + minPrice +
+                ", maxPrice=" + maxPrice +
+                ", discount=" + discount +
+                ", dateCreated=" + getDateCreated() +
+                ", lastUpdated=" + getLastUpdated() +
                 '}';
     }
 
