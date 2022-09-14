@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -25,38 +24,40 @@ import java.util.stream.Collectors;
 @Entity
 public class Deal extends BaseEntity {
 
+    @Column
+    boolean taxIncluded;
     @Column(nullable = false, columnDefinition = "text")
     private String description;
-
     @Column(columnDefinition = "text")
     private String cuisine;
-
     @Column(columnDefinition = "text")
     private String dish;
-
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "place_id")
     private Place place;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
     @JsonManagedReference
     @Builder.Default
     private Set<Day> days = new LinkedHashSet<>();
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
     @JsonManagedReference
     @Builder.Default
     private Set<Upload> uploads = new LinkedHashSet<>();
-
     @Column
-    private BigDecimal minPrice;
-
+    private Double minPrice;
     @Column
-    private BigDecimal maxPrice;
-
+    private Double maxPrice;
     @Column
-    private BigDecimal discount;
+    private Double minDiscount;
+    @Column
+    private Double maxDiscount;
+    @Column
+    private Double minDiscountPercent;
+    @Column
+    private Double maxDiscountPercent;
+    @Column
+    private boolean verified;
 
     @Override
     public int hashCode() {
@@ -87,7 +88,11 @@ public class Deal extends BaseEntity {
                 ", dish=" + dish +
                 ", minPrice=" + minPrice +
                 ", maxPrice=" + maxPrice +
-                ", discount=" + discount +
+                ", minDiscount=" + minDiscount +
+                ", maxDiscount=" + maxDiscount +
+                ", minDiscountPercent=" + minDiscountPercent +
+                ", maxDiscountPercent=" + maxDiscountPercent +
+                ", verified=" + verified +
                 ", dateCreated=" + getDateCreated() +
                 ", lastUpdated=" + getLastUpdated() +
                 '}';

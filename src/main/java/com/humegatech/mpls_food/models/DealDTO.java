@@ -27,6 +27,14 @@ public class DealDTO {
     private boolean saturday;
     private String daysDisplay;
     private String dish;
+    private Double minPrice;
+    private Double maxPrice;
+    private Double minDiscount;
+    private Double maxDiscount;
+    private Double minDiscountPercent;
+    private Double maxDiscountPercent;
+    private boolean verified;
+    private boolean isTaxIncluded;
     @Builder.Default
     private List<UploadDTO> uploads = new ArrayList<>();
 }

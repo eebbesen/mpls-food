@@ -53,6 +53,14 @@ public class DealServiceTest {
         dealMonTuesDTO.setPlaceName(dealMonTues.getPlace().getName());
         dealMonTuesDTO.setDish(dealMonTues.getDish());
         dealMonTuesDTO.setId(dealMonTues.getId());
+        dealMonTuesDTO.setMinPrice(dealMonTues.getMinPrice());
+        dealMonTuesDTO.setMaxPrice(dealMonTues.getMaxPrice());
+        dealMonTuesDTO.setMinDiscount(dealMonTues.getMinDiscount());
+        dealMonTuesDTO.setMaxDiscount(dealMonTues.getMaxDiscount());
+        dealMonTuesDTO.setMinDiscountPercent(dealMonTues.getMinDiscountPercent());
+        dealMonTuesDTO.setMaxDiscountPercent(dealMonTues.getMaxDiscountPercent());
+        dealMonTuesDTO.setVerified(dealMonTues.isVerified());
+        dealMonTuesDTO.setTaxIncluded(dealMonTues.isTaxIncluded());
     }
 
     @Test
@@ -197,6 +205,14 @@ public class DealServiceTest {
         assertEquals(dealMonTues.getDescription(), deal.getDescription());
         assertEquals(dealMonTues.getId(), deal.getId());
         assertEquals(dealMonTues.getDish(), deal.getDish());
+        assertEquals(dealMonTues.getMaxPrice(), deal.getMaxPrice());
+        assertEquals(dealMonTues.getMinPrice(), deal.getMinPrice());
+        assertEquals(dealMonTues.getMaxDiscount(), deal.getMaxDiscount());
+        assertEquals(dealMonTues.getMinDiscount(), deal.getMinDiscount());
+        assertEquals(dealMonTues.getMaxDiscountPercent(), deal.getMaxDiscountPercent());
+        assertEquals(dealMonTues.getMinDiscountPercent(), deal.getMinDiscountPercent());
+        assertEquals(dealMonTues.isVerified(), deal.isVerified());
+        assertEquals(dealMonTues.isTaxIncluded(), deal.isTaxIncluded());
 
         // confirm days
         Set<DayOfWeek> days = deal.getDays().stream().map(Day::getDayOfWeek)
@@ -267,6 +283,13 @@ public class DealServiceTest {
             assertEquals(dealMonTues.getDescription(), dto.getDescription());
             assertEquals(dealMonTues.getPlace().getId(), dto.getPlace());
             assertEquals(dealMonTues.getPlace().getName(), dto.getPlaceName());
+            assertEquals(dealMonTues.getMinPrice(), dto.getMinPrice());
+            assertEquals(dealMonTues.getMaxPrice(), dto.getMaxPrice());
+            assertEquals(dealMonTues.getMinDiscount(), dto.getMinDiscount());
+            assertEquals(dealMonTues.getMaxDiscount(), dto.getMaxDiscount());
+            assertEquals(dealMonTues.isTaxIncluded(), dto.isTaxIncluded());
+            assertEquals(dealMonTues.isVerified(), dto.isVerified());
+            assertEquals(dealMonTues.isTaxIncluded(), dto.isTaxIncluded());
             assertEquals("MT-----", dto.getDaysDisplay());
             assertEquals("Pizza", dto.getDish());
             assertEquals(1, dto.getUploads().size());
