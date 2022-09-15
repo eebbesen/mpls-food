@@ -24,4 +24,5 @@ public class DayDTO {
     private LocalDate date;
     private String dayOfWeekDisplay;
     private String dish;
+    private String cuisine;
 }

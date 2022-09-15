@@ -58,15 +58,19 @@ public class DayController {
         final DayOfWeek dayOfWeekFilter = handleDayOfWeekFilter(request.getParameter("dayOfWeek"));
         final String dishFilter = handleFilter(request.getParameter("dish"));
         final String placeFilter = handleFilter(request.getParameter("place"));
+        final String cuisineFilter = handleFilter(request.getParameter("cuisine"));
         final List<DayDTO> days = dayService.findAll();
 
         model.addAttribute("selectedDay", dayOfWeekFilter);
         model.addAttribute("selectedDish", dishFilter);
+        model.addAttribute("selectedPlace", placeFilter);
+        model.addAttribute("selectedCuisine", cuisineFilter);
         model.addAttribute("dishes",
                 days.stream().map(dayDTO -> dayDTO.getDish()).distinct().collect(Collectors.toList()));
-        model.addAttribute("selectedPlace", placeFilter);
         model.addAttribute("places",
                 days.stream().map(dayDTO -> dayDTO.getPlaceName()).distinct().collect(Collectors.toList()));
+        model.addAttribute("cuisines",
+                days.stream().map(dayDTO -> dayDTO.getCuisine()).distinct().collect(Collectors.toList()));
 
         model.addAttribute("days", days.stream()
                 .filter(d -> {
@@ -77,6 +81,9 @@ public class DayController {
                 })
                 .filter(d -> {
                     return null == placeFilter || d.getPlaceName().equals(placeFilter);
+                })
+                .filter(d -> {
+                    return null == cuisineFilter || d.getCuisine().equals(cuisineFilter);
                 })
                 .collect(Collectors.toList()));
 

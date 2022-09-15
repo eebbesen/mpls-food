@@ -38,3 +38,6 @@ select pg_size_pretty(pg_database_size('dbname'));
 
 select pg_database_size('dbname')
 ```
+
+## data
+https://www.mplsdowntown.com/wp-content/uploads/2022/07/220706-restaurant-list.pdf (07/06/2022)

@@ -25,7 +25,8 @@
                     <th scope="col" th:text="#{deal.dish.label}" />
                     <th scope="col" th:text="#{deal.price.label}" />
                     <th scope="col" th:text="#{deal.discount.label}" />
-                    <th><!-- --></th>
+                    <th scope="col" th:text="#{deal.discountPercent.label}" />
+                    <th sec:authorize="isAuthenticated()"><!-- --></th>
                 </tr>
             </thead>
             <tbody>
@@ -36,12 +37,12 @@
                     <td th:text="${deal.dish}" />
                     <td th:text="${deal.priceRange}" />
                     <td th:text="${deal.discountRange}" />
-                    <td>
-                        <div sec:authorize="isAuthenticated()">
-                            <div sec:authorize="hasRole('ROLE_USER')">
-                                <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${deal.id})}" th:text="#{deal.list.edit}" />
-                            </div>
-                        </div>
+                    <td th:text="${deal.discountPercentRange}" />
+                    <td sec:authorize="isAuthenticated()" style="white-space:nowrap">
+                        <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${deal.id})}" th:if="${#strings.contains(#authentication.principal.authorities, 'ROLE_USER')}"
+                           th:text="#{deal.list.edit}"/>
+                        <button class="btn btn-sm btn-danger"
+                                th:if="${#strings.contains(#authentication.principal.authorities, 'ROLE_ADMIN')}" th:text="#{place.list.delete}" type="submit" />
                     </td>
                 </tr>
         </tbody>

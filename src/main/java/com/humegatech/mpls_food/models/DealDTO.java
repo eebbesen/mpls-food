@@ -38,6 +38,7 @@ public class DealDTO {
     private String discountPercentRange;
     private boolean verified;
     private boolean taxIncluded;
+    private String cuisine;
     @Builder.Default
     private List<UploadDTO> uploads = new ArrayList<>();
 }
