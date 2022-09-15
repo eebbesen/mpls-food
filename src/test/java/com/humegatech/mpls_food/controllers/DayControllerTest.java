@@ -100,6 +100,22 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
+    void testListWithCuisine() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/days?cuisine=Italian").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Login")))
+                .andExpect(content().string(containsString("slices")));
+    }
+
+    @Test
+    void testListWithCuisineNoRecords() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/days?cuisine=Thai").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Login")))
+                .andExpect(content().string(not(containsString("slices"))));
+    }
+
+    @Test
     @WithMockUser
     void testListUser() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
