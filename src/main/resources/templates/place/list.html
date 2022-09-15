@@ -23,7 +23,7 @@
                             <th scope="col" th:text="#{place.address.label}" />
                             <th scope="col" th:text="#{place.app.label}" />
                             <th scope="col" th:text="#{place.orderAhead.label}" />
-                            <th><!-- --></th>
+                            <th sec:authorize="isAuthenticated()"><!-- --></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,15 +32,11 @@
                             <td th:text="${place.truncatedAddress}" />
                             <td th:text="${place.app}" />
                             <td th:text="${place.orderAhead}" />
-                            <td>
-                                <div sec:authorize="isAuthenticated()">
-                                    <div sec:authorize="hasRole('ROLE_ADMIN')">
-                                        <form class="js-submit-confirm float-end" method="post" th:action="@{/places/delete/{id}(id=${place.id})}" th:data-confirm-message="#{delete.confirm}">
-                                            <a class="btn btn-sm btn-info" th:href="@{/places/edit/{id}(id=${place.id})}" th:text="#{place.list.edit}" />
-                                            <button class="btn btn-sm btn-danger" th:text="#{place.list.delete}" type="submit" />
-                                        </form>
-                                    </div>
-                                </div>
+                            <td sec:authorize="hasRole('ROLE_ADMIN')" style="white-space:nowrap">
+                                <form class="js-submit-confirm float-end" method="post" th:action="@{/places/delete/{id}(id=${place.id})}" th:data-confirm-message="#{delete.confirm}">
+                                    <a class="btn btn-sm btn-info" th:href="@{/places/edit/{id}(id=${place.id})}" th:text="#{place.list.edit}" />
+                                    <button class="btn btn-sm btn-danger" th:text="#{place.list.delete}" type="submit" />
+                                </form>
                             </td>
                         </tr>
                     </tbody>
