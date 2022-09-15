@@ -59,6 +59,8 @@ public class Upload extends BaseEntity {
                 "deal=" + deal.getId() +
                 ", image=" + Arrays.toString(image) +
                 ", verified=" + verified +
+                ", dateCreated=" + getDateCreated() +
+                ", lastUpdated=" + getLastUpdated() +
                 '}';
     }
 }

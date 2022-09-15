@@ -6,13 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 
 @Entity
 @Getter
@@ -28,12 +28,6 @@ public class Day extends BaseEntity {
     private Deal deal;
     private DayOfWeek dayOfWeek;
     private LocalDate date;
-
-    @CreatedDate
-    private OffsetDateTime dateCreated;
-
-    @LastModifiedDate
-    private OffsetDateTime lastUpdated;
 
     @Override
     public int hashCode() {
@@ -61,8 +55,8 @@ public class Day extends BaseEntity {
                 "deal=" + deal.getId() +
                 ", dayOfWeek=" + dayOfWeek +
                 ", date=" + date +
-                ", dateCreated=" + dateCreated +
-                ", lastUpdated=" + lastUpdated +
+                ", dateCreated=" + getDateCreated() +
+                ", lastUpdated=" + getLastUpdated() +
                 '}';
     }
 }

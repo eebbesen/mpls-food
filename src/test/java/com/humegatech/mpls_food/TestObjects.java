@@ -147,6 +147,14 @@ public class TestObjects {
                 .place(place)
                 .id(dealId())
                 .dish("Pizza")
+                .minPrice(3.20D)
+                .maxPrice(3.20d)
+                .minDiscount(.50d)
+                .maxDiscount(1.25d)
+                .minDiscountPercent(15.63d)
+                .maxDiscountPercent(28.08d)
+                .verified(true)
+                .taxIncluded(false)
                 .build();
 
         for (DayOfWeek day : days) {

@@ -4,12 +4,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -47,12 +44,6 @@ public class Place extends BaseEntity {
     @Value("false")
     private boolean orderAhead;
 
-    @CreatedDate
-    private OffsetDateTime dateCreated;
-
-    @LastModifiedDate
-    private OffsetDateTime lastUpdated;
-
     @Override
     public int hashCode() {
         int result = name.hashCode();
@@ -85,8 +76,8 @@ public class Place extends BaseEntity {
                 ", website='" + website + '\'' +
                 ", app=" + app +
                 ", orderAhead=" + orderAhead +
-                ", dateCreated=" + dateCreated +
-                ", lastUpdated=" + lastUpdated +
+                ", dateCreated=" + getDateCreated() +
+                ", lastUpdated=" + getLastUpdated() +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.humegatech.mpls_food.domains;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
@@ -19,6 +20,7 @@ import java.time.OffsetDateTime;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

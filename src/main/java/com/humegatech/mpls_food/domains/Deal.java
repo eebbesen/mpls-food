@@ -4,13 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
-import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,35 +24,40 @@ import java.util.stream.Collectors;
 @Entity
 public class Deal extends BaseEntity {
 
+    @Column
+    boolean taxIncluded;
     @Column(nullable = false, columnDefinition = "text")
     private String description;
-
     @Column(columnDefinition = "text")
     private String cuisine;
-
     @Column(columnDefinition = "text")
     private String dish;
-
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "place_id")
     private Place place;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
     @JsonManagedReference
     @Builder.Default
     private Set<Day> days = new LinkedHashSet<>();
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
     @JsonManagedReference
     @Builder.Default
     private Set<Upload> uploads = new LinkedHashSet<>();
-
-    @CreatedDate
-    private OffsetDateTime dateCreated;
-
-    @LastModifiedDate
-    private OffsetDateTime lastUpdated;
+    @Column
+    private Double minPrice;
+    @Column
+    private Double maxPrice;
+    @Column
+    private Double minDiscount;
+    @Column
+    private Double maxDiscount;
+    @Column
+    private Double minDiscountPercent;
+    @Column
+    private Double maxDiscountPercent;
+    @Column
+    private boolean verified;
 
     @Override
     public int hashCode() {
@@ -84,8 +86,15 @@ public class Deal extends BaseEntity {
                 ", place=" + place.getId() +
                 ", dealDays=" + days +
                 ", dish=" + dish +
-                ", dateCreated=" + dateCreated +
-                ", lastUpdated=" + lastUpdated +
+                ", minPrice=" + minPrice +
+                ", maxPrice=" + maxPrice +
+                ", minDiscount=" + minDiscount +
+                ", maxDiscount=" + maxDiscount +
+                ", minDiscountPercent=" + minDiscountPercent +
+                ", maxDiscountPercent=" + maxDiscountPercent +
+                ", verified=" + verified +
+                ", dateCreated=" + getDateCreated() +
+                ", lastUpdated=" + getLastUpdated() +
                 '}';
     }
 

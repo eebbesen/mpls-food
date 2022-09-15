@@ -17,6 +17,14 @@
                 <div th:replace="fragments/forms::inputRow(object='deal', field='description', type='textarea')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='dish', type='text')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='place', type='select')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='minPrice', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='maxPrice', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='minDiscount', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='maxDiscount', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='minDiscountPercent', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='maxDiscountPercent', type='text')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='verified', type='checkbox')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='taxIncluded', type='checkbox')" />
                 <div>Days Deal is Active</div>
                 <div th:replace="fragments/forms::inputRow(object='deal', field='sunday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='monday', type='checkbox')" />

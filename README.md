@@ -30,3 +30,11 @@ If using GitHub Actions you may need to initialize the project's gradle scan by 
 ```bash
 gradle build --scan
 ```
+
+### PostgreSQL
+Get size of database
+```bash
+select pg_size_pretty(pg_database_size('dbname'));
+
+select pg_database_size('dbname')
+```
