@@ -61,7 +61,7 @@
         <td th:text="${day.dealDescription}" />
         <td th:text="${day.placeName}" />
         <td th:text="${day.dayOfWeekDisplay}" />
-        <td>
+        <td style="white-space:nowrap">
           <div sec:authorize="isAuthenticated()">
             <div sec:authorize="hasRole('ROLE_ADMIN')">
               <form class="js-submit-confirm float-end" method="post" th:action="@{/days/delete/{id}(id=${day.id})}" th:data-confirm-message="#{delete.confirm}">

@@ -16,6 +16,7 @@
             <form method="post" th:action="${#httpServletRequest.requestURI}">
                 <div th:replace="fragments/forms::inputRow(object='deal', field='description', type='textarea')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='dish', type='textarea')" />
+                <div th:replace="fragments/forms::inputRow(object='deal', field='cuisine', type='textarea')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='place', type='select')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='minPrice', type='text')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='maxPrice', type='text')" />

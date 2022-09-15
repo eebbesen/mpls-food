@@ -25,6 +25,7 @@
                     <th scope="col" th:text="#{deal.dish.label}" />
                     <th scope="col" th:text="#{deal.price.label}" />
                     <th scope="col" th:text="#{deal.discount.label}" />
+                    <th scope="col" th:text="#{deal.discountPercent.label}" />
                     <th><!-- --></th>
                 </tr>
             </thead>
@@ -36,6 +37,7 @@
                     <td th:text="${deal.dish}" />
                     <td th:text="${deal.priceRange}" />
                     <td th:text="${deal.discountRange}" />
+                    <td th:text="${deal.discountPercentRange}" />
                     <td>
                         <div sec:authorize="isAuthenticated()">
                             <div sec:authorize="hasRole('ROLE_USER')">

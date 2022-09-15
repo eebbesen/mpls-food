@@ -127,6 +127,7 @@ public class DealService {
         dealDTO.setPlaceName(deal.getPlace() == null ? null : deal.getPlace().getName());
         dealDTO.setDaysDisplay(MplsFoodUtils.condensedDays(deal.getDaysOfWeek()));
         dealDTO.setDish(deal.getDish());
+        dealDTO.setCuisine(deal.getCuisine());
         dealDTO.setMinPrice(deal.getMinPrice());
         dealDTO.setMaxPrice((deal.getMaxPrice()));
         dealDTO.setMinDiscount(deal.getMinDiscount());
@@ -178,6 +179,7 @@ public class DealService {
         deal.setId(dealDTO.getId());
         deal.setPlace(place);
         deal.setDish(dealDTO.getDish());
+        deal.setCuisine(dealDTO.getCuisine());
         deal.setMinPrice(dealDTO.getMinPrice());
         deal.setMaxPrice(dealDTO.getMaxPrice());
         deal.setMinDiscount(dealDTO.getMinDiscount());

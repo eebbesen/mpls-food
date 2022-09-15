@@ -54,6 +54,7 @@ public class TestObjects {
                 .place(tacoJohns)
                 .id(dealId())
                 .dish("Taco")
+                .cuisine("Tex Mex")
                 .build();
 
         deal.getDays().add(Day.builder()
@@ -85,6 +86,7 @@ public class TestObjects {
                 .description("$5.00 for two slices from 10:30 - 11:00")
                 .id(dealId())
                 .place(ginellis)
+                .cuisine("Italian")
                 .dish("Pizza").build();
 
         deal.getDays().add(Day.builder()
@@ -129,6 +131,7 @@ public class TestObjects {
                 .id(dealId())
                 .place(ginellis())
                 .dish("Pizza")
+                .cuisine("Italian")
                 .build();
 
         Day day = day(deal, DayOfWeek.THURSDAY);
@@ -147,6 +150,7 @@ public class TestObjects {
                 .place(place)
                 .id(dealId())
                 .dish("Pizza")
+                .cuisine("Italian")
                 .minPrice(3.20D)
                 .maxPrice(3.20d)
                 .minDiscount(.50d)
