@@ -34,7 +34,7 @@ public class Deal extends BaseEntity {
     private String dish;
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "place_id")
+    @JoinColumn(name = "place_id", foreignKey = @ForeignKey(name = "fk_deals_places"))
     private Place place;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
     @JsonManagedReference

@@ -22,7 +22,7 @@ import java.util.Arrays;
 @Table(name = "uploads")
 public class Upload extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "deal_id", nullable = false)
+    @JoinColumn(name = "deal_id", nullable = false, foreignKey = @ForeignKey(name = "fk_uploads_deals"))
     @JsonBackReference
     private Deal deal;
 
