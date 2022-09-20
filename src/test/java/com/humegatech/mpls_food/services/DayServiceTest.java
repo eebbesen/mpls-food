@@ -89,6 +89,9 @@ public class DayServiceTest {
         assertEquals(deal.getDish(), dto.getDish());
         assertEquals(deal.getCuisine(), dto.getCuisine());
         assertEquals(MplsFoodUtils.capitalizeFirst(DayOfWeek.WEDNESDAY.name()), dto.getDayOfWeekDisplay());
+        assertEquals(MplsFoodUtils.getRange(deal.getMinPrice(), deal.getMaxPrice(), "$"), dto.getPriceRange());
+        assertEquals(MplsFoodUtils.getRange(deal.getMinDiscount(), deal.getMaxDiscount(), "$"), dto.getDiscountRange());
+        assertEquals(MplsFoodUtils.getRange(deal.getMinDiscountPercent(), deal.getMaxDiscountPercent(), "$"), dto.getDiscountPercentRange());
     }
 
     @Test

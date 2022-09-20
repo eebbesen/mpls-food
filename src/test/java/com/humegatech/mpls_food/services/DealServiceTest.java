@@ -65,54 +65,6 @@ public class DealServiceTest {
     }
 
     @Test
-    void testGetRangeMinNullMaxNull() {
-        final String rangeString = ReflectionTestUtils.invokeMethod(service.getClass(), "getRange", null, null, "$");
-        assertEquals(null, rangeString);
-    }
-
-    @Test
-    void testGetRangeMinNullMaxPopulated() {
-        final String rangeString = ReflectionTestUtils.invokeMethod(service.getClass(), "getRange", null, 1.22, "$");
-        assertEquals("$1.22", rangeString);
-    }
-
-    @Test
-    void testGetRangeMinPopulatedMaxNull() {
-        final String rangeString = ReflectionTestUtils.invokeMethod(service.getClass(), "getRange", 1.22, null, "$");
-        assertEquals("$1.22", rangeString);
-    }
-
-    @Test
-    void testGetRangeSameWithDollar() {
-        final String rangeString = ReflectionTestUtils.invokeMethod(service.getClass(), "getRange", 1.22, 1.22, "$");
-        assertEquals("$1.22", rangeString);
-    }
-
-    @Test
-    void testGetRangeSameWithPercent() {
-        final String rangeString = ReflectionTestUtils.invokeMethod(service.getClass(), "getRange", 42.0, 42.0, "%");
-        assertEquals("42%", rangeString);
-    }
-
-    @Test
-    void testGetRangeDifferent() {
-        final String rangeString = ReflectionTestUtils.invokeMethod(service.getClass(), "getRange", 42.0, 55.0, "%");
-        assertEquals("42% - 55%", rangeString);
-    }
-
-    @Test
-    void testDecorateValuePercent() {
-        final String decorated = ReflectionTestUtils.invokeMethod(service.getClass(), "decorateValue", 42.0, "%");
-        assertEquals("42%", decorated);
-    }
-
-    @Test
-    void testDecorateValueDollarSign() {
-        final String decorated = ReflectionTestUtils.invokeMethod(service.getClass(), "decorateValue", 42.0, "$");
-        assertEquals("$42.00", decorated);
-    }
-
-    @Test
     void testConfirmOrAddDayDayExists() {
         ReflectionTestUtils.invokeMethod(service.getClass(), "addDay", dealMonTues, DayOfWeek.MONDAY);
         assertEquals(2, dealMonTues.getDays().size());

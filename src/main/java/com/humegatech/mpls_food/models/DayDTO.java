@@ -25,4 +25,7 @@ public class DayDTO {
     private String dayOfWeekDisplay;
     private String dish;
     private String cuisine;
+    private String priceRange;
+    private String discountRange;
+    private String discountPercentRange;
 }
