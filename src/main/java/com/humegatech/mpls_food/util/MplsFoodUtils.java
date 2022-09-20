@@ -20,6 +20,31 @@ public class MplsFoodUtils {
             DayOfWeek.SUNDAY, "s"
     );
 
+    public static String decorateValue(final Double value, final String punctuation) {
+        if (null == value) {
+            return null;
+        }
+
+        if (null == punctuation) {
+            return String.valueOf(value);
+        }
+
+        return punctuation.equals("$") ? String.format("%s%.2f", punctuation, value) : String.format("%.0f%s", value, punctuation);
+    }
+
+    public static String getRange(final Double min, final Double max, final String type) {
+        if (null == min && null == max) {
+            return null;
+        }
+
+        if (null == min || null == max || min.equals(max)) {
+            final Double val = null == min ? max : min;
+            return decorateValue(val, type);
+        }
+
+        return String.format("%s - %s", decorateValue(min, type), decorateValue(max, type));
+    }
+
     public static String capitalizeFirst(final String string) {
         if (null == string) {
             return null;

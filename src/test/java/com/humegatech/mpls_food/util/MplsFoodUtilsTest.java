@@ -118,4 +118,53 @@ public class MplsFoodUtilsTest {
         assertEquals(DayOfWeek.MONDAY, days.get(2).getDayOfWeek());
         assertEquals(DayOfWeek.MONDAY, days.get(2).getDayOfWeek());
     }
+
+
+    @Test
+    void testGetRangeMinNullMaxNull() {
+        final String rangeString = MplsFoodUtils.getRange(null, null, "$");
+        assertEquals(null, rangeString);
+    }
+
+    @Test
+    void testGetRangeMinNullMaxPopulated() {
+        final String rangeString = MplsFoodUtils.getRange(null, 1.22, "$");
+        assertEquals("$1.22", rangeString);
+    }
+
+    @Test
+    void testGetRangeMinPopulatedMaxNull() {
+        final String rangeString = MplsFoodUtils.getRange(1.22, null, "$");
+        assertEquals("$1.22", rangeString);
+    }
+
+    @Test
+    void testGetRangeSameWithDollar() {
+        final String rangeString = MplsFoodUtils.getRange(1.22, 1.22, "$");
+        assertEquals("$1.22", rangeString);
+    }
+
+    @Test
+    void testGetRangeSameWithPercent() {
+        final String rangeString = MplsFoodUtils.getRange(42.0, 42.0, "%");
+        assertEquals("42%", rangeString);
+    }
+
+    @Test
+    void testGetRangeDifferent() {
+        final String rangeString = MplsFoodUtils.getRange(42.0, 55.0, "%");
+        assertEquals("42% - 55%", rangeString);
+    }
+
+    @Test
+    void testDecorateValuePercent() {
+        final String decorated = MplsFoodUtils.decorateValue(42.0, "%");
+        assertEquals("42%", decorated);
+    }
+
+    @Test
+    void testDecorateValueDollarSign() {
+        final String decorated = MplsFoodUtils.decorateValue(42.0, "$");
+        assertEquals("$42.00", decorated);
+    }
 }

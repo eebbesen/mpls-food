@@ -68,20 +68,25 @@
     <table class="table table-striped table-hover">
       <thead>
       <tr>
-
         <th scope="col" th:text="#{deal.dish.label}" />
         <th scope="col" th:text="#{deal.description.label}" />
         <th scope="col" th:text="#{deal.place.label}" />
+        <th scope="col" th:text="#{deal.price.label}" />
+        <th scope="col" th:text="#{deal.discount.label}" />
+        <th scope="col" th:text="#{deal.discountPercent.label}" />
         <th scope="col" th:text="#{deal.day.label}" />
         <th><!-- --></th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="day : ${days}">
+      <tr name="dealRow" th:each="day : ${days}">
 
         <td th:text="${day.dish}" />
         <td th:text="${day.dealDescription}" />
         <td th:text="${day.placeName}" />
+        <td th:text="${day.priceRange}" />
+        <td th:text="${day.discountRange}" />
+        <td th:text="${day.discountPercentRange}" />
         <td th:text="${day.dayOfWeekDisplay}" />
         <td style="white-space:nowrap">
           <div sec:authorize="isAuthenticated()">
