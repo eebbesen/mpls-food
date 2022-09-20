@@ -12,7 +12,7 @@ Discount does not appear to be applied with online ordering.','2022-09-15 05:28:
 	 (57,'2022-07-27 23:56:35.586779','Buy one hot dog get another half off','2022-09-14 21:35:17.477544',10011,'American','Hot Dog',NULL,'admin',NULL,25.0,5.18,NULL,25.0,3.36,false,true),
 	 (64,'2022-07-28 00:14:24.973642','$5.00 for two slices from 10:30 - 11:00.','2022-09-15 05:34:39.362197',10000,'Italian','Pizza',NULL,'admin',NULL,NULL,5.0,NULL,NULL,5.0,false,false),
 	 (67,'2022-08-10 17:23:55.716542','$1.00 off taco salad','2022-09-14 16:07:42.187979',2,'Tex Mex','Taco',NULL,'admin',1.0,NULL,NULL,1.0,NULL,NULL,false,true),
-	 (58,'2022-07-27 23:16:36.873815','$1.10 crispy tacos (half price)','2022-09-14 16:08:14.917878',2,'Tex Mex','Taco',NULL,'admin',1.1,50.0,1.1,1.1,50.0,1.1,false,true);
+	 (58,'2022-07-27 23:16:36.873815','Half-price crispy tacos (Taco Tuesday). $1.19 pre-tax, $1.32 tax included.','2022-09-14 16:08:14.917878',2,'Tex Mex','Taco',NULL,'admin',1.19,50.0,1.19,1.19,50.0,1.19,false,true);
 INSERT INTO public.deals (id,date_created,description,last_updated,place_id,cuisine,dish,created_by,modified_by,max_discount,max_discount_percent,max_price,min_discount,min_discount_percent,min_price,tax_included,verified) VALUES
 	 (68,'2022-08-10 17:24:21.696795','$1.39 softshell taco','2022-09-15 05:34:54.994398',2,'Tex Mex','Taco',NULL,'admin',NULL,NULL,1.39,NULL,NULL,1.39,false,false),
 	 (63,'2022-07-28 00:03:39.268623','$3.00 (tax included) for any flavor small malt or root beer float.','2022-09-15 05:35:12.126051',10011,'American','Beverage',NULL,'admin',NULL,NULL,3.0,NULL,NULL,3.0,true,false),
