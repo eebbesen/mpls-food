@@ -216,7 +216,7 @@ public class TestObjects {
 
     public static byte[] image() {
         BufferedImage image = null;
-        final String path = String.format("%s/src/test/resources/taco_johns_specials_lunch.jpeg", System.getProperty("user.dir"));
+        final String path = String.format("%s/src/test/resources/deal_pics/taco_johns_specials_lunch.jpeg", System.getProperty("user.dir"));
         try {
             image = ImageIO.read(new File(path));
         } catch (IOException e) {
