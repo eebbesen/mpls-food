@@ -4,21 +4,25 @@ import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -113,6 +117,34 @@ public class DayControllerTest extends MFControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
                 .andExpect(content().string(not(containsString("slices"))));
+    }
+
+    @Test
+    void testListSortByPrice() throws Exception {
+        final Deal deal99 = TestObjects.deal(place, "z 99 cent deal", LocalDateTime.now().getDayOfWeek());
+        deal99.setMinPrice(0.99d);
+        deal99.setId(null);
+        deal99.getDays().stream().forEach(d -> d.setId(null));
+        place.getDeals().add(deal99);
+        dealRepository.save(deal99);
+        final Deal deal199 = TestObjects.deal(place, "a 199 cent deal", LocalDateTime.now().getDayOfWeek());
+        deal199.setMinPrice(1.99d);
+        deal199.setId(null);
+        deal199.getDays().stream().forEach(d -> d.setId(null));
+        place.getDeals().add(deal199);
+        dealRepository.save(deal199);
+
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/days?sortBy=price").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andReturn();
+        final String fullHtml = result.getResponse().getContentAsString();
+        final String htmlBody = fullHtml.substring(fullHtml.indexOf("<body"), fullHtml.lastIndexOf("</body>") + 7);
+
+        Document doc = Jsoup.parse(htmlBody);
+        Elements rows = doc.getElementById("daysTable").getElementsByTag("tr");
+        assertTrue(0 <= rows.get(1).text().indexOf("$0.99"));
+        assertTrue(0 <= rows.get(2).text().indexOf("$1.99"));
+        assertTrue(0 <= rows.get(3).text().indexOf("$5.00"));
     }
 
     @Test

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.DayOfWeek;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,12 +54,20 @@ public class DayController {
         return filter;
     }
 
+    private static void sort(final List<DayDTO> days, final String sortBy) {
+        if (sortBy == null) return;
+        if (sortBy.equals("price")) {
+            days.sort(Comparator.comparing((DayDTO day) -> null == day.getPriceRange() ? 99999d : day.getMinPrice()));
+        }
+    }
+
     @GetMapping
     public String list(final Model model, final HttpServletRequest request) {
         final DayOfWeek dayOfWeekFilter = handleDayOfWeekFilter(request.getParameter("dayOfWeek"));
         final String dishFilter = handleFilter(request.getParameter("dish"));
         final String placeFilter = handleFilter(request.getParameter("place"));
         final String cuisineFilter = handleFilter(request.getParameter("cuisine"));
+        final String sortBy = handleFilter(request.getParameter("sortBy"));
         final List<DayDTO> days = dayService.findAll();
 
         model.addAttribute("selectedDay", dayOfWeekFilter);
@@ -72,7 +81,9 @@ public class DayController {
         model.addAttribute("cuisines",
                 days.stream().map(dayDTO -> dayDTO.getCuisine()).distinct().collect(Collectors.toList()));
 
-        model.addAttribute("days", days.stream()
+        sort(days, sortBy);
+
+        final List<DayDTO> dayDTOs = days.stream()
                 .filter(d -> {
                     return null == dayOfWeekFilter || d.getDayOfWeek().equals(dayOfWeekFilter);
                 })
@@ -85,8 +96,9 @@ public class DayController {
                 .filter(d -> {
                     return null == cuisineFilter || d.getCuisine().equals(cuisineFilter);
                 })
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
 
+        model.addAttribute("days", dayDTOs);
 
         return "days/list";
     }

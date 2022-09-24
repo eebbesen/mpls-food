@@ -92,6 +92,7 @@ public class DayServiceTest {
         assertEquals(MplsFoodUtils.getRange(deal.getMinPrice(), deal.getMaxPrice(), "$"), dto.getPriceRange());
         assertEquals(MplsFoodUtils.getRange(deal.getMinDiscount(), deal.getMaxDiscount(), "$"), dto.getDiscountRange());
         assertEquals(MplsFoodUtils.getRange(deal.getMinDiscountPercent(), deal.getMaxDiscountPercent(), "$"), dto.getDiscountPercentRange());
+        assertEquals(deal.getMinPrice(), dto.getMinPrice());
     }
 
     @Test
