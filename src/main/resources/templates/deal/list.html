@@ -39,10 +39,14 @@
                     <td th:text="${deal.discountRange}" />
                     <td th:text="${deal.discountPercentRange}" />
                     <td sec:authorize="isAuthenticated()" style="white-space:nowrap">
-                        <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${deal.id})}" th:if="${#strings.contains(#authentication.principal.authorities, 'ROLE_USER')}"
-                           th:text="#{deal.list.edit}"/>
-                        <button class="btn btn-sm btn-danger"
-                                th:if="${#strings.contains(#authentication.principal.authorities, 'ROLE_ADMIN')}" th:text="#{place.list.delete}" type="submit" />
+                        <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${deal.id})}" th:text="#{deal.list.edit}"
+                           th:unless="${#strings.contains(#authentication.principal.authorities, 'ROLE_ADMIN')}"/>
+                        <form class="js-submit-confirm float-end" method="post" th:action="@{/deals/delete/{id}(id=${deal.id})}" th:data-confirm-message="#{delete.confirm}" th:if="${#strings.contains(#authentication.principal.authorities, 'ROLE_ADMIN')}">
+                            <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${deal.id})}" th:if="${#strings.contains(#authentication.principal.authorities, 'ROLE_ADMIN')}"
+                               th:text="#{deal.list.edit}"/>
+                            <button class="btn btn-sm btn-danger"
+                                    th:text="#{place.list.delete}" type="submit" />
+                        </form>
                     </td>
                 </tr>
         </tbody>
