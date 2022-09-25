@@ -68,6 +68,7 @@ public class DayService {
                 day.getDeal().getMaxDiscount(), "$"));
         dayDTO.setDiscountPercentRange(MplsFoodUtils.getRange(day.getDeal().getMinDiscountPercent(),
                 day.getDeal().getMaxDiscountPercent(), "%"));
+        dayDTO.setMinPrice(day.getDeal().getMinPrice());
 
         return dayDTO;
     }

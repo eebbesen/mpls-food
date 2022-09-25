@@ -1,3 +1,8 @@
 input#fileUploadButton.mt-4 {
     margin-top: 2px !important;
 }
+
+.column-header {
+    text-decoration: none;
+    color: inherit;
+}

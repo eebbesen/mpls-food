@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.DayOfWeek;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,18 +54,48 @@ public class DayController {
         return filter;
     }
 
+    private static Comparator priceComparator() {
+        return Comparator.comparing((DayDTO day) -> null == day.getMinPrice() ? 99999d : day.getMinPrice());
+    }
+
+    private static Comparator priceComparatorReversed() {
+        return Comparator.comparing((DayDTO day) -> null == day.getMinPrice() ? 0d : day.getMinPrice()).reversed();
+    }
+
+    private static void handleSort(final List<DayDTO> days, final String sortBy) {
+        if (ObjectUtils.isEmpty(sortBy)) return;
+
+        if (sortBy.equals("price")) {
+            days.sort(priceComparator());
+        }
+
+        if (sortBy.equals("priceDesc")) {
+            days.sort(priceComparatorReversed());
+        }
+    }
+
+    private static String calculateNextSort(final String sortBy, final String match) {
+        if (ObjectUtils.isEmpty(sortBy)) return match;
+        if (!sortBy.startsWith(match)) return match;
+
+        return sortBy.endsWith("Desc") ? sortBy.replaceFirst("Desc", "") : String.format("%sDesc", sortBy);
+    }
+
     @GetMapping
     public String list(final Model model, final HttpServletRequest request) {
         final DayOfWeek dayOfWeekFilter = handleDayOfWeekFilter(request.getParameter("dayOfWeek"));
         final String dishFilter = handleFilter(request.getParameter("dish"));
         final String placeFilter = handleFilter(request.getParameter("place"));
         final String cuisineFilter = handleFilter(request.getParameter("cuisine"));
+        final String sortBy = handleFilter(request.getParameter("sortBy"));
         final List<DayDTO> days = dayService.findAll();
 
         model.addAttribute("selectedDay", dayOfWeekFilter);
         model.addAttribute("selectedDish", dishFilter);
         model.addAttribute("selectedPlace", placeFilter);
         model.addAttribute("selectedCuisine", cuisineFilter);
+        model.addAttribute("selectedSortBy", sortBy);
+        model.addAttribute("nextPriceSort", calculateNextSort(sortBy, "price"));
         model.addAttribute("dishes",
                 days.stream().map(dayDTO -> dayDTO.getDish()).distinct().collect(Collectors.toList()));
         model.addAttribute("places",
@@ -72,7 +103,9 @@ public class DayController {
         model.addAttribute("cuisines",
                 days.stream().map(dayDTO -> dayDTO.getCuisine()).distinct().collect(Collectors.toList()));
 
-        model.addAttribute("days", days.stream()
+        handleSort(days, sortBy);
+
+        final List<DayDTO> dayDTOs = days.stream()
                 .filter(d -> {
                     return null == dayOfWeekFilter || d.getDayOfWeek().equals(dayOfWeekFilter);
                 })
@@ -85,8 +118,9 @@ public class DayController {
                 .filter(d -> {
                     return null == cuisineFilter || d.getCuisine().equals(cuisineFilter);
                 })
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
 
+        model.addAttribute("days", dayDTOs);
 
         return "days/list";
     }
