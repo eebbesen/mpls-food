@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -21,8 +22,7 @@ import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -91,8 +91,11 @@ public class DayServiceTest {
         assertEquals(MplsFoodUtils.capitalizeFirst(DayOfWeek.WEDNESDAY.name()), dto.getDayOfWeekDisplay());
         assertEquals(MplsFoodUtils.getRange(deal.getMinPrice(), deal.getMaxPrice(), "$"), dto.getPriceRange());
         assertEquals(MplsFoodUtils.getRange(deal.getMinDiscount(), deal.getMaxDiscount(), "$"), dto.getDiscountRange());
-        assertEquals(MplsFoodUtils.getRange(deal.getMinDiscountPercent(), deal.getMaxDiscountPercent(), "$"), dto.getDiscountPercentRange());
+        assertEquals(MplsFoodUtils.getRange(deal.getMinDiscountPercent(), deal.getMaxDiscountPercent(), "%"), dto.getDiscountPercentRange());
+        assertFalse(ObjectUtils.isEmpty(dto.getMinPrice()));
         assertEquals(deal.getMinPrice(), dto.getMinPrice());
+        assertFalse(ObjectUtils.isEmpty(dto.getMinDiscount() > 0d));
+        assertEquals(deal.getMinDiscount(), dto.getMinDiscount());
     }
 
     @Test
