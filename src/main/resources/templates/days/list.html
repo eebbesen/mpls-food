@@ -59,6 +59,7 @@
                 th:text="${cuisine}"
                 th:value="${cuisine}"></option>
       </select>
+      <input id="sortBy" th:value="${selectedSortBy}" type="hidden"/>
       <input class="btn btn-primary mt-2 mb-4" th:value="#{day.filter}" type="submit" />
       <input class="btn btn-secondary mt-2 mb-4" onclick="resetFilters()" th:value="#{day.filter.reset}" />
     </form>

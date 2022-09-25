@@ -74,6 +74,7 @@ public class DayController {
         model.addAttribute("selectedDish", dishFilter);
         model.addAttribute("selectedPlace", placeFilter);
         model.addAttribute("selectedCuisine", cuisineFilter);
+        model.addAttribute("selectedSortBy", sortBy);
         model.addAttribute("dishes",
                 days.stream().map(dayDTO -> dayDTO.getDish()).distinct().collect(Collectors.toList()));
         model.addAttribute("places",
