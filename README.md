@@ -31,6 +31,9 @@ If using GitHub Actions you may need to initialize the project's gradle scan by 
 gradle build --scan
 ```
 
+#### heroku
+Run locally using `heroku local web`
+
 ### PostgreSQL
 Get size of database
 ```bash
