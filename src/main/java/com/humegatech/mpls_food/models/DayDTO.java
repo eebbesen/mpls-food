@@ -31,4 +31,5 @@ public class DayDTO {
     private Double minPrice;
     private Double minDiscount;
     private Double minDiscountPercent;
+    private boolean verified;
 }

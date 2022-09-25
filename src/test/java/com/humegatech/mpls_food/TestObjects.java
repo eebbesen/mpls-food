@@ -135,6 +135,7 @@ public class TestObjects {
                 .minPrice(5d)
                 .minDiscount(2.4d)
                 .minDiscountPercent(32d)
+                .verified(true)
                 .build();
 
         Day day = day(deal, DayOfWeek.THURSDAY);

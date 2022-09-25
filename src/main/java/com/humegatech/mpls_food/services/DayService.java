@@ -71,6 +71,7 @@ public class DayService {
         dayDTO.setMinPrice(day.getDeal().getMinPrice());
         dayDTO.setMinDiscount(day.getDeal().getMinDiscount());
         dayDTO.setMinDiscountPercent(day.getDeal().getMinDiscountPercent());
+        dayDTO.setVerified(day.getDeal().isVerified());
 
         return dayDTO;
     }

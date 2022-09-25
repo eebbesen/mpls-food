@@ -96,6 +96,8 @@ public class DayServiceTest {
         assertEquals(deal.getMinPrice(), dto.getMinPrice());
         assertFalse(ObjectUtils.isEmpty(dto.getMinDiscount() > 0d));
         assertEquals(deal.getMinDiscount(), dto.getMinDiscount());
+        assertTrue(dto.isVerified());
+        assertEquals(deal.isVerified(), dto.isVerified());
     }
 
     @Test
