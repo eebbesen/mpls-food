@@ -54,11 +54,31 @@ public class DayController {
         return filter;
     }
 
-    private static void sort(final List<DayDTO> days, final String sortBy) {
-        if (sortBy == null) return;
+    private static Comparator priceComparator() {
+        return Comparator.comparing((DayDTO day) -> null == day.getMinPrice() ? 99999d : day.getMinPrice());
+    }
+
+    private static Comparator priceComparatorReversed() {
+        return Comparator.comparing((DayDTO day) -> null == day.getMinPrice() ? 0d : day.getMinPrice()).reversed();
+    }
+
+    private static void handleSort(final List<DayDTO> days, final String sortBy) {
+        if (ObjectUtils.isEmpty(sortBy)) return;
+
         if (sortBy.equals("price")) {
-            days.sort(Comparator.comparing((DayDTO day) -> null == day.getPriceRange() ? 99999d : day.getMinPrice()));
+            days.sort(priceComparator());
         }
+
+        if (sortBy.equals("priceDesc")) {
+            days.sort(priceComparatorReversed());
+        }
+    }
+
+    private static String calculateNextSort(final String sortBy, final String match) {
+        if (ObjectUtils.isEmpty(sortBy)) return match;
+        if (!sortBy.startsWith(match)) return match;
+
+        return sortBy.endsWith("Desc") ? sortBy.replaceFirst("Desc", "") : String.format("%sDesc", sortBy);
     }
 
     @GetMapping
@@ -75,6 +95,7 @@ public class DayController {
         model.addAttribute("selectedPlace", placeFilter);
         model.addAttribute("selectedCuisine", cuisineFilter);
         model.addAttribute("selectedSortBy", sortBy);
+        model.addAttribute("nextPriceSort", calculateNextSort(sortBy, "price"));
         model.addAttribute("dishes",
                 days.stream().map(dayDTO -> dayDTO.getDish()).distinct().collect(Collectors.toList()));
         model.addAttribute("places",
@@ -82,7 +103,7 @@ public class DayController {
         model.addAttribute("cuisines",
                 days.stream().map(dayDTO -> dayDTO.getCuisine()).distinct().collect(Collectors.toList()));
 
-        sort(days, sortBy);
+        handleSort(days, sortBy);
 
         final List<DayDTO> dayDTOs = days.stream()
                 .filter(d -> {

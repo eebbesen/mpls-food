@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <title th:text="#{day.list.headline}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
   <script  th:inline="javascript">
     function resetFilters() {
       document.getElementById("dayOfWeek").value = '';
@@ -59,7 +60,7 @@
                 th:text="${cuisine}"
                 th:value="${cuisine}"></option>
       </select>
-      <input id="sortBy" th:value="${selectedSortBy}" type="hidden"/>
+      <input id="sortBy" name="sortBy" th:value="${selectedSortBy}" type="hidden"/>
       <input class="btn btn-primary mt-2 mb-4" th:value="#{day.filter}" type="submit" />
       <input class="btn btn-secondary mt-2 mb-4" onclick="resetFilters()" th:value="#{day.filter.reset}" />
     </form>
@@ -72,8 +73,13 @@
         <th scope="col" th:text="#{deal.dish.label}" />
         <th scope="col" th:text="#{deal.description.label}" />
         <th scope="col" th:text="#{deal.place.label}" />
-        <th scope="col"><a class="text-decoration-none" th:href="${urlBuilder.replaceQueryParam('sortBy', 'price').toUriString()}"
-                           th:text="#{deal.price.label}"/></th>
+        <th scope="col">
+          <a class="column-header" th:href="${urlBuilder.replaceQueryParam('sortBy', nextPriceSort).toUriString()}"
+                           th:text="#{deal.price.label}"/>
+          <i class="bi bi-arrow-up" th:if="${null != selectedSortBy && selectedSortBy.equals('price')}"></i>
+          <i class="bi bi-arrow-down" th:if="${null != selectedSortBy && selectedSortBy.equals('priceDesc')}"></i>
+          <i class="bi bi-filter" th:if="${null == selectedSortBy || !selectedSortBy.startsWith('price')}"></i>
+        </th>
         <th scope="col" th:text="#{deal.discount.label}" />
         <th scope="col" th:text="#{deal.discountPercent.label}" />
         <th scope="col" th:text="#{deal.day.label}" />
