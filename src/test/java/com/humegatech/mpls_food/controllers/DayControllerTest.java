@@ -123,7 +123,7 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testListSortByPrice() throws Exception {
+    void testListSortByPriceHtml() throws Exception {
         final Deal deal99 = TestObjects.deal(place, "z 99 cent deal", LocalDateTime.now().getDayOfWeek());
         deal99.setMinPrice(0.99d);
         deal99.setId(null);
@@ -151,7 +151,91 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testHandleSortAsc() throws Exception {
+    void testHandleSortDiscountAsc() throws Exception {
+        final DayDTO day101 = DayDTO.builder()
+                .placeName("a")
+                .minDiscount(12d)
+                .build();
+        final DayDTO day099 = DayDTO.builder()
+                .placeName("z")
+                .minDiscount(9d)
+                .build();
+        List<DayDTO> days = new ArrayList();
+        days.add(day101);
+        days.add(day099);
+
+        assertEquals(day101.getMinPrice(), days.get(0).getMinPrice());
+
+        ReflectionTestUtils.invokeMethod(DayController.class, "handleSort", days, "price");
+
+        assertEquals(day099.getMinPrice(), days.get(0).getMinPrice());
+    }
+
+    @Test
+    void testHandleSortDiscountDesc() throws Exception {
+        final DayDTO day101 = DayDTO.builder()
+                .placeName("a")
+                .minDiscount(1.01d)
+                .build();
+        final DayDTO day099 = DayDTO.builder()
+                .placeName("z")
+                .minDiscount(.99d)
+                .build();
+        List<DayDTO> days = new ArrayList();
+        days.add(day099);
+        days.add(day101);
+
+        assertEquals(day099.getMinPrice(), days.get(0).getMinPrice());
+
+        ReflectionTestUtils.invokeMethod(DayController.class, "handleSort", days, "priceDesc");
+
+        assertEquals(day101.getMinPrice(), days.get(0).getMinPrice());
+    }
+
+    @Test
+    void testHandleSortDiscountPercentAsc() throws Exception {
+        final DayDTO day101 = DayDTO.builder()
+                .placeName("a")
+                .minDiscountPercent(12d)
+                .build();
+        final DayDTO day099 = DayDTO.builder()
+                .placeName("z")
+                .minDiscountPercent(9d)
+                .build();
+        List<DayDTO> days = new ArrayList();
+        days.add(day101);
+        days.add(day099);
+
+        assertEquals(day101.getMinPrice(), days.get(0).getMinPrice());
+
+        ReflectionTestUtils.invokeMethod(DayController.class, "handleSort", days, "price");
+
+        assertEquals(day099.getMinPrice(), days.get(0).getMinPrice());
+    }
+
+    @Test
+    void testHandleSortDiscountPercentDesc() throws Exception {
+        final DayDTO day101 = DayDTO.builder()
+                .placeName("a")
+                .minDiscountPercent(1.01d)
+                .build();
+        final DayDTO day099 = DayDTO.builder()
+                .placeName("z")
+                .minDiscountPercent(.99d)
+                .build();
+        List<DayDTO> days = new ArrayList();
+        days.add(day099);
+        days.add(day101);
+
+        assertEquals(day099.getMinPrice(), days.get(0).getMinPrice());
+
+        ReflectionTestUtils.invokeMethod(DayController.class, "handleSort", days, "priceDesc");
+
+        assertEquals(day101.getMinPrice(), days.get(0).getMinPrice());
+    }
+
+    @Test
+    void testHandleSortPriceAsc() throws Exception {
         final DayDTO day101 = DayDTO.builder()
                 .placeName("a")
                 .minPrice(1.01d)
@@ -172,7 +256,7 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testHandleSortDesc() throws Exception {
+    void testHandleSortPriceDesc() throws Exception {
         final DayDTO day101 = DayDTO.builder()
                 .placeName("a")
                 .minPrice(1.01d)
@@ -253,6 +337,11 @@ public class DayControllerTest extends MFControllerTest {
         ReflectionTestUtils.invokeMethod(DayController.class, "handleSort", days, nullString);
 
         assertEquals(day101.getMinPrice(), days.get(0).getMinPrice());
+    }
+
+    @Test
+    void testCalculateNextSortDiscountPercentDiscount() throws Exception {
+        assertEquals("discount", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "discountPercent", "discount"));
     }
 
     @Test

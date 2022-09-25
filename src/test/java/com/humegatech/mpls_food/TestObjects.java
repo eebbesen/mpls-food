@@ -132,6 +132,9 @@ public class TestObjects {
                 .place(ginellis())
                 .dish("Pizza")
                 .cuisine("Italian")
+                .minPrice(5d)
+                .minDiscount(2.4d)
+                .minDiscountPercent(32d)
                 .build();
 
         Day day = day(deal, DayOfWeek.THURSDAY);
@@ -158,7 +161,7 @@ public class TestObjects {
                 .minDiscountPercent(15.63d)
                 .maxDiscountPercent(28.08d)
                 .verified(true)
-                .taxIncluded(false)
+                .taxIncluded(true)
                 .build();
 
         for (DayOfWeek day : days) {

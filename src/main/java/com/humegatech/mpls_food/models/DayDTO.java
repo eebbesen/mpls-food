@@ -29,4 +29,6 @@ public class DayDTO {
     private String discountRange;
     private String discountPercentRange;
     private Double minPrice;
+    private Double minDiscount;
+    private Double minDiscountPercent;
 }
