@@ -30,7 +30,7 @@
     <h1 class="flex-grow-1" th:text="#{day.list.headline}" />
   </div>
   <a class="text-decoration-none" data-bs-toggle="collapse" href="#filtersDiv" id="showFilters" role="button" th:text="#{day.toggle.filters}"/>
-  <div class="collapse show" id="filtersDiv">
+  <div class="collapse" id="filtersDiv">
     <form id="filters" method="get" th:action="${#httpServletRequest.requestURI}">
       <select class="form-select w-25" id="dayOfWeek" name="dayOfWeek">
         <option th:text="#{day.empty.label}" value=""/>

@@ -345,8 +345,18 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testCalculateNextSortAscToDesc() throws Exception {
+    void testCalculateNextSortPriceAscToDesc() throws Exception {
         assertEquals("priceDesc", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "price", "price"));
+    }
+
+    @Test
+    void testCalculateNextSortDiscountAscToDesc() throws Exception {
+        assertEquals("discountDesc", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "discount", "discount"));
+    }
+
+    @Test
+    void testCalculateNextSortDiscountDescAsc() throws Exception {
+        assertEquals("discount", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "discountDesc", "discount"));
     }
 
     @Test

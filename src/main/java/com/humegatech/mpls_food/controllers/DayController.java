@@ -110,8 +110,7 @@ public class DayController {
         if (ObjectUtils.isEmpty(sortBy)) return match;
         if (!sortBy.startsWith(match)) return match;
 
-        final String cleaned = sortBy.replaceFirst("Desc", "");
-        if (sortBy.replaceFirst("Desc", "") != match) return match;
+        if (!sortBy.replaceFirst("Desc", "").equals(match)) return match;
 
         return sortBy.endsWith("Desc") ? sortBy.replaceFirst("Desc", "") : String.format("%sDesc", sortBy);
     }
