@@ -1,0 +1,1 @@
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/mpls-food-0.0.1-SNAPSHOT.jar

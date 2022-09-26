@@ -1,4 +1,5 @@
 # MPLS-FOOD
+https://mpls-food.herokuapp.com/
 
 Created with https://bootify.io
 Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Minneapolis.svg
@@ -30,6 +31,9 @@ If using GitHub Actions you may need to initialize the project's gradle scan by 
 ```bash
 gradle build --scan
 ```
+
+#### heroku
+Run locally using `heroku local web`
 
 ### PostgreSQL
 Get size of database
