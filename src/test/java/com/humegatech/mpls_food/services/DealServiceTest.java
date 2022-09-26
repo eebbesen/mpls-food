@@ -181,7 +181,7 @@ public class DealServiceTest {
     @Test
     void testUpdateRemoveDays() {
         final Day deletedDay = dealMonTues.getDays().stream()
-                .filter(day -> day.getDayOfWeek() == DayOfWeek.MONDAY)
+                .filter(day -> day.getDayOfWeek().equals(DayOfWeek.MONDAY))
                 .findFirst().orElse(null);
         dealMonTuesDTO.setMonday(false);
 
