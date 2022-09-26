@@ -2,6 +2,7 @@
 https://mpls-food.herokuapp.com/
 
 Created with https://bootify.io
+
 Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Minneapolis.svg
 
 ## Start
@@ -9,6 +10,7 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
 * run MplsFoodApplication.java
     * DDL will be executed on startup based on application.yml `spring:jpa:hibernate:ddl-auto:` value
 * navigate to http://localhost:8080
+* data seed scripts are in `src/test/test_data/`
 
 ### Start via gradle
 ```bash
@@ -33,7 +35,7 @@ gradle build --scan
 ```
 
 #### heroku
-Run locally using `heroku local web`
+Test locally using `heroku local web`
 
 ### PostgreSQL
 Get size of database
