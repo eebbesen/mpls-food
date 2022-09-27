@@ -36,4 +36,4 @@ $2.25 to add a dog.','2022-09-14 21:22:24.631882',10011,'American','Hot Dog',NUL
 INSERT INTO public.deals (id,date_created,description,last_updated,place_id,cuisine,dish,created_by,modified_by,max_discount,max_discount_percent,max_price,min_discount,min_discount_percent,min_price,tax_included,verified) VALUES
 	 (108,'2022-09-14 14:22:38.712614','Free breadsticks with purchase of a slice.','2022-09-15 05:29:58.370784',10000,'Italian','Bread','admin','admin',1.6,30.19,4.45,1.6,26.45,3.7,false,true),
 	 (61,'2022-07-28 00:00:17.810187','$4.95 for a Vienna Beef hot dog with chips and a 24 ounce fountain drink.
-$2.75 to add a beef hot dog.','2022-09-15 05:33:49.064028',10011,'American','Hot Dog',NULL,'admin',NULL,NULL,7.7,NULL,NULL,4.95,false,false);
+$2.75 to add a beef hot dog.','2022-09-27 08:15:08.175882',10011,'American','Hot Dog',NULL,'admin',NULL,NULL,7.7,NULL,NULL,4.95,false,true);
