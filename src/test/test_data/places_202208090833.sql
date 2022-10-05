@@ -7,5 +7,7 @@ Minneapolis, MN 55402',true,'2022-07-27 22:00:30.162734','2022-07-27 22:00:30.16
 Minneapolis, MN 55402',false,'2022-07-27 23:38:35.619756','2022-07-27 23:38:35.619756','The Burger Place',true,'https://www.theburgerplace.com/weekday-specials/',NULL,NULL),
 	 (10011,'618 2nd Ave S Ste 114
 Minneapolis, MN 55402',false,'2022-07-27 23:55:33.513632','2022-07-27 23:55:33.513632','Walkin''dog',false,'https://www.facebook.com/Walkindog-126087764097684/',NULL,NULL),
+	 (16,'705 S Marquette Avenue
+Minneapolis, MN 55402',false,'2022-10-05 15:24:55.311793','2022-10-05 15:24:55.311793','Afro Deli',true,'https://www.afrodeli.com/locations/skyway','admin','admin'),
 	 (15,'200 South 6th St #270
-Minneapolis, MN 55402',true,'2022-10-05 08:34:20.311449','2022-10-05 08:34:20.311449','Broadway Pizza',false,'https://www.broadwaypizza.com/menus/dan-kellys-menu-copy','admin','admin');
+Minneapolis, MN 55402',true,'2022-10-05 08:34:20.311449','2022-10-05 15:26:06.539468','Broadway Pizza',true,'https://www.broadwaypizza.com/fast-and-fresh/fast-and-fresh','admin','admin');
