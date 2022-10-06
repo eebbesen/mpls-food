@@ -5,13 +5,13 @@ INSERT INTO public.deals (id,date_created,description,last_updated,place_id,cuis
 	 (65,'2022-07-27 23:16:57.658109','$1.00 off Taco Bravo','2022-09-14 21:34:51.822252',2,'Tex Mex','Taco',NULL,'admin',1.0,NULL,NULL,1.0,NULL,NULL,false,true),
 	 (53,'2022-07-27 23:42:17.849534','$12.45 cajun cheese burger, fries and a 20oz fountain drink','2022-10-05 08:53:28.760934',10004,'American','Burger',NULL,'admin',1.55,11.07,12.45,1.55,11.07,12.45,false,true),
 	 (67,'2022-08-10 17:23:55.716542','$1.00 off taco salad','2022-09-14 16:07:42.187979',2,'Tex Mex','Taco',NULL,'admin',1.0,NULL,NULL,1.0,NULL,NULL,false,true),
-	 (54,'2022-07-27 23:45:21.760957','$13.75 bacon cheese burger, fries and a 20oz fountain beverage','2022-10-05 08:54:01.896667',10004,'American','Burger',NULL,'admin',1.55,10.13,13.75,1.55,10.13,13.75,false,true),
 	 (52,'2022-07-27 23:41:12.97514','$13.60 cheese burger, fries and a 20oz fountain drink','2022-10-05 08:54:15.238311',10004,'American','Burger',NULL,'admin',1.65,12.13,13.6,1.65,12.13,13.6,false,true),
 	 (57,'2022-07-27 23:56:35.586779','Buy one hot dog get another half off','2022-10-05 14:36:34.804231',10011,'American','Hot Dog',NULL,'admin',1.83,25.0,5.48,1.22,25.0,3.68,false,true),
-	 (63,'2022-07-28 00:03:39.268623','$3.00 (tax included) for any flavor small malt or root beer float.','2022-09-15 05:35:12.126051',10011,'American','Beverage',NULL,'admin',NULL,NULL,3.0,NULL,NULL,3.0,true,false);
+	 (63,'2022-07-28 00:03:39.268623','$3.00 (tax included) for any flavor small malt or root beer float.','2022-09-15 05:35:12.126051',10011,'American','Beverage',NULL,'admin',NULL,NULL,3.0,NULL,NULL,3.0,true,false),
+	 (59,'2022-07-27 23:59:01.748955','Two Ball Park hot dogs for $4.50','2022-10-05 14:38:58.381768',10011,'American','Hot Dog',NULL,'admin',0.4,8.16,4.5,0.4,8.16,4.5,false,true);
 INSERT INTO public.deals (id,date_created,description,last_updated,place_id,cuisine,dish,created_by,modified_by,max_discount,max_discount_percent,max_price,min_discount,min_discount_percent,min_price,tax_included,verified) VALUES
-	 (59,'2022-07-27 23:59:01.748955','Two Ball Park hot dogs for $4.50','2022-10-05 14:38:58.381768',10011,'American','Hot Dog',NULL,'admin',0.4,8.16,4.5,0.4,8.16,4.5,false,true),
 	 (60,'2022-07-27 23:59:20.578794','Two Ball Park chili dogs for $5.50','2022-10-05 14:39:43.837407',10011,'American','Hot Dog',NULL,'admin',0.4,6.78,5.5,0.4,6.78,5.5,false,true),
+	 (54,'2022-07-27 23:45:21.760957','$13.75 bacon cheese burger, fries and a 20oz fountain drink','2022-10-05 19:58:15.334742',10004,'American','Burger',NULL,'admin',1.55,10.13,13.75,1.55,10.13,13.75,false,true),
 	 (58,'2022-07-27 23:16:36.873815','Half-price crispy tacos (Taco Tuesday). $1.19 pre-tax, $1.32 tax included.','2022-09-20 13:27:39.793612',2,'Tex Mex','Taco',NULL,'admin',1.19,50.0,1.19,1.19,50.0,1.19,false,true),
 	 (68,'2022-08-10 17:24:21.696795','$1.39 softshell taco','2022-09-25 14:48:44.871546',2,'Tex Mex','Taco',NULL,'admin',NULL,NULL,1.39,NULL,NULL,1.39,false,true),
 	 (64,'2022-07-28 00:14:24.973642','$5.00 for two slices from 10:30 - 11:00.','2022-09-25 15:40:57.541839',10000,'Italian','Pizza',NULL,'admin',3.9,43.82,5.0,2.4,32.43,5.0,false,false),
