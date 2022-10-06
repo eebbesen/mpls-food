@@ -1,4 +1,4 @@
-INSERT INTO public.authorities (username,authority) VALUES
-	 ('user','ROLE_USER'),
-	 ('admin','ROLE_USER'),
-	 ('admin','ROLE_ADMIN');
+INSERT INTO public.authorities (id,username,authority) VALUES
+	 (1, 'user','ROLE_USER'),
+	 (2, 'admin','ROLE_USER'),
+	 (3, 'admin','ROLE_ADMIN');
