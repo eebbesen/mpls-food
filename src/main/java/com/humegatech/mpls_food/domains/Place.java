@@ -44,6 +44,9 @@ public class Place extends BaseEntity {
     @Value("false")
     private boolean orderAhead;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "place")
+    private Reward reward;
+
     @Override
     public int hashCode() {
         int result = name.hashCode();
