@@ -197,6 +197,9 @@ public class DealServiceTest {
 
     @Test
     void testMapToEntity() {
+        dealMonTuesDTO.setStartTime("10:30");
+        dealMonTuesDTO.setEndTime("11:00");
+
         when(placeRepository.findById(dealMonTues.getPlace().getId())).thenReturn(Optional.of(dealMonTues.getPlace()));
 
         Deal deal = new Deal();
@@ -215,6 +218,8 @@ public class DealServiceTest {
         assertEquals(dealMonTues.getMinDiscountPercent(), deal.getMinDiscountPercent());
         assertEquals(dealMonTues.isVerified(), deal.isVerified());
         assertEquals(dealMonTues.isTaxIncluded(), deal.isTaxIncluded());
+        assertEquals(dealMonTuesDTO.getStartTime(), deal.getStartTime());
+        assertEquals(dealMonTuesDTO.getEndTime(), deal.getEndTime());
 
         // confirm days
         Set<DayOfWeek> days = deal.getDays().stream().map(Day::getDayOfWeek)
@@ -268,6 +273,8 @@ public class DealServiceTest {
     @Test
     void testMapToDTO() {
         final Upload upload = TestObjects.upload(dealMonTues);
+        dealMonTues.setStartTime("10:30");
+        dealMonTues.setEndTime("11:00");
 
         final LocalDateTime mon = LocalDateTime.of(2022, Month.SEPTEMBER, 5, 12, 12);
         try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
@@ -298,6 +305,8 @@ public class DealServiceTest {
             assertEquals("MT-----", dto.getDaysDisplay());
             assertEquals(dealMonTues.getDish(), dto.getDish());
             assertEquals(dealMonTues.getCuisine(), dto.getCuisine());
+            assertEquals(dealMonTues.getStartTime(), dto.getStartTime());
+            assertEquals(dealMonTues.getEndTime(), dto.getEndTime());
             assertEquals(1, dto.getUploads().size());
             assertEquals(upload.getImage(), dto.getUploads().get(0).getImage());
             assertEquals(upload.getDeal().getId(), dto.getUploads().get(0).getDealId());

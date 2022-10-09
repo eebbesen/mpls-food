@@ -89,6 +89,14 @@ public class TestObjects {
                 .id(dealId())
                 .place(ginellis)
                 .cuisine("Italian")
+                .startTime("10:30")
+                .endTime("11:00")
+                .minPrice(5d)
+                .maxPrice(5d)
+                .minDiscount(2.4)
+                .maxDiscount(3.9)
+                .minDiscountPercent(32d)
+                .maxDiscountPercent(44d)
                 .dish("Pizza").build();
 
         deal.getDays().add(Day.builder()
@@ -138,6 +146,8 @@ public class TestObjects {
                 .minDiscount(2.4d)
                 .minDiscountPercent(32d)
                 .verified(true)
+                .startTime("10:30")
+                .endTime("11:00")
                 .build();
 
         Day day = day(deal, DayOfWeek.THURSDAY);

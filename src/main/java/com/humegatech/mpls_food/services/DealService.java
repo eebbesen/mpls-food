@@ -114,6 +114,8 @@ public class DealService {
         dealDTO.setDiscountPercentRange(MplsFoodUtils.getRange(deal.getMinDiscountPercent(), deal.getMaxDiscountPercent(), "%"));
         dealDTO.setTaxIncluded(deal.isTaxIncluded());
         dealDTO.setVerified(deal.isVerified());
+        dealDTO.setStartTime(deal.getStartTime());
+        dealDTO.setEndTime(deal.getEndTime());
         applyDaysToDTO(deal, dealDTO);
         applyUploadsToDTO(deal, dealDTO);
 
@@ -163,6 +165,8 @@ public class DealService {
         deal.setMaxDiscountPercent(dealDTO.getMaxDiscountPercent());
         deal.setVerified(dealDTO.isVerified());
         deal.setTaxIncluded(dealDTO.isTaxIncluded());
+        deal.setStartTime(dealDTO.getStartTime());
+        deal.setEndTime(dealDTO.getEndTime());
         applyDaysToEntity(dealDTO, deal);
 
         return deal;

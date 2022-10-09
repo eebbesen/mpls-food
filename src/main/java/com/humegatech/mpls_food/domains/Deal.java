@@ -58,6 +58,10 @@ public class Deal extends BaseEntity {
     private Double maxDiscountPercent;
     @Column
     private boolean verified;
+    @Column
+    private String startTime;
+    @Column
+    private String endTime;
 
     @Override
     public int hashCode() {
@@ -82,10 +86,13 @@ public class Deal extends BaseEntity {
     @Override
     public String toString() {
         return "Deal{" +
-                "description='" + description + '\'' +
-                ", place=" + place.getId() +
-                ", dealDays=" + days +
-                ", dish=" + dish +
+                "taxIncluded=" + taxIncluded +
+                ", description='" + description + '\'' +
+                ", cuisine='" + cuisine + '\'' +
+                ", dish='" + dish + '\'' +
+                ", place=" + place +
+                ", days=" + days +
+                ", uploads=" + uploads +
                 ", minPrice=" + minPrice +
                 ", maxPrice=" + maxPrice +
                 ", minDiscount=" + minDiscount +
@@ -93,8 +100,8 @@ public class Deal extends BaseEntity {
                 ", minDiscountPercent=" + minDiscountPercent +
                 ", maxDiscountPercent=" + maxDiscountPercent +
                 ", verified=" + verified +
-                ", dateCreated=" + getDateCreated() +
-                ", lastUpdated=" + getLastUpdated() +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
                 '}';
     }
 
