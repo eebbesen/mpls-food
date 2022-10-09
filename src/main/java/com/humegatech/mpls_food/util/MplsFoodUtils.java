@@ -49,7 +49,10 @@ public class MplsFoodUtils {
         if (null == string) {
             return null;
         }
-        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+
+        final String[] workingString = string.split("_|\\s");
+        return Arrays.stream(workingString).map(s -> s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase())
+                .collect(Collectors.joining(" "));
     }
 
     /**

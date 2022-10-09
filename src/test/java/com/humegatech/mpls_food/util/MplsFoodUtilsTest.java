@@ -33,6 +33,7 @@ public class MplsFoodUtilsTest {
     void testCapitalizeFirst() {
         assertEquals("Dealdto", MplsFoodUtils.capitalizeFirst("dealDTO"));
         assertNull(MplsFoodUtils.capitalizeFirst(null));
+        assertEquals("Punch Card", MplsFoodUtils.capitalizeFirst("PUNCH_CARD"));
     }
 
     @Test
