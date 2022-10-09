@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -43,6 +42,10 @@ public class Place extends BaseEntity {
     @Column
     @Value("false")
     private boolean orderAhead;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "place")
+    @PrimaryKeyJoinColumn
+    private Reward reward;
 
     @Override
     public int hashCode() {
