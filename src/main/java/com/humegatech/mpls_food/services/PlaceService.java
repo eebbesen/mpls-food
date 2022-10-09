@@ -4,7 +4,6 @@ import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.domains.Reward;
 import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
-import com.humegatech.mpls_food.repositories.RewardRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -19,11 +18,9 @@ import java.util.stream.Collectors;
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
-    private final RewardRepository rewardRepository;
 
-    public PlaceService(final PlaceRepository placeRepository, RewardRepository rewardRepository) {
+    public PlaceService(final PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
-        this.rewardRepository = rewardRepository;
     }
 
     public List<PlaceDTO> findAll() {
@@ -42,17 +39,8 @@ public class PlaceService {
     public Long create(final PlaceDTO placeDTO) {
         final Place place = new Place();
         mapToEntity(placeDTO, place);
-        Long placeId = placeRepository.save(place).getId();
-        if (null != placeDTO.getRewardType()) {
-            final Reward reward = Reward.builder()
-                    .rewardType(placeDTO.getRewardType())
-                    .notes(placeDTO.getRewardNotes())
-                    .place(place)
-                    .build();
-            rewardRepository.save(reward);
-        }
 
-        return place.getId();
+        return placeRepository.save(place).getId();
     }
 
     public void update(final Long id, final PlaceDTO placeDTO) {
@@ -80,21 +68,24 @@ public class PlaceService {
     }
 
     private Place mapToEntity(final PlaceDTO placeDTO, final Place place) {
+        Reward reward = null;
+        if (null != placeDTO.getRewardType()) {
+            reward = place.getReward();
+            if (null == reward) {
+                reward = new Reward();
+                reward.setPlace(place);
+            }
+
+            reward.setRewardType(placeDTO.getRewardType());
+            reward.setNotes(placeDTO.getRewardNotes());
+        }
+
         place.setName(placeDTO.getName());
         place.setAddress(placeDTO.getAddress());
         place.setWebsite(placeDTO.getWebsite());
         place.setApp(placeDTO.isApp());
         place.setOrderAhead(placeDTO.isOrderAhead());
-
-        if (null != placeDTO.getRewardType()) {
-            final Reward reward = Reward.builder()
-                    .notes(placeDTO.getRewardNotes())
-                    .rewardType(placeDTO.getRewardType())
-                    .place(place)
-                    .build();
-
-            place.setReward(reward);
-        }
+        place.setReward(reward);
 
         return place;
     }

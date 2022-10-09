@@ -117,7 +117,7 @@ public class PlaceControllerTest extends MFControllerTest {
 
     @Test
     @WithMockUser
-    void testPostAddUserNotAllowed() throws Exception {
+    void testPostAddUser() throws Exception {
         final int originalSize = placeRepository.findAll().size();
         mvc.perform(MockMvcRequestBuilders.post("/places/add")
                         .with(csrf())

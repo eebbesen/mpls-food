@@ -25,9 +25,9 @@ public class PlaceServiceTest {
 
     @Test
     void testMapToDTO() {
-        Place place = TestObjects.ginellis();
+        final Place place = TestObjects.ginellis();
 
-        PlaceDTO placeDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", place, new PlaceDTO());
+        final PlaceDTO placeDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", place, new PlaceDTO());
 
         assertEquals(place.getId(), placeDTO.getId());
         assertEquals(place.getName(), placeDTO.getName());
@@ -42,10 +42,10 @@ public class PlaceServiceTest {
 
     @Test
     void testMapToDTONoReward() {
-        Place place = TestObjects.ginellis();
+        final Place place = TestObjects.ginellis();
         place.setReward(null);
 
-        PlaceDTO placeDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", place, new PlaceDTO());
+        final PlaceDTO placeDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", place, new PlaceDTO());
 
         assertEquals(place.getId(), placeDTO.getId());
         assertEquals(place.getName(), placeDTO.getName());
@@ -59,8 +59,8 @@ public class PlaceServiceTest {
     }
 
     @Test
-    void testMapToEntity() {
-        PlaceDTO placeDTO = PlaceDTO.builder()
+    void testMapToEntityNewPlace() {
+        final PlaceDTO placeDTO = PlaceDTO.builder()
                 .name("test")
                 .address("123 Robert St")
                 .rewardNotes("Free slice after purchase of 9 regularly priced slices")
@@ -74,6 +74,26 @@ public class PlaceServiceTest {
         assertEquals(placeDTO.getAddress(), place.getAddress());
         assertEquals(placeDTO.getRewardType(), place.getReward().getRewardType());
         assertEquals(placeDTO.getRewardNotes(), place.getReward().getNotes());
+    }
+
+    @Test
+    void testMapToEntityRewardUpdate() {
+        final Place place = TestObjects.ginellis();
+        final PlaceDTO placeDTO = PlaceDTO.builder()
+                .name(place.getName())
+                .address(place.getAddress())
+                .rewardNotes("UPDATED: Free slice after purchase of 9 regularly priced slices")
+                .rewardType(RewardType.PUNCH_CARD)
+                .id(place.getId())
+                .build();
+
+        Place updatedPlace = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, new Place());
+
+        assertEquals(placeDTO.getName(), updatedPlace.getName());
+        assertEquals(placeDTO.getAddress(), updatedPlace.getAddress());
+        assertEquals(placeDTO.getRewardType(), updatedPlace.getReward().getRewardType());
+        assertEquals(placeDTO.getRewardNotes(), updatedPlace.getReward().getNotes());
+        assertEquals(place.getReward().getId(), updatedPlace.getReward().getId());
     }
 
 }
