@@ -1,9 +1,6 @@
 package com.humegatech.mpls_food;
 
-import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.domains.Upload;
+import com.humegatech.mpls_food.domains.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -68,7 +65,7 @@ public class TestObjects {
     }
 
     public static Place ginellis() {
-        return Place.builder()
+        Place place = Place.builder()
                 .name("Ginelli's Pizza")
                 .address("121 S 8th Street #235\n" +
                         "Minneapolis, MN 55402")
@@ -77,6 +74,11 @@ public class TestObjects {
                 .website("https://www.ginellispizza.com/")
                 .id(placeId())
                 .build();
+
+        final Reward reward = reward(place);
+        place.setReward(reward);
+
+        return place;
     }
 
     public static Deal fridayTwofer() {
@@ -235,5 +237,13 @@ public class TestObjects {
         }
 
         return baos.toByteArray();
+    }
+
+    public static Reward reward(final Place place) {
+        return Reward.builder()
+                .rewardType(RewardType.PUNCH_CARD)
+                .notes("Free slice after purchase of 9 regularly priced slices")
+                .place(place)
+                .build();
     }
 }

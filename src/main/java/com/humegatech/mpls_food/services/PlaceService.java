@@ -1,8 +1,10 @@
 package com.humegatech.mpls_food.services;
 
 import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.domains.Reward;
 import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
+import com.humegatech.mpls_food.repositories.RewardRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,11 @@ import java.util.stream.Collectors;
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
+    private final RewardRepository rewardRepository;
 
-    public PlaceService(final PlaceRepository placeRepository) {
+    public PlaceService(final PlaceRepository placeRepository, RewardRepository rewardRepository) {
         this.placeRepository = placeRepository;
+        this.rewardRepository = rewardRepository;
     }
 
     public List<PlaceDTO> findAll() {
@@ -38,7 +42,17 @@ public class PlaceService {
     public Long create(final PlaceDTO placeDTO) {
         final Place place = new Place();
         mapToEntity(placeDTO, place);
-        return placeRepository.save(place).getId();
+        Long placeId = placeRepository.save(place).getId();
+        if (null != placeDTO.getRewardType()) {
+            final Reward reward = Reward.builder()
+                    .rewardType(placeDTO.getRewardType())
+                    .notes(placeDTO.getRewardNotes())
+                    .place(place)
+                    .build();
+            rewardRepository.save(reward);
+        }
+
+        return place.getId();
     }
 
     public void update(final Long id, final PlaceDTO placeDTO) {
@@ -60,6 +74,8 @@ public class PlaceService {
         placeDTO.setApp(place.isApp());
         placeDTO.setOrderAhead(place.isOrderAhead());
         placeDTO.setTruncatedAddress(MplsFoodUtils.truncateAddress(place.getAddress()));
+        placeDTO.setRewardNotes(null == place.getReward() ? null : place.getReward().getNotes());
+        placeDTO.setRewardType(null == place.getReward() ? null : place.getReward().getRewardType());
         return placeDTO;
     }
 
@@ -69,6 +85,17 @@ public class PlaceService {
         place.setWebsite(placeDTO.getWebsite());
         place.setApp(placeDTO.isApp());
         place.setOrderAhead(placeDTO.isOrderAhead());
+
+        if (null != placeDTO.getRewardType()) {
+            final Reward reward = Reward.builder()
+                    .notes(placeDTO.getRewardNotes())
+                    .rewardType(placeDTO.getRewardType())
+                    .place(place)
+                    .build();
+
+            place.setReward(reward);
+        }
+
         return place;
     }
 

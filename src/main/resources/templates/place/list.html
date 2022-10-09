@@ -24,6 +24,7 @@
                             <th scope="col" th:text="#{place.address.label}" />
                             <th scope="col" th:text="#{place.app.label}" />
                             <th scope="col" th:text="#{place.orderAhead.label}" />
+                            <th scope="col" th:text="#{reward.label}" />
                             <th sec:authorize="isAuthenticated()"><!-- --></th>
                         </tr>
                     </thead>
@@ -36,6 +37,9 @@
                             </td>
                             <td>
                                 <i class="bi bi-check-circle-fill" th:if="${place.orderAhead}"></i>
+                            </td>
+                            <td>
+                                <i class="bi bi-check-circle-fill" th:if="${null != place.rewardType}"></i>
                             </td>
                             <td sec:authorize="hasRole('ROLE_ADMIN')" style="white-space:nowrap">
                                 <form class="js-submit-confirm float-end" method="post" th:action="@{/places/delete/{id}(id=${place.id})}" th:data-confirm-message="#{delete.confirm}">

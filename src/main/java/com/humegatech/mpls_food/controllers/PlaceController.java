@@ -1,8 +1,10 @@
 package com.humegatech.mpls_food.controllers;
 
+import com.humegatech.mpls_food.domains.RewardType;
 import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
 import com.humegatech.mpls_food.util.WebUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Controller
@@ -24,6 +29,13 @@ public class PlaceController {
     public PlaceController(final PlaceService placeService, DealService dealService) {
         this.placeService = placeService;
         this.dealService = dealService;
+    }
+
+    @ModelAttribute
+    public void prepareContext(final Model model) {
+        Map rewardTypes = Stream.of(RewardType.values())
+                .collect(Collectors.toMap(RewardType::name, rt -> MplsFoodUtils.capitalizeFirst(rt.name())));
+        model.addAttribute("rewardTypeValues", rewardTypes);
     }
 
     @GetMapping("/show/{id}")

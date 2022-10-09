@@ -1,25 +1,28 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org">
     <head>
         <title th:text="#{place.edit.headline}" />
     </head>
     <body>
         <div layout:fragment="content">
             <div class="d-flex flex-wrap mb-4">
-                <h1 th:text="#{place.edit.headline}" class="flex-grow-1" />
+                <h1 class="flex-grow-1" th:text="#{place.edit.headline}" />
                 <div>
-                    <a th:href="@{/places}" th:text="#{place.edit.back}" class="btn btn-secondary" />
+                    <a class="btn btn-secondary" th:href="@{/places}" th:text="#{place.edit.back}" />
                 </div>
             </div>
             <div th:replace="fragments/forms::globalErrors('place')" />
-            <form th:action="${#httpServletRequest.requestURI}" method="post">
+            <form method="post" th:action="${#httpServletRequest.requestURI}">
                 <div th:replace="fragments/forms::inputRow(object='place', field='name')" />
                 <div th:replace="fragments/forms::inputRow(object='place', field='address', type='textarea')" />
                 <div th:replace="fragments/forms::inputRow(object='place', field='website')" />
+                <div th:replace="fragments/forms::inputRow(object='place', field='rewardType', type='select')" />
+                <div th:replace="fragments/forms::inputRow(object='place', field='rewardNotes', type='textarea')" />
                 <div th:replace="fragments/forms::inputRow(object='place', field='app', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='place', field='orderAhead', type='checkbox')" />
-                <input type="submit" th:value="#{place.save.headline}" class="btn btn-primary mt-4" />
+                \
+                <input class="btn btn-primary mt-4" th:value="#{place.save.headline}" type="submit" />
             </form>
         </div>
     </body>
