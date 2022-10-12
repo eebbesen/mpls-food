@@ -8,17 +8,20 @@ Minneapolis, MN 55402',false,'2022-07-27 23:38:35.619756','2022-07-27 23:38:35.6
 Minneapolis, MN 55402',false,'2022-07-27 23:55:33.513632','2022-07-27 23:55:33.513632','Walkin''dog',false,'https://www.facebook.com/Walkindog-126087764097684/',NULL,NULL),
 	 (29,'925 Nicollet Mall
 Minneapolis, MN 55402',false,'2022-10-09 14:40:43.014166','2022-10-09 14:40:43.014166','Barrio',true,'https://barriotequila.com/locations/downtown-minneapolis/','admin','admin'),
+	 (30,'225 S 6th St. Capella Tower',false,'2022-10-11 09:01:07.31082','2022-10-11 09:01:07.31082','Andrea Pizza Capella Tower',false,'https://www.andreapizza.com/','admin','admin'),
+	 (31,'811 LaSalle Avenue Highland Court Building',false,'2022-10-11 09:01:56.454067','2022-10-11 09:01:56.454067','Andrea Pizza LaSalle',false,'https://www.andreapizza.com/','admin','admin'),
+	 (32,'330 2nd Avenue S. #258',false,'2022-10-11 09:02:22.061839','2022-10-11 09:02:22.061839','Andrea Pizza Towle',false,'https://www.andreapizza.com/','admin','admin'),
 	 (16,'705 S Marquette Avenue
 Minneapolis, MN 55402',false,'2022-10-05 15:24:55.311793','2022-10-09 13:36:57.850817','Afro Deli',true,'https://www.afrodeli.com/locations/skyway','admin','admin'),
 	 (15,'200 South 6th St #270
-Minneapolis, MN 55402',true,'2022-10-05 08:34:20.311449','2022-10-09 13:47:16.692923','Broadway Fast & Fresh',true,'https://www.broadwaypizza.com/fast-and-fresh/fast-and-fresh','admin','admin'),
+Minneapolis, MN 55402',true,'2022-10-05 08:34:20.311449','2022-10-09 13:47:16.692923','Broadway Fast & Fresh',true,'https://www.broadwaypizza.com/fast-and-fresh/fast-and-fresh','admin','admin');
+INSERT INTO public.places (id,address,app,date_created,last_updated,"name",order_ahead,website,created_by,modified_by) VALUES
 	 (17,'212 7th St.
 Minneapolis, MN 55402',true,'2022-10-05 17:06:06.68425','2022-10-09 13:48:24.655347','Dan Kelly''s Broadway Pizza',true,'https://www.broadwaypizza.com/dan-kellys/dan-kellys','admin','admin'),
 	 (10000,'121 S 8th Street #235
 Minneapolis, MN 55402',false,'2022-07-27 13:09:06.542326','2022-10-09 13:48:55.803837','Ginelli''s Pizza',false,'https://www.ginellispizza.com/',NULL,'admin'),
 	 (2,'607 Marquette Ave.
-Minneapolis, MN 55402',true,'2022-07-27 22:00:30.162734','2022-10-09 13:52:12.043233','Taco John''s',false,'https://locations.tacojohns.com/mn/minneapolis/607-marquette-ave/',NULL,'admin');
-INSERT INTO public.places (id,address,app,date_created,last_updated,"name",order_ahead,website,created_by,modified_by) VALUES
+Minneapolis, MN 55402',true,'2022-07-27 22:00:30.162734','2022-10-09 13:52:12.043233','Taco John''s',false,'https://locations.tacojohns.com/mn/minneapolis/607-marquette-ave/',NULL,'admin'),
 	 (23,'50 South 9th St.
 Minneapolis, MN 55402',true,'2022-10-09 14:29:03.084173','2022-10-09 14:29:03.084173','Subway 9th St',true,'https://restaurants.subway.com/united-states/mn/minneapolis/50-south-9th-st','admin','admin'),
 	 (22,'555 Nicollet Mall Suite 297, Minneapolis, MN 55402',true,'2022-10-09 14:27:13.95516','2022-10-09 14:29:11.471412','Subway Nicollet',true,'https://restaurants.subway.com/united-states/mn/minneapolis/555-nicollet-mall','admin','admin'),
