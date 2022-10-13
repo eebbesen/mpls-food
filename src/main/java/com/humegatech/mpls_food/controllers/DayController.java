@@ -62,19 +62,19 @@ public class DayController {
         return Comparator.comparing((DayDTO day) -> null == day.getMinPrice() ? 0d : day.getMinPrice()).reversed();
     }
 
-    private static Comparator discountComperator() {
+    private static Comparator discountComparator() {
         return Comparator.comparing((DayDTO day) -> null == day.getMinDiscount() ? 99999d : day.getMinDiscount());
     }
 
-    private static Comparator discountComperatorReversed() {
+    private static Comparator discountComparatorReversed() {
         return Comparator.comparing((DayDTO day) -> null == day.getMinDiscount() ? 0d : day.getMinDiscount()).reversed();
     }
 
-    private static Comparator discountPercentComperator() {
+    private static Comparator discountPercentComparator() {
         return Comparator.comparing((DayDTO day) -> null == day.getMinDiscountPercent() ? 99999d : day.getMinDiscountPercent());
     }
 
-    private static Comparator discountPercentComperatorReversed() {
+    private static Comparator discountPercentComparatorReversed() {
         return Comparator.comparing((DayDTO day) -> null == day.getMinDiscountPercent() ? 0d : day.getMinDiscountPercent()).reversed();
     }
 
@@ -90,19 +90,19 @@ public class DayController {
         }
 
         if (sortBy.equals("discount")) {
-            days.sort(discountComperator());
+            days.sort(discountComparator());
         }
 
         if (sortBy.equals("discountDesc")) {
-            days.sort(discountComperatorReversed());
+            days.sort(discountComparatorReversed());
         }
 
         if (sortBy.equals("discountPercent")) {
-            days.sort(discountPercentComperator());
+            days.sort(discountPercentComparator());
         }
 
         if (sortBy.equals("discountPercentDesc")) {
-            days.sort(discountPercentComperatorReversed());
+            days.sort(discountPercentComparatorReversed());
         }
     }
 
@@ -133,11 +133,11 @@ public class DayController {
         model.addAttribute("nextDiscountSort", calculateNextSort(sortBy, "discount"));
         model.addAttribute("nextDiscountPercentSort", calculateNextSort(sortBy, "discountPercent"));
         model.addAttribute("dishes",
-                days.stream().map(dayDTO -> dayDTO.getDish()).distinct().collect(Collectors.toList()));
+                days.stream().map(dayDTO -> dayDTO.getDish()).distinct().sorted().collect(Collectors.toList()));
         model.addAttribute("places",
-                days.stream().map(dayDTO -> dayDTO.getPlaceName()).distinct().collect(Collectors.toList()));
+                days.stream().map(dayDTO -> dayDTO.getPlaceName()).distinct().sorted().collect(Collectors.toList()));
         model.addAttribute("cuisines",
-                days.stream().map(dayDTO -> dayDTO.getCuisine()).distinct().collect(Collectors.toList()));
+                days.stream().map(dayDTO -> dayDTO.getCuisine()).distinct().sorted().collect(Collectors.toList()));
 
         handleSort(days, sortBy);
 
