@@ -48,7 +48,9 @@ public class DayService {
                 .stream()
                 .map(day -> mapToDTO(day, new DayDTO()))
                 .sorted(Comparator.comparing((DayDTO d) -> order.get(d.getDayOfWeek()))
-                        .thenComparing((DayDTO c) -> c.getPlaceName()))
+                        .thenComparing((DayDTO d) -> null == d.getStartTime() ? "zzz" : d.getStartTime())
+                        .thenComparing((DayDTO d) -> null == d.getEndTime() ? "zzz" : d.getEndTime())
+                        .thenComparing((DayDTO d) -> d.getPlaceName()))
                 .collect(Collectors.toList());
     }
 
@@ -71,6 +73,9 @@ public class DayService {
         dayDTO.setMinPrice(day.getDeal().getMinPrice());
         dayDTO.setMinDiscount(day.getDeal().getMinDiscount());
         dayDTO.setMinDiscountPercent(day.getDeal().getMinDiscountPercent());
+        dayDTO.setStartTime(day.getDeal().getStartTime());
+        dayDTO.setEndTime(day.getDeal().getEndTime());
+
         dayDTO.setVerified(day.getDeal().isVerified());
 
         return dayDTO;

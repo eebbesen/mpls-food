@@ -175,6 +175,8 @@ public class TestObjects {
                 .maxDiscountPercent(28.08d)
                 .verified(true)
                 .taxIncluded(true)
+                .startTime("10:30")
+                .endTime("15:00")
                 .build();
 
         for (DayOfWeek day : days) {
