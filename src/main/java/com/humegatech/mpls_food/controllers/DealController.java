@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -29,8 +31,11 @@ public class DealController {
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        model.addAttribute("placeValues", placeService.findAll().stream().collect(
-                Collectors.toMap(PlaceDTO::getId, PlaceDTO::getName)));
+        final Map<Long, String> placesMap = placeService.findAll().stream()
+                .collect(Collectors.toMap(PlaceDTO::getId, PlaceDTO::getName))
+                .entrySet().stream().sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (k, v) -> k, LinkedHashMap::new));
+        model.addAttribute("placeValues", placesMap);
     }
 
     @GetMapping
