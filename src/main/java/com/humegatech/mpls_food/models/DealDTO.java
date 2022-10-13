@@ -39,6 +39,8 @@ public class DealDTO {
     private boolean verified;
     private boolean taxIncluded;
     private String cuisine;
+    private String startTime;
+    private String endTime;
     @Builder.Default
     private List<UploadDTO> uploads = new ArrayList<>();
 }

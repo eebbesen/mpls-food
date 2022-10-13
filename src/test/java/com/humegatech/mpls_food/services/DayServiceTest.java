@@ -3,6 +3,7 @@ package com.humegatech.mpls_food.services;
 import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DayDTO;
 import com.humegatech.mpls_food.repositories.DayRepository;
 import com.humegatech.mpls_food.repositories.DealRepository;
@@ -19,6 +20,7 @@ import org.springframework.util.ObjectUtils;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,9 +38,8 @@ public class DayServiceTest {
     @Autowired
     private DayService service;
 
-    // ensure ordering is correct
     @Test
-    void testFindAll() {
+    void testFindAllSortsByDayBasedOnCurrentDay() {
         final List<Day> days = TestObjects.days();
 
         when(dayRepository.findAll()).thenReturn(days);
@@ -77,6 +78,42 @@ public class DayServiceTest {
     }
 
     @Test
+    void testFindAllSortsByDealStartTimeDealEndTimePlaceName() {
+        final Place place1 = TestObjects.place("first");
+        final Deal deal1 = TestObjects.deal(place1, "z10:30 - 15:00 deal", DayOfWeek.MONDAY);
+        final Deal deal2 = TestObjects.deal(place1, "a10:30 - 11:00 deal", DayOfWeek.MONDAY);
+        deal2.setEndTime("11:00");
+        final Place place2 = TestObjects.place("asecond");
+        final Deal deal3 = TestObjects.deal(place2, "aa 11:00 - 12:30 deal", DayOfWeek.MONDAY);
+        deal3.setStartTime("11:00");
+        deal3.setEndTime("12:30");
+        final Deal deal4 = TestObjects.deal(place2, "aaa 10:30 - 12:30 deal", DayOfWeek.MONDAY);
+        deal4.setStartTime("10:30");
+        deal4.setEndTime("12:30");
+        final Deal deal5 = TestObjects.deal(place2, "aaa 10:30 - 11:00 deal", DayOfWeek.MONDAY);
+        deal5.setStartTime("10:30");
+        deal5.setEndTime("11:00");
+        final Deal deal6 = TestObjects.deal(place2, "null start and end time", DayOfWeek.MONDAY);
+        deal6.setStartTime(null);
+        deal6.setEndTime(null);
+
+        final List<Day> days = new ArrayList<>();
+        for (Deal d : List.of(deal1, deal2, deal3, deal4, deal5, deal6)) {
+            days.addAll(d.getDays());
+        }
+        when(dayRepository.findAll()).thenReturn(days);
+
+        final List<DayDTO> dayDTOs = service.findAll();
+
+        assertEquals(deal5.getDescription(), dayDTOs.get(0).getDealDescription());
+        assertEquals(deal2.getDescription(), dayDTOs.get(1).getDealDescription());
+        assertEquals(deal4.getDescription(), dayDTOs.get(2).getDealDescription());
+        assertEquals(deal1.getDescription(), dayDTOs.get(3).getDealDescription());
+        assertEquals(deal3.getDescription(), dayDTOs.get(4).getDealDescription());
+        assertEquals(deal6.getDescription(), dayDTOs.get(5).getDealDescription());
+    }
+
+    @Test
     void testMapToDto() {
         final Deal deal = TestObjects.deal();
         final DayDTO dto = (DayDTO) ReflectionTestUtils
@@ -96,6 +133,8 @@ public class DayServiceTest {
         assertEquals(deal.getMinPrice(), dto.getMinPrice());
         assertFalse(ObjectUtils.isEmpty(dto.getMinDiscount() > 0d));
         assertEquals(deal.getMinDiscount(), dto.getMinDiscount());
+        assertEquals(deal.getStartTime(), dto.getStartTime());
+        assertEquals(deal.getEndTime(), dto.getEndTime());
         assertTrue(dto.isVerified());
         assertEquals(deal.isVerified(), dto.isVerified());
     }
