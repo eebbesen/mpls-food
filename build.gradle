@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'org.flywaydb.flyway' version '9.0.2'
+//    id 'checkstyle'
 }
 
 group = 'com.humegatech'

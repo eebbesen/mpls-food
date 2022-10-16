@@ -15,6 +15,7 @@ import org.springframework.web.util.NestedServletException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
@@ -114,7 +115,7 @@ public class DealControllerTest extends MFControllerTest {
     @Test
     @WithMockUser(roles = {"ADMIN", "USER"})
     void testPostEditAdmin() throws Exception {
-        final String updatedDescription = LocalDateTime.now().toString();
+        final String updatedDescription = LocalDateTime.now(ZoneId.systemDefault()).toString();
         mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/edit/%d", deal.getId()))
                         .with(csrf())
                         .param("description", updatedDescription)
@@ -125,8 +126,7 @@ public class DealControllerTest extends MFControllerTest {
 
     @Test
     @WithMockUser
-    void testPostEditUserNotAllowed() throws Exception {
-        final String originalDescription = deal.getDescription();
+    void testPostEditUser() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/edit/%d", deal.getId()))
                         .with(csrf())
                         .param("description", "Test deal updated")

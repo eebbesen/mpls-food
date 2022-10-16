@@ -51,7 +51,8 @@ public class DealService {
     }
 
     // Sorts by place name, then by the earliest day of the weak the deal is active.
-    // Replacing '-' with '~' for the sorting because '~' is the last character alphabetically and '-' is before all letters.
+    // Replacing '-' with '~' for the sorting because '~' is the last character alphabetically
+    // and '-' is before all letters.
     // I prefer to display '-' so I'm taking the hit on the replace
     public List<DealDTO> findAll() {
         return dealRepository.findAll()
@@ -111,7 +112,8 @@ public class DealService {
         dealDTO.setMaxDiscountPercent(deal.getMaxDiscountPercent());
         dealDTO.setPriceRange(MplsFoodUtils.getRange(deal.getMinPrice(), deal.getMaxPrice(), "$"));
         dealDTO.setDiscountRange(MplsFoodUtils.getRange(deal.getMinDiscount(), deal.getMaxDiscount(), "$"));
-        dealDTO.setDiscountPercentRange(MplsFoodUtils.getRange(deal.getMinDiscountPercent(), deal.getMaxDiscountPercent(), "%"));
+        dealDTO.setDiscountPercentRange(MplsFoodUtils.getRange(deal.getMinDiscountPercent(),
+                deal.getMaxDiscountPercent(), "%"));
         dealDTO.setTaxIncluded(deal.isTaxIncluded());
         dealDTO.setVerified(deal.isVerified());
         dealDTO.setStartTime(deal.getStartTime());

@@ -46,18 +46,18 @@ public class DealController {
 
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public String add(@ModelAttribute("deal") final DealDTO dealDTO) {
+    public String add(@ModelAttribute("deal") final DealDTO dealDto) {
         return "deal/add";
     }
 
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public String add(@ModelAttribute("deal") @Valid final DealDTO DealDTO,
+    public String add(@ModelAttribute("deal") @Valid final DealDTO dealDto,
                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "deal/add";
         }
-        dealService.create(DealDTO);
+        dealService.create(dealDto);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.create.success"));
         return "redirect:/deals";
     }
@@ -72,12 +72,12 @@ public class DealController {
     @PostMapping("/edit/{id}")
     @PreAuthorize("hasRole('USER')")
     public String edit(@PathVariable final Long id,
-                       @ModelAttribute("deal") @Valid final DealDTO DealDTO, final BindingResult bindingResult,
+                       @ModelAttribute("deal") @Valid final DealDTO dealDTO, final BindingResult bindingResult,
                        final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "deal/edit";
         }
-        dealService.update(id, DealDTO);
+        dealService.update(id, dealDTO);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
         return "redirect:/deals";
     }

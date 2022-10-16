@@ -47,3 +47,15 @@ select pg_database_size('dbname')
 
 ## data
 https://www.mplsdowntown.com/wp-content/uploads/2022/07/220706-restaurant-list.pdf (07/06/2022)
+
+## tools
+### linting
+#### Qodana
+```bash
+qodana scan --show-report
+```
+
+#### Checkstyle
+```bash
+gradle checkstyleMain
+```

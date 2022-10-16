@@ -14,7 +14,8 @@ public class DealDTO {
     private Long id;
 
     // using 'place' instead of 'place_id' for compatibility with thymeleaf dropdown
-    // if desired fragments/forms could be modified to use 'place_id' but display 'place', it just isn't baked in by default
+    // if desired fragments/forms could be modified to use 'place_id' but display 'place',
+    // it just isn't baked in by default
     private Long place;
     private String placeName;
     private String description;

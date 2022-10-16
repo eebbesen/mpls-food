@@ -15,7 +15,8 @@ public class DayDTO {
     private Long id;
 
     // using 'deal' instead of 'deal_id' for compatibility with thymeleaf dropdown
-    // if desired fragments/forms could be modified to use 'deal_id' but display 'deal', it just isn't baked in by default
+    // if desired fragments/forms could be modified to use 'deal_id' but display 'deal',
+    // it just isn't baked in by default
     @NotNull
     private Long deal;
     private String dealDescription;

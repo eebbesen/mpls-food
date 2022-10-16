@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -124,20 +125,23 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListSortByPriceHtml() throws Exception {
-        final Deal deal99 = TestObjects.deal(place, "z 99 cent deal", LocalDateTime.now().getDayOfWeek());
+        final Deal deal99 = TestObjects.deal(place, "z 99 cent deal",
+                LocalDateTime.now(ZoneId.systemDefault()).getDayOfWeek());
         deal99.setMinPrice(0.99d);
         deal99.setId(null);
-        deal99.getDays().stream().forEach(d -> d.setId(null));
+        deal99.getDays().forEach(d -> d.setId(null));
         place.getDeals().add(deal99);
         dealRepository.save(deal99);
-        final Deal deal199 = TestObjects.deal(place, "a 199 cent deal", LocalDateTime.now().getDayOfWeek());
+        final Deal deal199 = TestObjects.deal(place, "a 199 cent deal",
+                LocalDateTime.now(ZoneId.systemDefault()).getDayOfWeek());
         deal199.setMinPrice(1.99d);
         deal199.setId(null);
-        deal199.getDays().stream().forEach(d -> d.setId(null));
+        deal199.getDays().forEach(d -> d.setId(null));
         place.getDeals().add(deal199);
         dealRepository.save(deal199);
 
-        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/days?sortBy=price").accept(MediaType.APPLICATION_XML))
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/days?sortBy=price")
+                        .accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andReturn();
         final String fullHtml = result.getResponse().getContentAsString();
@@ -145,13 +149,13 @@ public class DayControllerTest extends MFControllerTest {
 
         Document doc = Jsoup.parse(htmlBody);
         Elements rows = doc.getElementById("daysTable").getElementsByTag("tr");
-        assertTrue(0 <= rows.get(1).text().indexOf("$0.99"));
-        assertTrue(0 <= rows.get(2).text().indexOf("$1.99"));
-        assertTrue(0 <= rows.get(3).text().indexOf("$5.00"));
+        assertTrue(rows.get(1).text().contains("$0.99"));
+        assertTrue(rows.get(2).text().contains("$1.99"));
+        assertTrue(rows.get(3).text().contains("$5.00"));
     }
 
     @Test
-    void testHandleSortDiscountAsc() throws Exception {
+    void testHandleSortDiscountAsc() {
         final DayDTO day101 = DayDTO.builder()
                 .placeName("a")
                 .minDiscount(12d)
@@ -160,7 +164,7 @@ public class DayControllerTest extends MFControllerTest {
                 .placeName("z")
                 .minDiscount(9d)
                 .build();
-        List<DayDTO> days = new ArrayList();
+        List<DayDTO> days = new ArrayList<>();
         days.add(day101);
         days.add(day099);
 
@@ -172,7 +176,7 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testHandleSortDiscountDesc() throws Exception {
+    void testHandleSortDiscountDesc() {
         final DayDTO day101 = DayDTO.builder()
                 .placeName("a")
                 .minDiscount(1.01d)
@@ -181,7 +185,7 @@ public class DayControllerTest extends MFControllerTest {
                 .placeName("z")
                 .minDiscount(.99d)
                 .build();
-        List<DayDTO> days = new ArrayList();
+        List<DayDTO> days = new ArrayList<>();
         days.add(day099);
         days.add(day101);
 
@@ -193,7 +197,7 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testHandleSortDiscountPercentAsc() throws Exception {
+    void testHandleSortDiscountPercentAsc() {
         final DayDTO day101 = DayDTO.builder()
                 .placeName("a")
                 .minDiscountPercent(12d)
@@ -202,7 +206,7 @@ public class DayControllerTest extends MFControllerTest {
                 .placeName("z")
                 .minDiscountPercent(9d)
                 .build();
-        List<DayDTO> days = new ArrayList();
+        List<DayDTO> days = new ArrayList<>();
         days.add(day101);
         days.add(day099);
 
@@ -214,7 +218,7 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testHandleSortDiscountPercentDesc() throws Exception {
+    void testHandleSortDiscountPercentDesc() {
         final DayDTO day101 = DayDTO.builder()
                 .placeName("a")
                 .minDiscountPercent(1.01d)
@@ -223,7 +227,7 @@ public class DayControllerTest extends MFControllerTest {
                 .placeName("z")
                 .minDiscountPercent(.99d)
                 .build();
-        List<DayDTO> days = new ArrayList();
+        List<DayDTO> days = new ArrayList<>();
         days.add(day099);
         days.add(day101);
 
@@ -235,7 +239,7 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testHandleSortPriceAsc() throws Exception {
+    void testHandleSortPriceAsc() {
         final DayDTO day101 = DayDTO.builder()
                 .placeName("a")
                 .minPrice(1.01d)
@@ -244,7 +248,7 @@ public class DayControllerTest extends MFControllerTest {
                 .placeName("z")
                 .minPrice(.99d)
                 .build();
-        List<DayDTO> days = new ArrayList();
+        List<DayDTO> days = new ArrayList<>();
         days.add(day101);
         days.add(day099);
 
@@ -256,7 +260,7 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testHandleSortPriceDesc() throws Exception {
+    void testHandleSortPriceDesc() {
         final DayDTO day101 = DayDTO.builder()
                 .placeName("a")
                 .minPrice(1.01d)
@@ -265,7 +269,7 @@ public class DayControllerTest extends MFControllerTest {
                 .placeName("z")
                 .minPrice(.99d)
                 .build();
-        List<DayDTO> days = new ArrayList();
+        List<DayDTO> days = new ArrayList<>();
         days.add(day099);
         days.add(day101);
 
@@ -277,7 +281,7 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testHandleSortMinPriceNull() throws Exception {
+    void testHandleSortMinPriceNull() {
         final DayDTO day101 = DayDTO.builder()
                 .placeName("a")
                 .build();
@@ -285,7 +289,7 @@ public class DayControllerTest extends MFControllerTest {
                 .placeName("z")
                 .minPrice(.99d)
                 .build();
-        List<DayDTO> days = new ArrayList();
+        List<DayDTO> days = new ArrayList<>();
         days.add(day101);
         days.add(day099);
 
@@ -306,7 +310,7 @@ public class DayControllerTest extends MFControllerTest {
                 .placeName("z")
                 .minPrice(.99d)
                 .build();
-        List<DayDTO> days = new ArrayList();
+        List<DayDTO> days = new ArrayList<>();
         days.add(day101);
         days.add(day099);
 
@@ -327,7 +331,7 @@ public class DayControllerTest extends MFControllerTest {
                 .placeName("z")
                 .minPrice(.99d)
                 .build();
-        List<DayDTO> days = new ArrayList();
+        List<DayDTO> days = new ArrayList<>();
         days.add(day101);
         days.add(day099);
 
@@ -340,42 +344,42 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testCalculateNextSortDiscountPercentDiscount() throws Exception {
+    void testCalculateNextSortDiscountPercentDiscount() {
         assertEquals("discount", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "discountPercent", "discount"));
     }
 
     @Test
-    void testCalculateNextSortPriceAscToDesc() throws Exception {
+    void testCalculateNextSortPriceAscToDesc() {
         assertEquals("priceDesc", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "price", "price"));
     }
 
     @Test
-    void testCalculateNextSortDiscountAscToDesc() throws Exception {
+    void testCalculateNextSortDiscountAscToDesc() {
         assertEquals("discountDesc", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "discount", "discount"));
     }
 
     @Test
-    void testCalculateNextSortDiscountDescAsc() throws Exception {
+    void testCalculateNextSortDiscountDescAsc() {
         assertEquals("discount", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "discountDesc", "discount"));
     }
 
     @Test
-    void testCalculateNextSortDescToAsc() throws Exception {
+    void testCalculateNextSortDescToAsc() {
         assertEquals("price", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "priceDesc", "price"));
     }
 
     @Test
-    void testCalculateNextSortNoMatch() throws Exception {
+    void testCalculateNextSortNoMatch() {
         assertEquals("price", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "discount", "price"));
     }
 
     @Test
-    void testCalculateNextSortSortByBlank() throws Exception {
+    void testCalculateNextSortSortByBlank() {
         assertEquals("price", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", "", "price"));
     }
 
     @Test
-    void testCalculateNextSortSortByNull() throws Exception {
+    void testCalculateNextSortSortByNull() {
         final String nullString = null;
         assertEquals("price", ReflectionTestUtils.invokeMethod(DayController.class, "calculateNextSort", nullString, "price"));
     }
@@ -422,46 +426,46 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testHandleDayOfWeek() throws Exception {
+    void testHandleDayOfWeek() {
         DayOfWeek dow = ReflectionTestUtils.invokeMethod(controller, "handleDayOfWeekFilter", "TUESDAY");
         assertEquals(DayOfWeek.TUESDAY, dow);
     }
 
     @Test
-    void testHandleDayOfWeekNullDow() throws Exception {
+    void testHandleDayOfWeekNullDow() {
         final String nullString = null;
         final DayOfWeek dow = ReflectionTestUtils.invokeMethod(controller, "handleDayOfWeekFilter", nullString);
-        assertEquals(null, dow);
+        assertNull(dow);
     }
 
     @Test
-    void testHandleDayOfWeekEmptyDow() throws Exception {
+    void testHandleDayOfWeekEmptyDow() {
         final DayOfWeek dow = ReflectionTestUtils.invokeMethod(controller, "handleDayOfWeekFilter", "");
-        assertEquals(null, dow);
+        assertNull(dow);
     }
 
     @Test
-    void testHandleDayOfWeekInvalidDow() throws Exception {
+    void testHandleDayOfWeekInvalidDow() {
         final String invalid = "BLORTSDAY";
         final DayOfWeek dow = ReflectionTestUtils.invokeMethod(controller, "handleDayOfWeekFilter", invalid);
-        assertEquals(null, dow);
+        assertNull(dow);
     }
 
     @Test
-    void handleFilter() throws Exception {
+    void handleFilter() {
         final String dish = ReflectionTestUtils.invokeMethod(controller, "handleFilter", "Pizza");
         assertEquals("Pizza", dish);
     }
 
     @Test
-    void handleFilterNullFilter() throws Exception {
+    void handleFilterNullFilter() {
         final String nullString = null;
         final String dish = ReflectionTestUtils.invokeMethod(controller, "handleFilter", "Samosas");
         assertEquals("Samosas", dish);
     }
 
     @Test
-    void handleFilterEmptyFilter() throws Exception {
+    void handleFilterEmptyFilter() {
         final String dish = ReflectionTestUtils.invokeMethod(controller, "handleFilter", "");
         assertNull(dish);
     }

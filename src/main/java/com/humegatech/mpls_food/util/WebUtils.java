@@ -1,12 +1,13 @@
 package com.humegatech.mpls_food.util;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.LocaleResolver;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 
 @Component
@@ -24,7 +25,7 @@ public class WebUtils {
     }
 
     public static HttpServletRequest getRequest() {
-        return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
     public static String getMessage(final String code, final Object... args) {
