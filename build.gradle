@@ -3,12 +3,13 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'org.flywaydb.flyway' version '9.0.2'
-//    id 'checkstyle'
+    id 'jacoco'
+    //  id 'checkstyle' // uncomment to run checkstyle
 }
 
 group = 'com.humegatech'
 version = '0.0.1-SNAPSHOT'
-//sourceCompatibility = '17'
+// sourceCompatibility = '17'
 
 bootRun {
     environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: 'local'
@@ -54,6 +55,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
 }
 
 flyway {
