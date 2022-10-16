@@ -125,20 +125,23 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListSortByPriceHtml() throws Exception {
-        final Deal deal99 = TestObjects.deal(place, "z 99 cent deal", LocalDateTime.now(ZoneId.systemDefault()).getDayOfWeek());
+        final Deal deal99 = TestObjects.deal(place, "z 99 cent deal",
+                LocalDateTime.now(ZoneId.systemDefault()).getDayOfWeek());
         deal99.setMinPrice(0.99d);
         deal99.setId(null);
         deal99.getDays().forEach(d -> d.setId(null));
         place.getDeals().add(deal99);
         dealRepository.save(deal99);
-        final Deal deal199 = TestObjects.deal(place, "a 199 cent deal", LocalDateTime.now(ZoneId.systemDefault()).getDayOfWeek());
+        final Deal deal199 = TestObjects.deal(place, "a 199 cent deal",
+                LocalDateTime.now(ZoneId.systemDefault()).getDayOfWeek());
         deal199.setMinPrice(1.99d);
         deal199.setId(null);
         deal199.getDays().forEach(d -> d.setId(null));
         place.getDeals().add(deal199);
         dealRepository.save(deal199);
 
-        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/days?sortBy=price").accept(MediaType.APPLICATION_XML))
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/days?sortBy=price")
+                        .accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andReturn();
         final String fullHtml = result.getResponse().getContentAsString();
