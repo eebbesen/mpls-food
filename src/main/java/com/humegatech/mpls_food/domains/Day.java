@@ -37,7 +37,7 @@ public class Day extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !(o instanceof Day)) return false;
 
         Day day = (Day) o;
 

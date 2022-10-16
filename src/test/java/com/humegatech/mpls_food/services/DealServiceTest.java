@@ -81,7 +81,7 @@ public class DealServiceTest {
         final Place place = TestObjects.ginellis();
         final Deal deal1 = Deal.builder()
                 .place(place)
-                .id(1l)
+                .id(1L)
                 .description("BB").build();
         final Day day1_1 = Day.builder().deal(deal1).dayOfWeek(DayOfWeek.WEDNESDAY).build();
         final Day day1_2 = Day.builder().deal(deal1).dayOfWeek(DayOfWeek.FRIDAY).build();
@@ -89,7 +89,7 @@ public class DealServiceTest {
 
         final Deal deal2 = Deal.builder()
                 .place(place)
-                .id(2l)
+                .id(2L)
                 .description("AA").build();
         final Day day2_1 = Day.builder().deal(deal2).dayOfWeek(DayOfWeek.WEDNESDAY).build();
         final Day day2_2 = Day.builder().deal(deal2).dayOfWeek(DayOfWeek.FRIDAY).build();
@@ -97,7 +97,7 @@ public class DealServiceTest {
 
         final Deal deal3 = Deal.builder()
                 .place(place)
-                .id(3l)
+                .id(3L)
                 .description("Z").build();
         final Day day3_1 = Day.builder().deal(deal3).dayOfWeek(DayOfWeek.WEDNESDAY).build();
         final Day day3_2 = Day.builder().deal(deal3).dayOfWeek(DayOfWeek.FRIDAY).build();
@@ -105,7 +105,7 @@ public class DealServiceTest {
 
         final Deal deal4 = Deal.builder()
                 .place(place)
-                .id(4l)
+                .id(4L)
                 .description("C").build();
         final Day day4_1 = Day.builder().deal(deal4).dayOfWeek(DayOfWeek.MONDAY).build();
         final Day day4_2 = Day.builder().deal(deal4).dayOfWeek(DayOfWeek.FRIDAY).build();
@@ -279,7 +279,7 @@ public class DealServiceTest {
         final LocalDateTime mon = LocalDateTime.of(2022, Month.SEPTEMBER, 5, 12, 12);
         try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
             ldt.when(LocalDateTime::now).thenReturn(mon);
-            DealDTO dto = (DealDTO) ReflectionTestUtils.invokeMethod(service, "mapToDTO", dealMonTues, new DealDTO());
+            DealDTO dto = ReflectionTestUtils.invokeMethod(service, "mapToDTO", dealMonTues, new DealDTO());
 
             assertEquals(dealMonTues.getId(), dto.getId());
             assertTrue(dto.isMonday());
@@ -299,7 +299,7 @@ public class DealServiceTest {
             assertEquals(dealMonTues.isTaxIncluded(), dto.isTaxIncluded());
             assertEquals(dealMonTues.isVerified(), dto.isVerified());
             assertEquals(dealMonTues.isTaxIncluded(), dto.isTaxIncluded());
-            assertEquals(String.format("$%.2f", dealMonTues.getMinPrice(), dealMonTues.getMaxPrice()), dto.getPriceRange());
+            assertEquals(String.format("$%.2f", dealMonTues.getMinPrice()), dto.getPriceRange());
             assertEquals(String.format("$%.2f - $%.2f", dealMonTues.getMinDiscount(), dealMonTues.getMaxDiscount()), dto.getDiscountRange());
             assertEquals(String.format("%.0f%% - %.0f%%", dealMonTues.getMinDiscountPercent(), dealMonTues.getMaxDiscountPercent()), dto.getDiscountPercentRange());
             assertEquals("MT-----", dto.getDaysDisplay());
@@ -320,11 +320,11 @@ public class DealServiceTest {
         final Upload upload = TestObjects.upload(dealMonTues);
         final Upload upload2 = Upload.builder()
                 .deal(dealMonTues)
-                .id(2l)
+                .id(2L)
                 .verified(true)
                 .image(new byte['a']).build();
 
-        List<Upload> uploads = Stream.of(upload, upload2).collect(Collectors.toList());
+        List<Upload> uploads = Stream.of(upload, upload2).toList();
         dealMonTues.getUploads().addAll(uploads);
 
         final DealDTO dto = new DealDTO();

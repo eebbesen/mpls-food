@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 
@@ -21,7 +22,7 @@ public class DomainConfig {
 
     @Bean(name = "auditingDateTimeProvider")
     public DateTimeProvider dateTimeProvider() {
-        return () -> Optional.of(OffsetDateTime.now());
+        return () -> Optional.of(OffsetDateTime.now(ZoneId.systemDefault()));
     }
 
 }

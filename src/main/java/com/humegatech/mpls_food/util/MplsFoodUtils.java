@@ -65,6 +65,8 @@ public class MplsFoodUtils {
     }
 
     /**
+     * Returns short display of days of the week a deal is valid for.
+     *
      * @param days
      * @return String of abbreviations for the days of the week if they exist in the input, or a "-" if they do not
      */
@@ -88,6 +90,8 @@ public class MplsFoodUtils {
     }
 
     /**
+     * Returns DayOfWeek map with the passed-in day at position 0
+     *
      * @return sorted DayOfWeek map with the passed-in day at position 0
      */
     public static Map<DayOfWeek, Integer> getSortOrderFromDay(final DayOfWeek t) {
