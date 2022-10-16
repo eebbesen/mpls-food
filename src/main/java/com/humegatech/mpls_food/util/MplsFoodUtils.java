@@ -29,7 +29,8 @@ public class MplsFoodUtils {
             return String.valueOf(value);
         }
 
-        return punctuation.equals("$") ? String.format("%s%.2f", punctuation, value) : String.format("%.0f%s", value, punctuation);
+        return punctuation.equals("$") ? String.format("%s%.2f", punctuation, value)
+                : String.format("%.0f%s", value, punctuation);
     }
 
     public static String getRange(final Double min, final Double max, final String type) {
@@ -51,12 +52,13 @@ public class MplsFoodUtils {
         }
 
         final String[] workingString = string.split("_|\\s");
-        return Arrays.stream(workingString).map(s -> s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase())
+        return Arrays.stream(workingString)
+                .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));
     }
 
     /**
-     * This will need some i18n treatment
+     * This will need some i18n treatment.
      *
      * @return String representing abbreviations for the days of the week.
      */
@@ -67,7 +69,7 @@ public class MplsFoodUtils {
     /**
      * Returns short display of days of the week a deal is valid for.
      *
-     * @param days
+     * @param days Active deal days
      * @return String of abbreviations for the days of the week if they exist in the input, or a "-" if they do not
      */
     public static String condensedDays(final List<DayOfWeek> days) {
@@ -90,7 +92,7 @@ public class MplsFoodUtils {
     }
 
     /**
-     * Returns DayOfWeek map with the passed-in day at position 0
+     * Returns DayOfWeek map with the passed-in day at position 0.
      *
      * @return sorted DayOfWeek map with the passed-in day at position 0
      */
@@ -98,7 +100,8 @@ public class MplsFoodUtils {
         return Arrays.stream(DayOfWeek.values())
                 .collect(Collectors.toMap(
                         v -> v,
-                        v -> v.getValue() >= t.getValue() ? (v.getValue() - t.getValue()) : (v.getValue() + 7 - t.getValue())));
+                        v -> v.getValue() >= t.getValue() ? (v.getValue() - t.getValue())
+                                : (v.getValue() + 7 - t.getValue())));
     }
 
 }

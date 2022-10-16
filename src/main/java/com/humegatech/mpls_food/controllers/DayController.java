@@ -38,8 +38,9 @@ public class DayController {
         try {
             dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
         } catch (IllegalArgumentException e) {
-//            todo log error
-//            result.addError(new ObjectError("globalError", String.format("Invalid day of the week: %s", dayOfWeekString)));
+            // todo log error
+            // result.addError(new ObjectError("globalError",
+            // String.format("Invalid day of the week: %s", dayOfWeekString)));
             return null;
         }
 
@@ -67,15 +68,18 @@ public class DayController {
     }
 
     private static Comparator discountComparatorReversed() {
-        return Comparator.comparing((DayDTO day) -> null == day.getMinDiscount() ? 0d : day.getMinDiscount()).reversed();
+        return Comparator.comparing((DayDTO day) -> null == day.getMinDiscount() ? 0d
+                : day.getMinDiscount()).reversed();
     }
 
     private static Comparator discountPercentComparator() {
-        return Comparator.comparing((DayDTO day) -> null == day.getMinDiscountPercent() ? 99999d : day.getMinDiscountPercent());
+        return Comparator.comparing((DayDTO day) -> null == day.getMinDiscountPercent() ? 99999d
+                : day.getMinDiscountPercent());
     }
 
     private static Comparator discountPercentComparatorReversed() {
-        return Comparator.comparing((DayDTO day) -> null == day.getMinDiscountPercent() ? 0d : day.getMinDiscountPercent()).reversed();
+        return Comparator.comparing((DayDTO day) -> null == day.getMinDiscountPercent() ? 0d
+                : day.getMinDiscountPercent()).reversed();
     }
 
     private static void handleSort(final List<DayDTO> days, final String sortBy) {
@@ -112,7 +116,8 @@ public class DayController {
 
         if (!sortBy.replaceFirst("Desc", "").equals(match)) return match;
 
-        return sortBy.endsWith("Desc") ? sortBy.replaceFirst("Desc", "") : String.format("%sDesc", sortBy);
+        return sortBy.endsWith("Desc") ? sortBy.replaceFirst("Desc", "")
+                : String.format("%sDesc", sortBy);
     }
 
     @GetMapping

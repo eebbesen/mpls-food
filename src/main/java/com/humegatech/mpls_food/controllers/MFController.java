@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 public class MFController {
     /**
-     * Extract user from request
+     * Extract user from request.
      *
-     * @param request
+     * @param request HttpServletRequest
      * @return user
      */
     protected UsernamePasswordAuthenticationToken getUser(final HttpServletRequest request) {

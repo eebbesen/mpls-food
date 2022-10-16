@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//    https://docs.spring.io/spring-security/site/docs/5.3.9.RELEASE/reference/html5/#servlet-authorization
+    // https://docs.spring.io/spring-security/site/docs/5.3.9.RELEASE/reference/html5/#servlet-authorization
 
     @Autowired
     private DataSource dataSource;
@@ -32,19 +32,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/css/**", "/places", "/deals", "/days", "/login", "/", "/js/**", "/images/**", "/places/show/*").permitAll()
+                .mvcMatchers("/css/**", "/places", "/deals", "/days", "/login", "/", "/js/**", "/images/**",
+                        "/places/show/*").permitAll()
                 .mvcMatchers("/deals/add", "/places/add", "/uploads/**", "/deals/edit/*").authenticated()
-                .mvcMatchers("/places/delete/*", "/*/edit/*", "/deals/delete/*", "/days/delete/*", "").hasRole("ADMIN")
+                .mvcMatchers("/places/delete/*", "/*/edit/*", "/deals/delete/*",
+                        "/days/delete/*", "").hasRole("ADMIN")
                 .anyRequest().denyAll();
-//        http.httpBasic();
+        // http.httpBasic();
         http.formLogin();
     }
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-//            .inMemoryAuthentication()
-//            .withUser("user").password("password").roles("USER");
-//    }
+    //    @Autowired
+    //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    //        auth
+    //            .inMemoryAuthentication()
+    //            .withUser("user").password("password").roles("USER");
+    //    }
 
 }
