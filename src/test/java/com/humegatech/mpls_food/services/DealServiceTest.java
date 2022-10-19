@@ -310,7 +310,6 @@ public class DealServiceTest {
             assertEquals(1, dto.getUploads().size());
             assertEquals(upload.getImage(), dto.getUploads().get(0).getImage());
             assertEquals(upload.getDeal().getId(), dto.getUploads().get(0).getDealId());
-            assertEquals(upload.getId(), dto.getUploads().get(0).getId());
             assertEquals(upload.isVerified(), dto.getUploads().get(0).isVerified());
         }
     }

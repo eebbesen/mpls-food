@@ -143,7 +143,6 @@ public class DealService {
     private void applyUploadsToDTO(final Deal deal, final DealDTO dealDTO) {
         deal.getUploads().forEach(u -> {
             dealDTO.getUploads().add(UploadDTO.builder()
-                    .id(u.getId())
                     .dealId(u.getDeal().getId())
                     .verified(u.isVerified())
                     .image(u.getImage()).build());

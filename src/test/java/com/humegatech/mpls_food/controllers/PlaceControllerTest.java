@@ -104,6 +104,46 @@ public class PlaceControllerTest extends MFControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
+    void testPostEditNameTheSame() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post(String.format("/places/edit/%s", place.getId()))
+                        .with(csrf())
+                        .param("id", place.getId().toString())
+                        .param("name", place.getName())
+                        .param("address", "updated address")
+                        .accept(MediaType.APPLICATION_XML))
+                .andExpect(status().is3xxRedirection());
+        assertEquals(place.getName(), placeRepository.findById(place.getId()).get().getName());
+        assertEquals("updated address", placeRepository.findById(place.getId()).get().getAddress());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testPostEditNameExists() throws Exception {
+        Place otherPlace = TestObjects.place("New Place");
+        otherPlace = placeRepository.save(otherPlace);
+        mvc.perform(MockMvcRequestBuilders.post(String.format("/places/edit/%s", otherPlace.getId()))
+                        .with(csrf())
+                        .param("id", otherPlace.getId().toString())
+                        .param("name", place.getName())
+                        .accept(MediaType.APPLICATION_XML))
+                .andExpect(status().is2xxSuccessful());
+        assertEquals(otherPlace.getName(), placeRepository.findById(otherPlace.getId()).get().getName());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testPostEditNameBlank() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post(String.format("/places/edit/%s", place.getId()))
+                        .with(csrf())
+                        .param("id", place.getId().toString())
+                        .param("address", "updated address")
+                        .accept(MediaType.APPLICATION_XML))
+                .andExpect(status().is2xxSuccessful());
+        assertEquals(place.getName(), placeRepository.findById(place.getId()).get().getName());
+    }
+
+    @Test
     void testPostAddNotAllowed() throws Exception {
         final int originalSize = placeRepository.findAll().size();
         mvc.perform(MockMvcRequestBuilders.post("/places/add")
@@ -130,17 +170,29 @@ public class PlaceControllerTest extends MFControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
-    void testPostAddAdmin() throws Exception {
+    @WithMockUser
+    void testPostAddUserBlankName() throws Exception {
         final int originalSize = placeRepository.findAll().size();
         mvc.perform(MockMvcRequestBuilders.post("/places/add")
                         .with(csrf())
-                        .param("name", "new place")
+                        .param("name", "")
                         .param("address", "123 main street")
                         .accept(MediaType.APPLICATION_XML))
-                .andExpect(status().is3xxRedirection());
-        assertEquals(originalSize + 1, placeRepository.findAll().size());
-        assertEquals("new place", placeRepository.findAll().get(originalSize).getName());
+                .andExpect(status().is2xxSuccessful());
+        assertEquals(originalSize, placeRepository.findAll().size());
+    }
+
+    @Test
+    @WithMockUser
+    void testPostAddUserNameExists() throws Exception {
+        final int originalSize = placeRepository.findAll().size();
+        mvc.perform(MockMvcRequestBuilders.post("/places/add")
+                        .with(csrf())
+                        .param("name", place.getName())
+                        .param("address", "123 main street")
+                        .accept(MediaType.APPLICATION_XML))
+                .andExpect(status().is2xxSuccessful());
+        assertEquals(originalSize, placeRepository.findAll().size());
     }
 
     @Test
@@ -168,6 +220,14 @@ public class PlaceControllerTest extends MFControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
                 .andExpect(content().string(containsString("slices")));
+    }
+
+    @Test
+    @WithMockUser
+    void testGetAdd() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/places/add"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string(containsString("Add Place")));
     }
 
 }

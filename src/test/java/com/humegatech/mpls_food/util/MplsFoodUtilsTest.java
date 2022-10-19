@@ -168,4 +168,14 @@ public class MplsFoodUtilsTest {
         final String decorated = MplsFoodUtils.decorateValue(42.0, "$");
         assertEquals("$42.00", decorated);
     }
+
+    @Test
+    void testDecorateValueNullValue() {
+        assertNull(MplsFoodUtils.decorateValue(null, "$"));
+    }
+
+    @Test
+    void testDecorateValueNullPunctuation() {
+        assertEquals("5.0", MplsFoodUtils.decorateValue(5.0, null));
+    }
 }
