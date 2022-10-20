@@ -5,6 +5,10 @@ Created with https://bootify.io
 
 Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Minneapolis.svg
 
+## Required
+* A relational database. Out of the box this will work with a local PostgreSQL instance
+* [chromedriver](https://chromedriver.chromium.org/downloads) on your path that matches your current Chrome version
+
 ## Start
 * modify application.yml to point to a running database instance
 * run MplsFoodApplication.java
@@ -27,6 +31,18 @@ Fixtures for all models can be found in src/main/test/resources/seeds. The defau
 
 To generate your own credentials you'll need to bcrypt passwords, then assign your user to a role in `authorities`. You can bcrypt a password using https://www.devglan.com/online-tools/bcrypt-hash-generator.
 
+### linting
+#### Qodana
+This requires a running Docker container locally
+```bash
+qodana scan --show-report
+```
+
+#### Checkstyle
+```bash
+gradle checkstyleMain
+```
+
 ### CI
 #### gradle build scan
 If using GitHub Actions you may need to initialize the project's gradle scan by running locally and accepting the terms
@@ -47,15 +63,3 @@ select pg_database_size('dbname')
 
 ## data
 https://www.mplsdowntown.com/wp-content/uploads/2022/07/220706-restaurant-list.pdf (07/06/2022)
-
-## tools
-### linting
-#### Qodana
-```bash
-qodana scan --show-report
-```
-
-#### Checkstyle
-```bash
-gradle checkstyleMain
-```
