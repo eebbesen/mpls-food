@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.List;
 
@@ -20,7 +21,13 @@ public class PlaceTest extends MFSeleniumTest {
 
     @BeforeEach
     public void setUp() {
-        driver = new ChromeDriver();
+        try {
+            final ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless");
+            driver = new ChromeDriver(options);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
     }
 
     @Test
