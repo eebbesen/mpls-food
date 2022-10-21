@@ -8,6 +8,7 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
 ## Required
 * A relational database. Out of the box this will work with a local PostgreSQL instance
 * [chromedriver](https://chromedriver.chromium.org/downloads) on your path that matches your current Chrome version
+** this is only needed if you are running end-to-end tests
 
 ## Start
 * modify application.yml to point to a running database instance
@@ -45,13 +46,21 @@ gradle checkstyleMain
 
 ### CI
 #### gradle build scan
-If using GitHub Actions you may need to initialize the project's gradle scan by running locally and accepting the terms
+This will run the tests and build a jarfile.
+If using GitHub Actions you may need to initialize the project's gradle scan by running locally and accepting the terms.
+You can also run without `--scan`.
 ```bash
 gradle build --scan
 ```
 
+The test suite includes end-to-end tests that require the app running at http://localhost:8080. You can exclude end-to-end tests by running
+```bash
+gradle build --scan -PexcludeTests=**/endtoend*
+
+```
+
 #### heroku
-Test locally using `heroku local web`
+Test Heroku locally using `heroku local web`
 
 ### PostgreSQL
 Get size of database
