@@ -16,8 +16,8 @@
         <div th:replace="fragments/forms::inputRow(object='place', field='rewardType', disabled='true')" />
         <div th:if="${null != place.rewardType && place.rewardType.length > 0}" th:replace="fragments/forms::inputRow(object='place', field='rewardNotes', type='textarea', disabled='true')" />
     </div>
-    <div th:if="${deals.empty}" th:text="#{deal.list.empty}" />
-    <div class="table-responsive" th:if="${!deals.empty}">
+    <div id="deal-rows" th:if="${deals.empty}" th:text="#{deal.list.empty}" />
+    <div class="table-responsive" id="deal-rows"  th:if="${!deals.empty}">
         <table class="table table-striped table-hover">
             <thead>
             <tr>
@@ -27,13 +27,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="deal : ${deals}">
-                <td th:text="${deal.daysDisplay}" />
+            <tr name="deal-row" th:each="deal : ${deals}">
+                <td id="deal-days" th:text="${deal.daysDisplay}"/>
                 <td>
-                    <i class="bi bi-check-circle" th:if="${deal.isVerified}" th:title="#{verified}"></i>
-                    <span th:text="${deal.description}"/>
+                    <i class="bi bi-check-circle" id="deal-verified" th:if="${deal.isVerified}" th:title="#{verified}"></i>
+                    <span id="deal-description" th:text="${deal.description}"/>
                 </td>
-                <td th:text="${deal.dish}" />
+                <td id="deal-dish" th:text="${deal.dish}"/>
             </tr>
             </tbody>
         </table>
