@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.server.ResponseStatusException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class PlaceServiceTest {
@@ -89,6 +89,59 @@ public class PlaceServiceTest {
         assertEquals(placeDTO.getRewardType(), updatedPlace.getReward().getRewardType());
         assertEquals(placeDTO.getRewardNotes(), updatedPlace.getReward().getNotes());
         assertEquals(place.getReward().getId(), updatedPlace.getReward().getId());
+    }
+
+    @Test
+    void testMapToEntityRewardOnPlace() {
+        final Place place = TestObjects.ginellis();
+
+        final PlaceDTO placeDTO = PlaceDTO.builder()
+                .name(place.getName())
+                .address(place.getAddress())
+                .id(place.getId())
+                .rewardType(RewardType.PUNCH_CARD)
+                .rewardNotes("reward")
+                .build();
+
+        Place updatedPlace = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, place);
+
+        assertEquals(placeDTO.getName(), updatedPlace.getName());
+        assertEquals(placeDTO.getAddress(), updatedPlace.getAddress());
+        assertEquals(placeDTO.getRewardType(), updatedPlace.getReward().getRewardType());
+        assertEquals(placeDTO.getRewardNotes(), updatedPlace.getReward().getNotes());
+    }
+
+    @Test
+    void testMapToEntityNoRewardOnPlace() {
+        final Place place = TestObjects.ginellis();
+        place.setReward(null);
+
+        final PlaceDTO placeDTO = PlaceDTO.builder()
+                .name(place.getName())
+                .address(place.getAddress())
+                .id(place.getId())
+                .rewardType(RewardType.PUNCH_CARD)
+                .rewardNotes("reward")
+                .build();
+
+        Place updatedPlace = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, place);
+
+        assertEquals(placeDTO.getName(), updatedPlace.getName());
+        assertEquals(placeDTO.getAddress(), updatedPlace.getAddress());
+        assertEquals(placeDTO.getRewardType(), updatedPlace.getReward().getRewardType());
+        assertEquals(placeDTO.getRewardNotes(), updatedPlace.getReward().getNotes());
+    }
+
+    @Test
+    void testGetNotFound() {
+        Exception exception = assertThrows(ResponseStatusException.class, () -> service.get(99L));
+        assertEquals("404 NOT_FOUND", exception.getMessage());
+    }
+
+    @Test
+    void testUpdateNotFound() {
+        Exception exception = assertThrows(ResponseStatusException.class, () -> service.update(99L, new PlaceDTO()));
+        assertEquals("404 NOT_FOUND", exception.getMessage());
     }
 
 }

@@ -3,28 +3,45 @@ package com.humegatech.mpls_food.controllers;
 import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.services.PlaceService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.util.NestedServletException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SpringBootTest
 public class DealControllerTest extends MFControllerTest {
     private Place place;
     private Deal deal;
+    private DealController controller;
+
+    @Autowired
+    private PlaceService placeService;
+    @Mock
+    private BindingResult bindingResult;
 
     @BeforeEach
     void setUp() {
@@ -32,6 +49,10 @@ public class DealControllerTest extends MFControllerTest {
         Deal d = TestObjects.fridayTwofer();
         d.setPlace(place);
         deal = dealRepository.save(d);
+
+        controller = new DealController(null, placeService);
+
+        when(bindingResult.hasErrors()).thenReturn(false);
     }
 
     @Test
@@ -78,6 +99,18 @@ public class DealControllerTest extends MFControllerTest {
                         .param("place", place.getId().toString()))
                 .andExpect(status().is3xxRedirection());
         assertEquals(dealCount + 1, dealRepository.findAll().size());
+    }
+
+    @Test
+    @WithMockUser
+    void testPostAddUserBindingResultError() throws Exception {
+        when(bindingResult.hasErrors()).thenReturn(true);
+        final int dealCount = dealRepository.findAll().size();
+
+        final String ret = controller.add(new DealDTO(), bindingResult, null);
+        assertEquals("deal/add", ret);
+
+        assertEquals(dealCount, dealRepository.findAll().size());
     }
 
     // todo this test will fail once the app handles bad payloads better
@@ -130,6 +163,16 @@ public class DealControllerTest extends MFControllerTest {
     }
 
     @Test
+    @WithMockUser
+    void testPostEditUserBindingResultError() throws Exception {
+        when(bindingResult.hasErrors()).thenReturn(true);
+
+        final String ret = controller.edit(1L, new DealDTO(), bindingResult, null);
+
+        assertEquals("deal/edit", ret);
+    }
+
+    @Test
     @WithMockUser(roles = "ADMIN")
     void testPostDeleteAdmin() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/delete/%d", deal.getId()))
@@ -145,5 +188,18 @@ public class DealControllerTest extends MFControllerTest {
                         .with(csrf()))
                 .andExpect(status().is4xxClientError());
         assertNotNull(dealRepository.findById(deal.getId()));
+    }
+
+    @Test
+    void testSortedPlaces() {
+        final Place newPlace = TestObjects.tacoJohns();
+        newPlace.setId(null);
+        placeRepository.save(newPlace);
+
+        Map<Long, String> placeMap = ReflectionTestUtils.invokeMethod(controller, "sortedPlaces");
+        Iterator<Map.Entry<Long, String>> places = placeMap.entrySet().iterator();
+
+        assertEquals("Ginelli's Pizza", places.next().getValue());
+        assertEquals("Taco John's", places.next().getValue());
     }
 }
