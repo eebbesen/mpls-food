@@ -1,11 +1,9 @@
 package com.humegatech.mpls_food;
 
 import com.humegatech.mpls_food.domains.*;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.util.List;
@@ -231,22 +229,17 @@ public class TestObjects {
     }
 
     public static byte[] image() {
-        BufferedImage image;
-        final String path = String.format("%s/src/test/resources/deal_pics/taco_johns_specials_lunch.jpeg", System.getProperty("user.dir"));
+        byte[] bytes = null;
+        MockMultipartFile multipartFile = new MockMultipartFile("file",
+                "test.png", MediaType.MULTIPART_FORM_DATA_VALUE, "abcd".getBytes());
+
         try {
-            image = ImageIO.read(new File(path));
+            bytes = multipartFile.getBytes();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(image, "jpg", baos);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return baos.toByteArray();
+        return bytes;
     }
 
     public static Reward reward(final Place place) {

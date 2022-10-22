@@ -1,6 +1,7 @@
 package com.humegatech.mpls_food.services;
 
 import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.controllers.MFControllerTest;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Upload;
 import com.humegatech.mpls_food.models.UploadDTO;
@@ -8,7 +9,6 @@ import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.UploadRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -18,8 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-public class UploadServiceTest {
+public class UploadServiceTest extends MFControllerTest {
     @MockBean
     private UploadRepository uploadRepository;
     @MockBean
@@ -36,7 +35,7 @@ public class UploadServiceTest {
         UploadDTO uploadDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", upload, new UploadDTO());
 
         assertEquals(deal.getId(), uploadDTO.getDealId());
-        assertTrue(uploadDTO.getImage().length > 100);
+        assertTrue(uploadDTO.getImage().length > 2);
         assertTrue(uploadDTO.isVerified());
     }
 
@@ -54,6 +53,6 @@ public class UploadServiceTest {
 
         assertEquals(deal, upload.getDeal());
         assertTrue(upload.isVerified());
-        assertTrue(upload.getImage().length > 100);
+        assertTrue(upload.getImage().length > 2);
     }
 }
