@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -144,7 +145,10 @@ public class DealServiceTest {
         final Deal tt = TestObjects.tacoTuesday();
         final Deal mt = TestObjects.dealMonTues();
         final Deal ft = TestObjects.fridayTwofer();
-        final List<Deal> deals = Stream.of(tt, ft, mt)
+        final Deal t = TestObjects.deal();
+        final Deal t2 = TestObjects.deal();
+        t2.setDescription("t2");
+        final List<Deal> deals = Stream.of(tt, ft, mt, t, t2)
                 .collect(Collectors.toList());
 
         when(dealRepository.findAll()).thenReturn(deals);
@@ -154,13 +158,17 @@ public class DealServiceTest {
             ldt.when(LocalDateTime::now).thenReturn(mon);
             final List<DealDTO> dealDTOs = service.findAll();
 
-            assertEquals(3, dealDTOs.size());
+            assertEquals(5, dealDTOs.size());
             assertEquals(mt.getPlace().getId(), dealDTOs.get(0).getPlace());
             assertEquals("MT-----", dealDTOs.get(0).getDaysDisplay());
             assertEquals(tt.getPlace().getId(), dealDTOs.get(1).getPlace());
             assertEquals("-T-----", dealDTOs.get(1).getDaysDisplay());
-            assertEquals(ft.getPlace().getId(), dealDTOs.get(2).getPlace());
-            assertEquals("----F--", dealDTOs.get(2).getDaysDisplay());
+            assertEquals(t.getPlace().getId(), dealDTOs.get(2).getPlace());
+            assertEquals("---t---", dealDTOs.get(2).getDaysDisplay());
+            assertEquals(t2.getPlace().getId(), dealDTOs.get(3).getPlace());
+            assertEquals("---t---", dealDTOs.get(3).getDaysDisplay());
+            assertEquals(ft.getPlace().getId(), dealDTOs.get(4).getPlace());
+            assertEquals("----F--", dealDTOs.get(4).getDaysDisplay());
         }
 
         final LocalDateTime fri = LocalDateTime.of(2022, Month.SEPTEMBER, 9, 12, 12);
@@ -168,14 +176,24 @@ public class DealServiceTest {
             ldt.when(LocalDateTime::now).thenReturn(fri);
             final List<DealDTO> dealDTOs = service.findAll();
 
-            assertEquals(3, dealDTOs.size());
+            assertEquals(5, dealDTOs.size());
             assertEquals(ft.getPlace().getId(), dealDTOs.get(0).getPlace());
             assertEquals("F------", dealDTOs.get(0).getDaysDisplay());
             assertEquals(mt.getPlace().getId(), dealDTOs.get(1).getPlace());
             assertEquals("---MT--", dealDTOs.get(1).getDaysDisplay());
             assertEquals(tt.getPlace().getId(), dealDTOs.get(2).getPlace());
             assertEquals("----T--", dealDTOs.get(2).getDaysDisplay());
+            assertEquals(t.getPlace().getId(), dealDTOs.get(3).getPlace());
+            assertEquals("------t", dealDTOs.get(3).getDaysDisplay());
+            assertEquals(t2.getPlace().getId(), dealDTOs.get(4).getPlace());
+            assertEquals("------t", dealDTOs.get(4).getDaysDisplay());
         }
+    }
+
+    @Test
+    void testupdateNotFound() {
+        Exception ex = assertThrows(ResponseStatusException.class, () -> service.update(99L, new DealDTO()));
+        assertEquals("404 NOT_FOUND", ex.getMessage());
     }
 
     @Test
@@ -227,6 +245,26 @@ public class DealServiceTest {
         assertEquals(2, days.size());
         assertTrue(days.contains(DayOfWeek.MONDAY));
         assertTrue(days.contains(DayOfWeek.TUESDAY));
+    }
+
+    @Test
+    void testMapToEntityPlaceNotFound() {
+        final DealDTO dealDTO = DealDTO.builder().place(99L).build();
+        Exception ex = assertThrows(ResponseStatusException.class, () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal()));
+        assertEquals("404 NOT_FOUND \"place not found\"", ex.getMessage());
+    }
+
+    @Test
+    void testMapToEntityNullPlace() {
+        final DealDTO dealDTO = DealDTO.builder().build();
+        Exception ex = assertThrows(ResponseStatusException.class, () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal()));
+        assertEquals("404 NOT_FOUND \"place not found\"", ex.getMessage());
+    }
+
+    @Test
+    void testGetNotFound() {
+        Exception ex = assertThrows(ResponseStatusException.class, () -> service.get(99L));
+        assertEquals("404 NOT_FOUND", ex.getMessage());
     }
 
     @Test

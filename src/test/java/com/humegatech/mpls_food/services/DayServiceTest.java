@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -37,6 +38,34 @@ public class DayServiceTest {
 
     @Autowired
     private DayService service;
+
+    @Test
+    void testCreate() {
+        final Deal deal = TestObjects.deal();
+        final DayDTO dto = DayDTO.builder()
+                .dayOfWeek(DayOfWeek.SATURDAY)
+                .deal(deal.getId())
+                .placeName(deal.getPlace().getName())
+                .build();
+
+        when(dealRepository.findById(deal.getId())).thenReturn(Optional.of(deal));
+        when(dayRepository.save(any(Day.class))).thenReturn(Day.builder().id(1L).build());
+
+        assertEquals(1L, service.create(dto));
+    }
+
+    @Test
+    void testFindByDayOfWeek() {
+        final List<Day> days = TestObjects.days().stream()
+                .filter(d -> d.getDayOfWeek().equals(DayOfWeek.TUESDAY))
+                .toList();
+        when(dayRepository.findByDayOfWeek(DayOfWeek.TUESDAY)).thenReturn(days);
+        final List<DayDTO> dtos = service.findByDayOfWeek(DayOfWeek.TUESDAY);
+
+        assertEquals(2, dtos.size());
+        assertEquals("Ginelli's Pizza", dtos.get(0).getPlaceName());
+        assertEquals("Taco John's", dtos.get(1).getPlaceName());
+    }
 
     @Test
     void testFindAllSortsByDayBasedOnCurrentDay() {
