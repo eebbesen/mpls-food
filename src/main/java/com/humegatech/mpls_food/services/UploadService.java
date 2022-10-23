@@ -51,6 +51,9 @@ public class UploadService {
     private Upload mapToEntity(final UploadDTO uploadDTO, final Upload upload) {
         final Deal deal = uploadDTO.getDealId() == null ? null : dealRepository.findById(uploadDTO.getDealId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
+        if (null == deal) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found");
+        }
 
         upload.setVerified(uploadDTO.isVerified());
         upload.setDeal(deal);
