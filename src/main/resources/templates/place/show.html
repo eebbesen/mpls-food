@@ -13,7 +13,7 @@
     <div th:replace="fragments/forms::inputRow(object='place', field='app', type='checkbox', disabled='true')" />
     <div th:replace="fragments/forms::inputRow(object='place', field='orderAhead', type='checkbox', disabled='true')" />
     <div th:unless="${place.rewardType} == null" >
-        <div th:replace="fragments/forms::inputRow(object='place', field='rewardType', disabled='true')" />
+        <div th:replace="fragments/forms::inputRow(object='place', field='rewardType', type='select', disabled='true')" />
         <div th:if="${null != place.rewardType && place.rewardType.length > 0}" th:replace="fragments/forms::inputRow(object='place', field='rewardNotes', type='textarea', disabled='true')" />
     </div>
     <div id="deal-rows" th:if="${deals.empty}" th:text="#{deal.list.empty}" />
