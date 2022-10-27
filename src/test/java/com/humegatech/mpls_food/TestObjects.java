@@ -1,13 +1,12 @@
 package com.humegatech.mpls_food;
 
 import com.humegatech.mpls_food.domains.*;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -123,15 +122,15 @@ public class TestObjects {
                 .build();
     }
 
-//    public static List<Place> places() {
-//        final Place place = deal().getPlace();
-//
-//        final List<Place> places = new ArrayList<>();
-//        places.add(ginellis());
-//        places.add(place);
-//
-//        return places;
-//    }
+    public static List<Place> places() {
+        final Place place = deal().getPlace();
+
+        final List<Place> places = new ArrayList<>();
+        places.add(ginellis());
+        places.add(place);
+
+        return places;
+    }
 
     public static Deal deal() {
         Deal deal = Deal.builder()
@@ -186,17 +185,17 @@ public class TestObjects {
         return deal;
     }
 
-//    public static List<Deal> deals() {
-//        List<Place> places = places();
-//        Deal d1 = deal(places.get(0), "half-off lunch", DayOfWeek.FRIDAY, DayOfWeek.THURSDAY);
-//        Deal d2 = deal(places.get(1), "$5.00 for two slices", DayOfWeek.TUESDAY);
-//
-//        List<Deal> deals = new ArrayList<>();
-//        deals.add(d1);
-//        deals.add(d2);
-//
-//        return deals;
-//    }
+    public static List<Deal> deals() {
+        List<Place> places = places();
+        Deal d1 = deal(places.get(0), "half-off lunch", DayOfWeek.FRIDAY, DayOfWeek.THURSDAY);
+        Deal d2 = deal(places.get(1), "$5.00 for two slices", DayOfWeek.TUESDAY);
+
+        List<Deal> deals = new ArrayList<>();
+        deals.add(d1);
+        deals.add(d2);
+
+        return deals;
+    }
 
     public static List<Day> days() {
         return Stream.concat(Stream.concat(
@@ -231,22 +230,17 @@ public class TestObjects {
     }
 
     public static byte[] image() {
-        BufferedImage image;
-        final String path = String.format("%s/src/test/resources/deal_pics/taco_johns_specials_lunch.jpeg", System.getProperty("user.dir"));
+        byte[] bytes = null;
+        MockMultipartFile multipartFile = new MockMultipartFile("file",
+                "test.png", MediaType.MULTIPART_FORM_DATA_VALUE, "abcd".getBytes());
+
         try {
-            image = ImageIO.read(new File(path));
+            bytes = multipartFile.getBytes();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(image, "jpg", baos);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return baos.toByteArray();
+        return bytes;
     }
 
     public static Reward reward(final Place place) {

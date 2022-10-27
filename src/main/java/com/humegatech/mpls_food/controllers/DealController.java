@@ -31,11 +31,14 @@ public class DealController {
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        final Map<Long, String> placesMap = placeService.findAll().stream()
+        model.addAttribute("placeValues", sortedPlaces());
+    }
+
+    private Map<Long, String> sortedPlaces() {
+        return placeService.findAll().stream()
                 .collect(Collectors.toMap(PlaceDTO::getId, PlaceDTO::getName))
                 .entrySet().stream().sorted(Map.Entry.comparingByValue())
                 .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (k, v) -> k, LinkedHashMap::new));
-        model.addAttribute("placeValues", placesMap);
     }
 
     @GetMapping

@@ -21,13 +21,9 @@ public class PlaceTest extends MFSeleniumTest {
 
     @BeforeEach
     public void setUp() {
-        try {
-            final ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless");
-            driver = new ChromeDriver(options);
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
+        final ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        driver = new ChromeDriver(options);
     }
 
     @Test
@@ -57,8 +53,8 @@ public class PlaceTest extends MFSeleniumTest {
                 driver.findElement(By.id("address")).getText());
         assertEquals("https://www.afrodeli.com/locations/skyway",
                 driver.findElement(By.id("website")).getAttribute("value"));
-        assertFalse(new Boolean(driver.findElement(By.id("app1")).getAttribute("selected")));
-        assertTrue(new Boolean(driver.findElement(By.id("orderAhead1")).getAttribute("selected")));
+        assertFalse(Boolean.parseBoolean(driver.findElement(By.id("app1")).getAttribute("selected")));
+        assertTrue(Boolean.parseBoolean(driver.findElement(By.id("orderAhead1")).getAttribute("selected")));
         assertEquals("TOAST", driver.findElement(By.id("rewardType")).getAttribute("value"));
         assertEquals("1 point for every $2 you spend and receive a $5 discount for every 100 points you redeem",
                 driver.findElement(By.id("rewardNotes")).getText());
@@ -70,7 +66,7 @@ public class PlaceTest extends MFSeleniumTest {
         driver.get("http://localhost:8080/places/show/10000");
 
         assertEquals("Ginelli's Pizza", driver.findElement(By.id("name")).getAttribute("value"));
-        assertFalse(new Boolean(driver.findElement(By.id("orderAhead1")).getAttribute("selected")));
+        assertFalse(Boolean.parseBoolean(driver.findElement(By.id("orderAhead1")).getAttribute("selected")));
         assertEquals("PUNCH_CARD", driver.findElement(By.id("rewardType")).getAttribute("value"));
         assertEquals(5, driver.findElements(By.name("deal-row")).size());
     }
