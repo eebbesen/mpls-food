@@ -6,6 +6,7 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -121,15 +122,15 @@ public class TestObjects {
                 .build();
     }
 
-//    public static List<Place> places() {
-//        final Place place = deal().getPlace();
-//
-//        final List<Place> places = new ArrayList<>();
-//        places.add(ginellis());
-//        places.add(place);
-//
-//        return places;
-//    }
+    public static List<Place> places() {
+        final Place place = deal().getPlace();
+
+        final List<Place> places = new ArrayList<>();
+        places.add(ginellis());
+        places.add(place);
+
+        return places;
+    }
 
     public static Deal deal() {
         Deal deal = Deal.builder()
@@ -184,17 +185,17 @@ public class TestObjects {
         return deal;
     }
 
-//    public static List<Deal> deals() {
-//        List<Place> places = places();
-//        Deal d1 = deal(places.get(0), "half-off lunch", DayOfWeek.FRIDAY, DayOfWeek.THURSDAY);
-//        Deal d2 = deal(places.get(1), "$5.00 for two slices", DayOfWeek.TUESDAY);
-//
-//        List<Deal> deals = new ArrayList<>();
-//        deals.add(d1);
-//        deals.add(d2);
-//
-//        return deals;
-//    }
+    public static List<Deal> deals() {
+        List<Place> places = places();
+        Deal d1 = deal(places.get(0), "half-off lunch", DayOfWeek.FRIDAY, DayOfWeek.THURSDAY);
+        Deal d2 = deal(places.get(1), "$5.00 for two slices", DayOfWeek.TUESDAY);
+
+        List<Deal> deals = new ArrayList<>();
+        deals.add(d1);
+        deals.add(d2);
+
+        return deals;
+    }
 
     public static List<Day> days() {
         return Stream.concat(Stream.concat(

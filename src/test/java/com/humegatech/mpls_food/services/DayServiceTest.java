@@ -143,6 +143,25 @@ public class DayServiceTest {
     }
 
     @Test
+    void testFindAllSortByEndTime() {
+        final Deal deal1 = TestObjects.deal();
+        final Deal deal2 = TestObjects.deal(deal1.getPlace(), "new deal", deal1.getDaysOfWeek().get(0));
+        deal2.setStartTime(deal1.getStartTime());
+        deal2.setEndTime(deal1.getStartTime());
+        final List<Day> days = List.of(deal1.getDays(), deal2.getDays()).stream()
+                .flatMap(ds -> ds.stream())
+                .toList();
+
+        when(dayRepository.findAll()).thenReturn(days);
+
+        final List<DayDTO> dtos = service.findAll();
+
+        assertEquals(2, dtos.size());
+        assertEquals("new deal", dtos.get(0).getDealDescription());
+        assertEquals("$5.00 for two slices from 10:30 - 11:00", dtos.get(1).getDealDescription());
+    }
+
+    @Test
     void testMapToDto() {
         final Deal deal = TestObjects.deal();
         final DayDTO dto = (DayDTO) ReflectionTestUtils
