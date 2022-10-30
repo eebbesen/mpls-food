@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UploadDTO {
+    private Long id;
     private Long dealId;
     private byte[] image;
     private boolean verified;

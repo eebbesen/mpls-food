@@ -46,6 +46,7 @@ public class UploadServiceTest extends MFControllerTest {
         assertEquals(deal.getId(), uploadDTO.getDealId());
         assertTrue(uploadDTO.getImage().length > 2);
         assertTrue(uploadDTO.isVerified());
+        assertEquals(upload.getId(), uploadDTO.getId());
     }
 
     @Test

@@ -44,6 +44,7 @@ public class UploadService {
         uploadDTO.setImage(upload.getImage());
         uploadDTO.setVerified(upload.isVerified());
         uploadDTO.setDealId(upload.getDeal().getId());
+        uploadDTO.setId(upload.getId());
 
         return uploadDTO;
     }
