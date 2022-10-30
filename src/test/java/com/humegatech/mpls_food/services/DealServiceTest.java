@@ -19,6 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
@@ -217,6 +218,8 @@ public class DealServiceTest {
     void testMapToEntity() {
         dealMonTuesDTO.setStartTime("10:30");
         dealMonTuesDTO.setEndTime("11:00");
+        dealMonTuesDTO.setStartDate(LocalDate.of(2022, 10, 1));
+        dealMonTuesDTO.setStartDate(LocalDate.of(2022, 10, 31));
 
         when(placeRepository.findById(dealMonTues.getPlace().getId())).thenReturn(Optional.of(dealMonTues.getPlace()));
 
@@ -238,6 +241,8 @@ public class DealServiceTest {
         assertEquals(dealMonTues.isTaxIncluded(), deal.isTaxIncluded());
         assertEquals(dealMonTuesDTO.getStartTime(), deal.getStartTime());
         assertEquals(dealMonTuesDTO.getEndTime(), deal.getEndTime());
+        assertEquals(dealMonTuesDTO.getStartDate(), deal.getStartDate());
+        assertEquals(dealMonTuesDTO.getEndDate(), deal.getEndDate());
 
         // confirm days
         Set<DayOfWeek> days = deal.getDays().stream().map(Day::getDayOfWeek)
@@ -313,6 +318,8 @@ public class DealServiceTest {
         final Upload upload = TestObjects.upload(dealMonTues);
         dealMonTues.setStartTime("10:30");
         dealMonTues.setEndTime("11:00");
+        dealMonTues.setStartDate(LocalDate.of(2022, 10, 1));
+        dealMonTues.setStartDate(LocalDate.of(2022, 10, 31));
 
         final LocalDateTime mon = LocalDateTime.of(2022, Month.SEPTEMBER, 5, 12, 12);
         try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
@@ -345,6 +352,8 @@ public class DealServiceTest {
             assertEquals(dealMonTues.getCuisine(), dto.getCuisine());
             assertEquals(dealMonTues.getStartTime(), dto.getStartTime());
             assertEquals(dealMonTues.getEndTime(), dto.getEndTime());
+            assertEquals(dealMonTues.getStartDate(), dto.getStartDate());
+            assertEquals(dealMonTues.getEndDate(), dto.getEndDate());
             assertEquals(1, dto.getUploads().size());
             assertEquals(upload.getImage(), dto.getUploads().get(0).getImage());
             assertEquals(upload.getDeal().getId(), dto.getUploads().get(0).getDealId());
