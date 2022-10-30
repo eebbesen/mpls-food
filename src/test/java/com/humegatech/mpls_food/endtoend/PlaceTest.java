@@ -1,31 +1,14 @@
 package com.humegatech.mpls_food.endtoend;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlaceTest extends MFSeleniumTest {
-    @BeforeAll
-    public static void setDriver() {
-        WebDriverManager.chromedriver().setup();
-    }
-
-    @BeforeEach
-    public void setUp() {
-        final ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        driver = new ChromeDriver(options);
-    }
-
     @Test
     public void testPlaceList() {
         driver.get("http://localhost:8080/places");
