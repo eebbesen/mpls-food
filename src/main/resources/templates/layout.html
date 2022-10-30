@@ -41,11 +41,13 @@
                             </li>
                             <li class="navbar-item" sec:authorize="isAuthenticated()">
                                 <form method="post" th:action="@{/logout}">
-                                    <input class="nav-link border-0 bg-transparent" th:value="'Logout '+ ${#authentication.getPrincipal().getUsername()}"  type="submit"/>
+                                    <input class="nav-link border-0 bg-transparent" id="logout"
+                                           th:value="'Logout '+ ${#authentication.getPrincipal().getUsername()}"
+                                           type="submit"  />
                                 </form>
                             </li>
                             <li class="navbar-item" sec:authorize="isAnonymous()">
-                                <a class="nav-link" th:href="@{/login}" th:text="#{navigation.login}" />
+                                <a class="nav-link" id="login" th:href="@{/login}" th:text="#{navigation.login}"/>
                             </li>
                         </ul>
                     </div>

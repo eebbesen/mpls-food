@@ -36,7 +36,7 @@
                 <div th:replace="fragments/forms::inputRow(object='deal', field='thursday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='friday', type='checkbox')" />
                 <div th:replace="fragments/forms::inputRow(object='deal', field='saturday', type='checkbox')" />
-                <input class="btn btn-primary mt-4" th:value="#{deal.save.headline}" type="submit" />
+                <input class="btn btn-primary mt-4" th:value="#{deal.save.headline}" type="submit" id="save-deal" />
             </form>
             </p>
             <div class="d-flex flex-wrap mb-4">
