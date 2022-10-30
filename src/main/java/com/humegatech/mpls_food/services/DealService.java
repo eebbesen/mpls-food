@@ -118,6 +118,8 @@ public class DealService {
         dealDTO.setVerified(deal.isVerified());
         dealDTO.setStartTime(deal.getStartTime());
         dealDTO.setEndTime(deal.getEndTime());
+        dealDTO.setStartDate(deal.getStartDate());
+        dealDTO.setEndDate(deal.getEndDate());
         applyDaysToDTO(deal, dealDTO);
         applyUploadsToDTO(deal, dealDTO);
 
@@ -171,6 +173,8 @@ public class DealService {
         deal.setTaxIncluded(dealDTO.isTaxIncluded());
         deal.setStartTime(dealDTO.getStartTime());
         deal.setEndTime(dealDTO.getEndTime());
+        deal.setStartDate(dealDTO.getStartDate());
+        deal.setEndDate(dealDTO.getEndDate());
         applyDaysToEntity(dealDTO, deal);
 
         return deal;

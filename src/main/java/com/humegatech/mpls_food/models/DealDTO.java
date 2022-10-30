@@ -2,6 +2,7 @@ package com.humegatech.mpls_food.models;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,8 @@ public class DealDTO {
     private String cuisine;
     private String startTime;
     private String endTime;
+    private LocalDate startDate;
+    private LocalDate endDate;
     @Builder.Default
     private List<UploadDTO> uploads = new ArrayList<>();
 }

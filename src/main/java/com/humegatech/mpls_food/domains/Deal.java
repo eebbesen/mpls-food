@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -62,6 +63,10 @@ public class Deal extends BaseEntity {
     private String startTime;
     @Column
     private String endTime;
+    @Column
+    private LocalDate startDate;
+    @Column
+    private LocalDate endDate;
 
     @Override
     public int hashCode() {
