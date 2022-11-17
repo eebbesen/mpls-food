@@ -8,12 +8,12 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
 ## Required
 * A relational database. Out of the box this will work with a local PostgreSQL instance
 * [chromedriver](https://chromedriver.chromium.org/downloads) on your path that matches your current Chrome version
-** this is only needed if you are running end-to-end tests
+  * this is only needed if you are running end-to-end tests
 
 ## Start
 * modify application.yml to point to a running database instance
 * run MplsFoodApplication.java
-    * DDL will be executed on startup based on application.yml `spring:jpa:hibernate:ddl-auto:` value
+  * DDL will be executed on startup based on application.yml `spring:jpa:hibernate:ddl-auto:` value
 * navigate to http://localhost:8080
 * data seed scripts are in `src/test/test_data/`
 

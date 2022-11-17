@@ -1,6 +1,7 @@
 package com.humegatech.mpls_food.models;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -43,7 +44,9 @@ public class DealDTO {
     private String cuisine;
     private String startTime;
     private String endTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     @Builder.Default
     private List<UploadDTO> uploads = new ArrayList<>();

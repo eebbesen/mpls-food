@@ -6,6 +6,7 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,6 +18,7 @@ public class TestObjects {
     private static Long DEAL_ID = 1L;
     private static Long DEAL_DAY_ID = 1L;
     private static Long UPLOAD_ID = 1L;
+    private static Long DEAL_LOG_ID = 1L;
 
     private static Long placeId() {
         return ++PLACE_ID;
@@ -28,6 +30,10 @@ public class TestObjects {
 
     private static Long dayId() {
         return ++DEAL_DAY_ID;
+    }
+
+    private static Long dealLogId() {
+        return ++DEAL_LOG_ID;
     }
 
     public static Place tacoJohns() {
@@ -248,6 +254,19 @@ public class TestObjects {
                 .rewardType(RewardType.PUNCH_CARD)
                 .notes("Free slice after purchase of 9 regularly priced slices")
                 .place(place)
+                .build();
+    }
+
+    public static DealLog dealLog() {
+        final Deal deal = deal();
+        return DealLog.builder()
+                .deal(deal)
+                .id(dealLogId())
+                .description("Got two slices for $5.00")
+                .place(deal.getPlace())
+                .redeemed(true)
+                .redemptionDate(LocalDate.now())
+                .dealType(DealType.PUNCH_CARD)
                 .build();
     }
 }

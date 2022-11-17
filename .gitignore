@@ -8,6 +8,7 @@ application-local.yml
 *.log
 node_modules/
 snippets.md
+.java-version
 
 ## IntelliJ IDEA
 .idea
