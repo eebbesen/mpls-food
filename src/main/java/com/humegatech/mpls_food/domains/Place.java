@@ -27,7 +27,7 @@ public class Place extends BaseEntity {
     private String address;
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy(value = "description")
     @Builder.Default
     private Set<Deal> deals = new LinkedHashSet<>();
@@ -43,9 +43,14 @@ public class Place extends BaseEntity {
     @Value("false")
     private boolean orderAhead;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "place")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "place", fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
     private Reward reward;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<DealLog> DealLogs = new LinkedHashSet<>();
 
     @Override
     public int hashCode() {

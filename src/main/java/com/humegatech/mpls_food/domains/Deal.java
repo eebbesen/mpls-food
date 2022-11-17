@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
@@ -41,10 +42,15 @@ public class Deal extends BaseEntity {
     @JsonManagedReference
     @Builder.Default
     private Set<Day> days = new LinkedHashSet<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     @Builder.Default
     private Set<Upload> uploads = new LinkedHashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<DealLog> DealLogs = new LinkedHashSet<>();
     @Column
     private Double minPrice;
     @Column
@@ -64,8 +70,10 @@ public class Deal extends BaseEntity {
     @Column
     private String endTime;
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @Override

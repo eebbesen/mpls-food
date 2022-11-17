@@ -40,11 +40,18 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
         jdbc:
           lob:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        type: trace
 #management:
 #  endpoints:
 #    web:
