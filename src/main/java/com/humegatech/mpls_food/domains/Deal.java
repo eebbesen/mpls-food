@@ -50,7 +50,7 @@ public class Deal extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     @Builder.Default
-    private Set<DealLog> DealLogs = new LinkedHashSet<>();
+    private Set<DealLog> dealLogs = new LinkedHashSet<>();
     @Column
     private Double minPrice;
     @Column
@@ -87,9 +87,7 @@ public class Deal extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof Deal)) return false;
-
-        Deal deal = (Deal) o;
+        if (!(o instanceof Deal deal)) return false;
 
         if (!place.equals(deal.getPlace())) return false;
         if (!dish.equals(deal.getDish())) return false;
@@ -125,7 +123,7 @@ public class Deal extends BaseEntity {
     }
 
     public List<DayOfWeek> getDaysOfWeek() {
-        return days.stream().map(day -> day.getDayOfWeek())
+        return days.stream().map(Day::getDayOfWeek)
                 .collect(Collectors.toList());
     }
 }

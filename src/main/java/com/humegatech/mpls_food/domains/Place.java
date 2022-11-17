@@ -43,14 +43,14 @@ public class Place extends BaseEntity {
     @Value("false")
     private boolean orderAhead;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "place", fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "place")
     @PrimaryKeyJoinColumn
     private Reward reward;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     @Builder.Default
-    private Set<DealLog> DealLogs = new LinkedHashSet<>();
+    private Set<DealLog> dealLogs = new LinkedHashSet<>();
 
     @Override
     public int hashCode() {
@@ -65,9 +65,7 @@ public class Place extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof Place)) return false;
-
-        Place place = (Place) o;
+        if (!(o instanceof Place place)) return false;
 
         if (app != place.app) return false;
         if (orderAhead != place.orderAhead) return false;

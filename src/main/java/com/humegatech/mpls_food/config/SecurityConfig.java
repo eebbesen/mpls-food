@@ -32,9 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/css/**", "/places", "/deals", "/days", "/deal_logs", "/login", "/", "/js/**", "/images/**",
-                        "/places/show/*").permitAll()
-                .mvcMatchers("/deals/add", "/places/add", "/uploads/**", "/deals/edit/*", "/deal_logs/add").authenticated()
+                .mvcMatchers("/css/**", "/places", "/deals", "/days", "/deal_logs", "/login", "/", "/js/**",
+                        "/images/**", "/places/show/*").permitAll()
+                .mvcMatchers("/deals/add", "/places/add", "/uploads/**", "/deals/edit/*", "/deal_logs/add")
+                .authenticated()
                 .mvcMatchers("/places/delete/*", "/*/edit/*", "/deals/delete/*",
                         "/days/delete/*", "").hasRole("ADMIN")
                 .anyRequest().denyAll();
