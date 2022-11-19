@@ -2,13 +2,13 @@
 <html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{place.list.headline}" />
+    <title th:text="#{dealLog.list.headline}" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
     <div class="d-flex flex-wrap mb-4">
-        <h1 class="flex-grow-1" th:text="#{deal_log.list.headline}" />
+        <h1 class="flex-grow-1" th:text="#{dealLog.list.headline}" />
         <div sec:authorize="isAuthenticated()">
             <div sec:authorize="hasRole('ROLE_USER')">
                 <a class="btn btn-primary ms-2" th:href="@{/deal_logs/add}" th:text="#{dealLog.list.createNew}" />
@@ -30,18 +30,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr name="place-row" th:each="place : ${places}">
-                <td name="deal-log-desc" ><a th:href="@{/deal_logs/show/{id}(id=${place.id})}" th:text="${dealLog.description.label}" /></td>
-                <td name="deal-log-place" th:text="${dealLog.place}" />
+            <tr name="deal-log-row" th:each="dealLog : ${dealLogs}">
+                <td name="deal-log-desc" ><a th:href="@{/deal_logs/show/{id}(id=${dealLog.id})}" th:text="${dealLog.description}" /></td>
+                <td name="deal-log-place" th:text="${dealLog.placeName}" />
                 <td name="deal-log-deal-type" th:text="${dealLog.dealType}" />
-                <td name="deal-log-deal" th:text="${dealLog.deal}" />
+                <td name="deal-log-deal" th:text="${dealLog.dealDescription}" />
                 <td>
                     <i class="bi bi-check-circle-fill" name="redeemed-ind" th:if="${dealLog.redeemed}"></i>
                 </td>
                 <td name="deal-log-redemption-date" th:text="${dealLog.redemptionDate}" />
                 <td sec:authorize="hasRole('ROLE_ADMIN')" style="white-space:nowrap">
                     <form class="js-submit-confirm float-end" method="post" th:action="@{/deal_logs/delete/{id}(id=${dealLog.id})}" th:data-confirm-message="#{delete.confirm}">
-                        <a class="btn btn-sm btn-info" th:href="@{/deal_logs/edit/{id}(id=${dealLog.id})}" th:text="#{dealLogs.list.edit}" />
+                        <a class="btn btn-sm btn-info" th:href="@{/deal_logs/edit/{id}(id=${dealLog.id})}" th:text="#{dealLog.list.edit}" />
                         <button class="btn btn-sm btn-danger" th:text="#{dealLog.list.delete}" type="submit" />
                     </form>
                 </td>

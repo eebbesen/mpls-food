@@ -95,7 +95,9 @@ public class DealLogServiceTest {
         DealLogDTO dealLogDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", dealLog, new DealLogDTO());
 
         assertEquals(dealLog.getDeal().getId(), dealLogDTO.getDeal());
+        assertEquals(dealLog.getDeal().getDescription(), dealLogDTO.getDealDescription());
         assertEquals(dealLog.getPlace().getId(), dealLogDTO.getPlace());
+        assertEquals(dealLog.getPlace().getName(), dealLogDTO.getPlaceName());
         assertEquals(dealLog.getDescription(), dealLogDTO.getDescription());
         assertEquals(dealLog.getRedeemed(), dealLogDTO.getRedeemed());
         assertEquals(dealLog.getRedemptionDate(), dealLogDTO.getRedemptionDate());

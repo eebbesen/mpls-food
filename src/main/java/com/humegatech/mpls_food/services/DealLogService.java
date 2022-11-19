@@ -28,7 +28,6 @@ public class DealLogService {
         this.placeRepository = placeRepository;
     }
 
-
     public Long create(final DealLogDTO dealLogDTO) {
         final DealLog dealLog = new DealLog();
         mapToEntity(dealLogDTO, dealLog);
@@ -47,8 +46,10 @@ public class DealLogService {
     private DealLogDTO mapToDTO(final DealLog dealLog, final DealLogDTO dealLogDTO) {
         if (null != dealLog.getDeal()) {
             dealLogDTO.setDeal(dealLog.getDeal().getId());
+            dealLogDTO.setDealDescription(dealLog.getDeal().getDescription());
         }
         dealLogDTO.setPlace(dealLog.getPlace().getId());
+        dealLogDTO.setPlaceName(dealLog.getPlace().getName());
         dealLogDTO.setDealType(dealLog.getDealType());
         dealLogDTO.setDescription(dealLog.getDescription());
         dealLogDTO.setRedeemed(dealLog.getRedeemed());
