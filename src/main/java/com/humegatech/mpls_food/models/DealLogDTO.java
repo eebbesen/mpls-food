@@ -21,4 +21,6 @@ public class DealLogDTO {
     // using 'place' and 'deal' instead of 'place_id' and 'deal_id' for compatibility with thymeleaf dropdown
     private Long place;
     private Long deal;
+    private String placeName;
+    private String dealDescription;
 }

@@ -78,7 +78,7 @@ public class MplsFoodUtils {
 
     public static String condensedDaysFromDay(final List<DayOfWeek> days, final DayOfWeek fromDay) {
         final Map<DayOfWeek, Integer> order = MplsFoodUtils.getSortOrderFromDay(fromDay);
-        return Arrays.stream(DayOfWeek.values()).sorted(Comparator.comparing((DayOfWeek d) -> order.get(d)))
+        return Arrays.stream(DayOfWeek.values()).sorted(Comparator.comparing(order::get))
                 .map(day -> days.contains(day) ? dowAbbreviation(day) : DOW_SEPARATOR)
                 .collect(Collectors.joining(""));
     }
@@ -89,6 +89,20 @@ public class MplsFoodUtils {
         }
 
         return address.substring(0, address.lastIndexOf("\n")).replaceAll("\n", " ");
+    }
+
+    public static String truncateDealDescription(final String description) {
+        if (null == description || description.length() < 1) {
+            return "";
+        }
+
+        String truncated = description.substring(0, description.length() > 49 ? 50 : description.length());
+        if (truncated.length() == 50) {
+            truncated = truncated.lastIndexOf(" ") > 9 ? truncated.substring(0, truncated.lastIndexOf(" ")) :
+                    truncated;
+        }
+
+        return truncated;
     }
 
     /**

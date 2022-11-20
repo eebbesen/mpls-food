@@ -28,27 +28,42 @@ public class DealLogService {
         this.placeRepository = placeRepository;
     }
 
-
     public Long create(final DealLogDTO dealLogDTO) {
         final DealLog dealLog = new DealLog();
         mapToEntity(dealLogDTO, dealLog);
         return dealLogRepository.save(dealLog).getId();
     }
 
+    public void update(final Long id, final DealLogDTO dealLogDTO) {
+        final DealLog dealLog = dealLogRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        mapToEntity(dealLogDTO, dealLog);
+        dealLogRepository.save(dealLog);
+    }
+
     public List<DealLogDTO> findAll() {
         return dealLogRepository.findAll()
                 .stream()
                 .map(dealLog -> mapToDTO(dealLog, new DealLogDTO()))
-                .sorted(Comparator.comparing((DealLogDTO l) -> l.getRedemptionDate())
-                        .thenComparing((DealLogDTO l) -> l.getDescription()))
+                .sorted(Comparator.comparing(DealLogDTO::getRedemptionDate,
+                                Comparator.nullsLast(Comparator.naturalOrder()))
+                        .thenComparing(DealLogDTO::getDescription))
                 .collect(Collectors.toList());
+    }
+
+    public DealLogDTO get(final Long id) {
+        return dealLogRepository.findById(id)
+                .map(dealLog -> mapToDTO(dealLog, new DealLogDTO()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     private DealLogDTO mapToDTO(final DealLog dealLog, final DealLogDTO dealLogDTO) {
         if (null != dealLog.getDeal()) {
             dealLogDTO.setDeal(dealLog.getDeal().getId());
+            dealLogDTO.setDealDescription(dealLog.getDeal().getDescription());
         }
         dealLogDTO.setPlace(dealLog.getPlace().getId());
+        dealLogDTO.setPlaceName(dealLog.getPlace().getName());
         dealLogDTO.setDealType(dealLog.getDealType());
         dealLogDTO.setDescription(dealLog.getDescription());
         dealLogDTO.setRedeemed(dealLog.getRedeemed());

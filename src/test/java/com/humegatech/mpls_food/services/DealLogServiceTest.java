@@ -5,6 +5,7 @@ import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.DealLog;
 import com.humegatech.mpls_food.domains.DealType;
 import com.humegatech.mpls_food.models.DealLogDTO;
+import com.humegatech.mpls_food.repositories.DealLogRepository;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,6 +34,9 @@ public class DealLogServiceTest {
 
     @MockBean
     private PlaceRepository placeRepository;
+
+    @MockBean
+    private DealLogRepository dealLogRepository;
 
     @Test
     void testMapToEntityPlaceNotFound() {
@@ -95,10 +100,27 @@ public class DealLogServiceTest {
         DealLogDTO dealLogDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", dealLog, new DealLogDTO());
 
         assertEquals(dealLog.getDeal().getId(), dealLogDTO.getDeal());
+        assertEquals(dealLog.getDeal().getDescription(), dealLogDTO.getDealDescription());
         assertEquals(dealLog.getPlace().getId(), dealLogDTO.getPlace());
+        assertEquals(dealLog.getPlace().getName(), dealLogDTO.getPlaceName());
         assertEquals(dealLog.getDescription(), dealLogDTO.getDescription());
         assertEquals(dealLog.getRedeemed(), dealLogDTO.getRedeemed());
         assertEquals(dealLog.getRedemptionDate(), dealLogDTO.getRedemptionDate());
         assertEquals(dealLog.getDealType(), dealLogDTO.getDealType());
+    }
+
+    @Test
+    void testFindAll() {
+        final DealLog dealLog1 = TestObjects.dealLog();
+        final DealLog dealLog2 = DealLog.builder()
+                .id(99L)
+                .dealType(DealType.EMAIL)
+                .place(dealLog1.getPlace())
+                .build();
+
+        when(dealLogRepository.findAll()).thenReturn(List.of(dealLog1, dealLog2));
+
+        List<DealLogDTO> dealLogDTOs = service.findAll();
+
     }
 }

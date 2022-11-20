@@ -59,8 +59,8 @@ public class DealService {
                 .stream()
                 .map(deal -> mapToDTO(deal, new DealDTO()))
                 .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replaceAll("-", "~"))
-                        .thenComparing((DealDTO c) -> c.getPlaceName())
-                        .thenComparing((DealDTO c) -> c.getDescription()))
+                        .thenComparing(DealDTO::getPlaceName)
+                        .thenComparing(DealDTO::getDescription))
                 .collect(Collectors.toList());
     }
 
@@ -69,7 +69,7 @@ public class DealService {
                 .stream()
                 .map(deal -> mapToDTO(deal, new DealDTO()))
                 .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replaceAll("-", "~"))
-                        .thenComparing((DealDTO c) -> c.getDescription()))
+                        .thenComparing(DealDTO::getDescription))
                 .collect(Collectors.toList());
     }
 
@@ -143,12 +143,10 @@ public class DealService {
 
     // todo refactor to use UploadService
     private void applyUploadsToDTO(final Deal deal, final DealDTO dealDTO) {
-        deal.getUploads().forEach(u -> {
-            dealDTO.getUploads().add(UploadDTO.builder()
-                    .dealId(u.getDeal().getId())
-                    .verified(u.isVerified())
-                    .image(u.getImage()).build());
-        });
+        deal.getUploads().forEach(u -> dealDTO.getUploads().add(UploadDTO.builder()
+                .dealId(u.getDeal().getId())
+                .verified(u.isVerified())
+                .image(u.getImage()).build()));
     }
 
     private Deal mapToEntity(final DealDTO dealDTO, final Deal deal) {

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="#{dealLog.edit.headline}" />
+</head>
+<body>
+<div layout:fragment="content">
+  <div class="d-flex flex-wrap mb-4">
+    <h1 class="flex-grow-1" th:text="#{dealLog.edit.headline}" />
+    <div>
+      <a class="btn btn-secondary" th:href="@{/deal_logs}" th:text="#{dealLog.edit.back}" />
+    </div>
+  </div>
+  <div th:replace="fragments/forms::globalErrors('dealLog')" />
+  <form method="post" th:action="${#httpServletRequest.requestURI}">
+    <div th:replace="fragments/forms::inputRow(object='dealLog', field='description', type='textarea')" />
+    <div th:replace="fragments/forms::inputRow(object='dealLog', field='place', type='select')" />
+    <div th:replace="fragments/forms::inputRow(object='dealLog', field='dealType', type='select')" />
+    <div th:replace="fragments/forms::inputRow(object='dealLog', field='deal', type='select')" />
+    <div th:replace="fragments/forms::inputRow(object='dealLog', field='redeemed', type='checkbox')" />
+    <div th:replace="fragments/forms::inputRow(object='dealLog', field='redemptionDate', type='date')" />
+    <input class="btn btn-primary mt-4" th:value="#{dealLog.edit.headline}" type="submit" />
+  </form>
+</div>
+</body>
+</html>
