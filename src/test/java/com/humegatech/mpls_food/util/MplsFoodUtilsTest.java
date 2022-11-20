@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -43,7 +44,7 @@ public class MplsFoodUtilsTest {
         final LocalDateTime mon = LocalDateTime.of(2022, Month.SEPTEMBER, 5, 12, 12);
         try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
             ldt.when(LocalDateTime::now).thenReturn(mon);
-            assertEquals("-------", MplsFoodUtils.condensedDays(new ArrayList()));
+            assertEquals("-------", MplsFoodUtils.condensedDays(new ArrayList<>()));
             assertEquals("MT-----", MplsFoodUtils.condensedDays(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY)));
             assertEquals("-TWt-Ss", MplsFoodUtils.condensedDays(Arrays.asList(DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)));
         }
@@ -51,7 +52,7 @@ public class MplsFoodUtilsTest {
         final LocalDateTime sun = LocalDateTime.of(2022, Month.SEPTEMBER, 4, 12, 12);
         try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
             ldt.when(LocalDateTime::now).thenReturn(sun);
-            assertEquals("-------", MplsFoodUtils.condensedDays(new ArrayList()));
+            assertEquals("-------", MplsFoodUtils.condensedDays(new ArrayList<>()));
             assertEquals("-MT----", MplsFoodUtils.condensedDays(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY)));
             assertEquals("s-TWt-S", MplsFoodUtils.condensedDays(Arrays.asList(DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)));
         }
@@ -111,7 +112,7 @@ public class MplsFoodUtilsTest {
                 .deal(deal.getId())
                 .dayOfWeek(DayOfWeek.MONDAY).build();
 
-        List<DayDTO> days = Arrays.asList(mon, wed, mon2, sun).stream().collect(Collectors.toList());
+        List<DayDTO> days = Stream.of(mon, wed, mon2, sun).collect(Collectors.toList());
 
         Map<DayOfWeek, Integer> wedFirst = MplsFoodUtils.getSortOrderFromDay(DayOfWeek.WEDNESDAY);
         days.sort(Comparator.comparing((DayDTO d) -> wedFirst.get(d.getDayOfWeek())));
@@ -125,8 +126,7 @@ public class MplsFoodUtilsTest {
 
     @Test
     void testGetRangeMinNullMaxNull() {
-        final String rangeString = MplsFoodUtils.getRange(null, null, "$");
-        assertEquals(null, rangeString);
+        assertNull(MplsFoodUtils.getRange(null, null, "$"));
     }
 
     @Test
@@ -179,5 +179,14 @@ public class MplsFoodUtilsTest {
     @Test
     void testDecorateValueNullPunctuation() {
         assertEquals("5.0", MplsFoodUtils.decorateValue(5.0, null));
+    }
+
+    @Test
+    void testTruncateDealDescription() {
+        assertEquals("", MplsFoodUtils.truncateDealDescription(null));
+        assertEquals("", MplsFoodUtils.truncateDealDescription(""));
+        assertEquals("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsdfasd", MplsFoodUtils.truncateDealDescription("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsdfasdfasd"));
+        assertEquals("Half-price", MplsFoodUtils.truncateDealDescription("Half-price"));
+        assertEquals("Half-price Crispy Tacos (Taco Tuesday) $1.19", MplsFoodUtils.truncateDealDescription("Half-price Crispy Tacos (Taco Tuesday) $1.19 Pre-tax, $1.32 Tax Included."));
     }
 }

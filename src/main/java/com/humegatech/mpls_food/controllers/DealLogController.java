@@ -13,10 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -73,6 +70,12 @@ public class DealLogController {
         return "deal_logs/list";
     }
 
+    @GetMapping("/show/{id}")
+    public String show(@PathVariable final Long id, final Model model) {
+        model.addAttribute("dealLog", dealLogService.get(id));
+        return "deal_logs/show";
+    }
+
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String add(@ModelAttribute("dealLog") final DealLogDTO dealLogDto) {
@@ -88,6 +91,26 @@ public class DealLogController {
         }
         dealLogService.create(dealLogDto);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("dealLog.create.success"));
+        return "redirect:/deal_logs";
+    }
+
+    @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public String edit(@PathVariable final Long id, final Model model) {
+        model.addAttribute("dealLog", dealLogService.get(id));
+        return "deal_logs/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public String edit(@PathVariable final Long id,
+                       @ModelAttribute("dealLog") @Valid final DealLogDTO dealLogDTO, final BindingResult bindingResult,
+                       final RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "deal_logs/edit";
+        }
+        dealLogService.update(id, dealLogDTO);
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
         return "redirect:/deal_logs";
     }
 }

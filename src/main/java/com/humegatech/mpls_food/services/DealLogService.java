@@ -34,13 +34,27 @@ public class DealLogService {
         return dealLogRepository.save(dealLog).getId();
     }
 
+    public void update(final Long id, final DealLogDTO dealLogDTO) {
+        final DealLog dealLog = dealLogRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        mapToEntity(dealLogDTO, dealLog);
+        dealLogRepository.save(dealLog);
+    }
+
     public List<DealLogDTO> findAll() {
         return dealLogRepository.findAll()
                 .stream()
                 .map(dealLog -> mapToDTO(dealLog, new DealLogDTO()))
-                .sorted(Comparator.comparing((DealLogDTO l) -> l.getRedemptionDate())
-                        .thenComparing((DealLogDTO l) -> l.getDescription()))
+                .sorted(Comparator.comparing(DealLogDTO::getRedemptionDate,
+                                Comparator.nullsLast(Comparator.naturalOrder()))
+                        .thenComparing(DealLogDTO::getDescription))
                 .collect(Collectors.toList());
+    }
+
+    public DealLogDTO get(final Long id) {
+        return dealLogRepository.findById(id)
+                .map(dealLog -> mapToDTO(dealLog, new DealLogDTO()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     private DealLogDTO mapToDTO(final DealLog dealLog, final DealLogDTO dealLogDTO) {

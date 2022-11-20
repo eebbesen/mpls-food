@@ -33,8 +33,9 @@
             <tr name="deal-log-row" th:each="dealLog : ${dealLogs}">
                 <td name="deal-log-desc" ><a th:href="@{/deal_logs/show/{id}(id=${dealLog.id})}" th:text="${dealLog.description}" /></td>
                 <td name="deal-log-place" th:text="${dealLog.placeName}" />
-                <td name="deal-log-deal-type" th:text="${dealLog.dealType}" />
-                <td name="deal-log-deal" th:text="${dealLog.dealDescription}" />
+                <td name="deal-log-deal-type" th:text="${T(com.humegatech.mpls_food.util.MplsFoodUtils).capitalizeFirst(dealLog.dealType)}" />
+                <td name="deal-log-deal" th:text="${T(com.humegatech.mpls_food.util.MplsFoodUtils).truncateDealDescription(dealLog.dealDescription)}" th:unless="${dealLog.dealDescription == null}" />
+                <td name="deal-log-deal" th:if="${dealLog.dealDescription == null}" />
                 <td>
                     <i class="bi bi-check-circle-fill" name="redeemed-ind" th:if="${dealLog.redeemed}"></i>
                 </td>
