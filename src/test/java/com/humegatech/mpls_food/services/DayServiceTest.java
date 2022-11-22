@@ -162,6 +162,11 @@ public class DayServiceTest {
     }
 
     @Test
+    void testFindAllActiveOnly() {
+        final Day active =
+    }
+
+    @Test
     void testMapToDto() {
         final Deal deal = TestObjects.deal();
         final DayDTO dto = (DayDTO) ReflectionTestUtils

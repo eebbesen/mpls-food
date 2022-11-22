@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -57,6 +58,10 @@ public class DealService {
     public List<DealDTO> findAll() {
         return dealRepository.findAll()
                 .stream()
+                .filter(deal -> null == deal.getStartDate() || LocalDate.now().isAfter(deal.getStartDate()) ||
+                        LocalDate.now().isEqual(deal.getStartDate()))
+                .filter(deal -> null == deal.getEndDate() || LocalDate.now().isBefore(deal.getEndDate()) ||
+                        LocalDate.now().isEqual(deal.getEndDate()))
                 .map(deal -> mapToDTO(deal, new DealDTO()))
                 .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replaceAll("-", "~"))
                         .thenComparing(DealDTO::getPlaceName)

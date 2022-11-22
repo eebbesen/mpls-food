@@ -142,6 +142,37 @@ public class DealServiceTest {
     }
 
     @Test
+    void testFindAllActiveOnly() {
+        final Deal active = TestObjects.tacoTuesday();
+        final Deal notStarted = TestObjects.dealMonTues();
+        notStarted.setStartDate(LocalDate.now().plusDays(1));
+        final Deal ended = TestObjects.fridayTwofer();
+        ended.setEndDate(LocalDate.now().minusDays(1));
+
+        when(dealRepository.findAll()).thenReturn(List.of(active, notStarted, ended));
+
+        final List<DealDTO> dealDTOs = service.findAll();
+
+        assertEquals(1, dealDTOs.size());
+        assertEquals(active.getDescription(), dealDTOs.get(0).getDescription());
+    }
+
+    @Test
+    void testFindAllActiveOnlySameDay() {
+        final Deal active = TestObjects.tacoTuesday();
+        final Deal startsToday = TestObjects.dealMonTues();
+        startsToday.setStartDate(LocalDate.now());
+        final Deal endsToday = TestObjects.fridayTwofer();
+        endsToday.setEndDate(LocalDate.now());
+
+        when(dealRepository.findAll()).thenReturn(List.of(active, startsToday, endsToday));
+
+        final List<DealDTO> dealDTOs = service.findAll();
+
+        assertEquals(3, dealDTOs.size());
+    }
+
+    @Test
     void testFindAll() {
         final Deal tt = TestObjects.tacoTuesday();
         final Deal mt = TestObjects.dealMonTues();
