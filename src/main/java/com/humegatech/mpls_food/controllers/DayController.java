@@ -127,7 +127,7 @@ public class DayController {
         final String placeFilter = handleFilter(request.getParameter("place"));
         final String cuisineFilter = handleFilter(request.getParameter("cuisine"));
         final String sortBy = handleFilter(request.getParameter("sortBy"));
-        final List<DayDTO> days = dayService.findAll();
+        final List<DayDTO> days = dayService.findAllActive();
 
         model.addAttribute("selectedDay", dayOfWeekFilter);
         model.addAttribute("selectedDish", dishFilter);

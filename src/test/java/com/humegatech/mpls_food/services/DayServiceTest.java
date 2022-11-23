@@ -21,8 +21,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -148,8 +150,8 @@ public class DayServiceTest {
         final Deal deal2 = TestObjects.deal(deal1.getPlace(), "new deal", deal1.getDaysOfWeek().get(0));
         deal2.setStartTime(deal1.getStartTime());
         deal2.setEndTime(deal1.getStartTime());
-        final List<Day> days = List.of(deal1.getDays(), deal2.getDays()).stream()
-                .flatMap(ds -> ds.stream())
+        final List<Day> days = Stream.of(deal1.getDays(), deal2.getDays())
+                .flatMap(Collection::stream)
                 .toList();
 
         when(dayRepository.findAll()).thenReturn(days);
@@ -162,14 +164,9 @@ public class DayServiceTest {
     }
 
     @Test
-    void testFindAllActiveOnly() {
-        final Day active =
-    }
-
-    @Test
     void testMapToDto() {
         final Deal deal = TestObjects.deal();
-        final DayDTO dto = (DayDTO) ReflectionTestUtils
+        final DayDTO dto = ReflectionTestUtils
                 .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
 
         assertEquals(deal.getId(), dto.getDeal());
@@ -201,11 +198,11 @@ public class DayServiceTest {
                 .dealDescription(deal.getDescription())
                 .placeName(deal.getPlace().getName())
                 .cuisine(deal.getCuisine())
-                .id(88l).build();
+                .id(88L).build();
 
         when(dealRepository.findById(deal.getId())).thenReturn(Optional.of(deal));
 
-        Day day = (Day) ReflectionTestUtils
+        Day day = ReflectionTestUtils
                 .invokeMethod(service, "mapToEntity", dto, new Day());
 
         assertEquals(88, day.getId());

@@ -54,6 +54,18 @@ public class DayService {
                 .collect(Collectors.toList());
     }
 
+    public List<DayDTO> findAllActive() {
+        final Map<DayOfWeek, Integer> order = MplsFoodUtils.getSortOrderFromDay(LocalDateTime.now().getDayOfWeek());
+        return dayRepository.findAllActive()
+                .stream()
+                .map(day -> mapToDTO(day, new DayDTO()))
+                .sorted(Comparator.comparing((DayDTO d) -> order.get(d.getDayOfWeek()))
+                        .thenComparing((DayDTO d) -> null == d.getStartTime() ? "zzz" : d.getStartTime())
+                        .thenComparing((DayDTO d) -> null == d.getEndTime() ? "zzz" : d.getEndTime())
+                        .thenComparing((DayDTO d) -> d.getPlaceName()))
+                .collect(Collectors.toList());
+    }
+
     private DayDTO mapToDTO(final Day day, final DayDTO dayDTO) {
         dayDTO.setId(day.getId());
         dayDTO.setDeal(day.getDeal().getId());
