@@ -38,7 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/deal_logs/edit/*")
                 .authenticated()
                 .mvcMatchers("/places/delete/*", "/*/edit/*", "/deals/delete/*",
-                        "/days/delete/*", "/deal_logs/delete/*", "").hasRole("ADMIN")
+                        "/days/delete/*", "/deal_logs/delete/*", "/actuator", "/actuator/*", "").hasRole("ADMIN")
+
                 .anyRequest().denyAll();
         // http.httpBasic();
         http.formLogin();

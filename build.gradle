@@ -9,7 +9,7 @@ plugins {
 
 group = 'com.humegatech'
 version = '0.0.1-SNAPSHOT'
-// sourceCompatibility = '17'
+// sourceCompatibility = '17' // took out to avoid Heroku deployment issues
 
 bootRun {
     environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: 'local'
@@ -30,7 +30,7 @@ gradleEnterprise {
 
 dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.13'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -49,9 +49,9 @@ dependencies {
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    testImplementation 'io.github.bonigarcia:webdrivermanager:5.3.0'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.3.1'
     testImplementation 'org.jsoup:jsoup:1.15.3'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.5.0'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.6.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
