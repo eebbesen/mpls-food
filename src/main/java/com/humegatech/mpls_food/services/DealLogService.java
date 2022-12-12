@@ -51,6 +51,10 @@ public class DealLogService {
                 .collect(Collectors.toList());
     }
 
+    public void delete(final Long id) {
+        dealLogRepository.deleteById(id);
+    }
+
     public DealLogDTO get(final Long id) {
         return dealLogRepository.findById(id)
                 .map(dealLog -> mapToDTO(dealLog, new DealLogDTO()))
