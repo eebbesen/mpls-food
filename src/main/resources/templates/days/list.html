@@ -10,13 +10,16 @@
       document.getElementById("dish").value = '';
       document.getElementById("place").value = '';
       document.getElementById("cuisine").value = '';
+      document.getElementById("happyHour").checked = false;
     }
 
     function handleFilter() {
       if (document.getElementById("dayOfWeek").value === ''
           && document.getElementById("dish").value === ''
           && document.getElementById("place").value === ''
-          && document.getElementById("cuisine").value === '') {
+          && document.getElementById("cuisine").value === ''
+          && document.getElementById("happyHour").checked == false)
+      {
         document.getElementById("filtersDiv").classList.remove("show")
       } else {
         document.getElementById("filtersDiv").classList.add("show")
@@ -60,6 +63,9 @@
                 th:text="${cuisine}"
                 th:value="${cuisine}"></option>
       </select>
+      <label for="happyHour" th:checked value="happyHour" >Include Happy Hour?</label>
+      <input id="happyHour" name="happyHour" th:checked="${happyHour}" type="checkbox" />
+      <p></p>
       <input id="sortBy" name="sortBy" th:value="${selectedSortBy}" type="hidden"/>
       <input class="btn btn-primary mt-2 mb-4" th:value="#{day.filter}" type="submit" />
       <input class="btn btn-secondary mt-2 mb-4" onclick="resetFilters()" th:value="#{day.filter.reset}" />
