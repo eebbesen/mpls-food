@@ -163,7 +163,8 @@ public class DayController {
                     return null == cuisineFilter || d.getCuisine().equals(cuisineFilter);
                 })
                 .filter(d -> {
-                    return (null != happyHourFilter && happyHourFilter.equals("on")) || (null == d.getStartTime() || 0 > d.getStartTime().compareTo(HH_CUTOFF));
+                    return (null != happyHourFilter && happyHourFilter.equals("on"))
+                            || (null == d.getStartTime() || 0 > d.getStartTime().compareTo(HH_CUTOFF));
                 })
                 .collect(Collectors.toList());
 
