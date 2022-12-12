@@ -113,4 +113,12 @@ public class DealLogController {
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
         return "redirect:/deal_logs";
     }
+
+    @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
+        dealLogService.delete(id);
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("dealLog.delete.success"));
+        return "redirect:/deal_logs";
+    }
 }

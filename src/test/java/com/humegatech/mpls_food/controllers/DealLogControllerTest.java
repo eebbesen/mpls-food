@@ -69,4 +69,26 @@ public class DealLogControllerTest extends MFControllerTest {
 
         verify(dealLogRepository, times(1)).save(any(DealLog.class));
     }
+
+    @Test
+    @WithMockUser
+    void testPostDeleteUser() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post("/deal_logs/delete/1")
+                        .with(csrf()))
+                .andExpect(status().is4xxClientError());
+
+        verify(dealLogRepository, times(0)).deleteById(1L);
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testPostDeleteAdmin() throws Exception {
+        doNothing().when(dealLogRepository).deleteById(1L);
+
+        mvc.perform(MockMvcRequestBuilders.post("/deal_logs/delete/1")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+
+        verify(dealLogRepository, times(1)).deleteById(1L);
+    }
 }
