@@ -52,10 +52,10 @@ spring:
 #    org:
 #      hibernate:
 #        type: trace
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 springdoc:
   pathsToMatch: /api/**
