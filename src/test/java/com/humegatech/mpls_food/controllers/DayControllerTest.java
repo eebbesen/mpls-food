@@ -171,6 +171,76 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
+    void testListWithHappyHourFilterStartTimeAtCutoff() throws Exception {
+        deal.setStartTime("13:00");
+        dealRepository.save(deal);
+
+        mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("slices"))));
+
+        mvc.perform(MockMvcRequestBuilders.get("/days?happyHour=on").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("slices")));
+    }
+
+    @Test
+    void testListWithHappyHourFilterStartTimeAfterCutoff() throws Exception {
+        deal.setStartTime("13:01");
+        dealRepository.save(deal);
+
+        mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("slices"))));
+
+        mvc.perform(MockMvcRequestBuilders.get("/days?happyHour=on").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("slices")));
+    }
+
+    @Test
+    void testListWithHappyHourFilterStartTimeJustBeforeCutoff() throws Exception {
+        deal.setStartTime("12:59");
+        dealRepository.save(deal);
+
+        mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("slices")));
+
+        mvc.perform(MockMvcRequestBuilders.get("/days?happyHour=on").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("slices")));
+    }
+
+    @Test
+    void testListWithHappyHourFilterNoStartTime() throws Exception {
+        deal.setStartTime(null);
+        dealRepository.save(deal);
+
+        mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("slices")));
+
+        mvc.perform(MockMvcRequestBuilders.get("/days?happyHour=on").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("slices")));
+    }
+
+    @Test
+    void testListWithHappyHourFilterIncorrectFilterValue() throws Exception {
+        deal.setStartTime("14:00");
+        dealRepository.save(deal);
+
+        mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("slices"))));
+
+        mvc.perform(MockMvcRequestBuilders.get("/days?happyHour=yes").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(not(containsString("slices"))));
+    }
+
+    @Test
     void testHandleSortDiscountAsc() {
         final DayDTO day101 = DayDTO.builder()
                 .placeName("a")

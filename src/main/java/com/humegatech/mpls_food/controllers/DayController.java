@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/days")
 public class DayController {
+    private static final String HH_CUTOFF = "13:00";
     private final DayService dayService;
 
     public DayController(DayService dayService) {
@@ -126,6 +127,7 @@ public class DayController {
         final String dishFilter = handleFilter(request.getParameter("dish"));
         final String placeFilter = handleFilter(request.getParameter("place"));
         final String cuisineFilter = handleFilter(request.getParameter("cuisine"));
+        final String happyHourFilter = handleFilter(request.getParameter("happyHour"));
         final String sortBy = handleFilter(request.getParameter("sortBy"));
         final List<DayDTO> days = dayService.findAll();
 
@@ -137,6 +139,7 @@ public class DayController {
         model.addAttribute("nextPriceSort", calculateNextSort(sortBy, "price"));
         model.addAttribute("nextDiscountSort", calculateNextSort(sortBy, "discount"));
         model.addAttribute("nextDiscountPercentSort", calculateNextSort(sortBy, "discountPercent"));
+        model.addAttribute("happyHour", happyHourFilter);
         model.addAttribute("dishes",
                 days.stream().map(dayDTO -> dayDTO.getDish()).distinct().sorted().collect(Collectors.toList()));
         model.addAttribute("places",
@@ -158,6 +161,9 @@ public class DayController {
                 })
                 .filter(d -> {
                     return null == cuisineFilter || d.getCuisine().equals(cuisineFilter);
+                })
+                .filter(d -> {
+                    return (null != happyHourFilter && happyHourFilter.equals("on")) || (null == d.getStartTime() || 0 > d.getStartTime().compareTo(HH_CUTOFF));
                 })
                 .collect(Collectors.toList());
 
