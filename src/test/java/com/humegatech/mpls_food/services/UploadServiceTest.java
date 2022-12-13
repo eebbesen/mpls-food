@@ -1,7 +1,6 @@
 package com.humegatech.mpls_food.services;
 
 import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.controllers.MFControllerTest;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Upload;
 import com.humegatech.mpls_food.models.UploadDTO;
@@ -10,6 +9,7 @@ import com.humegatech.mpls_food.repositories.UploadRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,7 +21,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-public class UploadServiceTest extends MFControllerTest {
+@SpringBootTest
+public class UploadServiceTest {
     @MockBean
     private DealRepository dealRepository;
     @MockBean
