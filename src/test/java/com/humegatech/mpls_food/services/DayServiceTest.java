@@ -101,10 +101,10 @@ public class DayServiceTest extends MFServiceTest {
     }
 
     @Test
-    void testFindAllSortsByDealStartTimeDealEndTimePlaceName() {
+    void testFindAllSortsByDealStartTimeEndTimePlaceName() {
         final Place place1 = TestObjects.place("first");
         final Deal deal1 = TestObjects.deal(place1, "z10:30 - 15:00 deal", DayOfWeek.MONDAY);
-        final Deal deal2 = TestObjects.deal(place1, "a10:30 - 11:00 deal", DayOfWeek.MONDAY);
+        final Deal deal2 = TestObjects.deal(place1, "a11:00 - 11:00 deal", DayOfWeek.MONDAY);
         deal2.setEndTime("11:00");
         final Place place2 = TestObjects.place("asecond");
         final Deal deal3 = TestObjects.deal(place2, "aa 11:00 - 12:30 deal", DayOfWeek.MONDAY);
@@ -119,9 +119,12 @@ public class DayServiceTest extends MFServiceTest {
         final Deal deal6 = TestObjects.deal(place2, "null start and end time", DayOfWeek.MONDAY);
         deal6.setStartTime(null);
         deal6.setEndTime(null);
+        final Deal deal7 = TestObjects.deal(place2, "null start - 12:30", DayOfWeek.MONDAY);
+        deal7.setStartTime(null);
+        deal7.setEndTime(null);
 
         final List<Day> days = new ArrayList<>();
-        for (Deal d : List.of(deal1, deal2, deal3, deal4, deal5, deal6)) {
+        for (Deal d : List.of(deal1, deal2, deal3, deal4, deal5, deal6, deal7)) {
             days.addAll(d.getDays());
         }
         when(dayRepository.findAll()).thenReturn(days);
@@ -134,6 +137,47 @@ public class DayServiceTest extends MFServiceTest {
         assertEquals(deal1.getDescription(), dayDTOs.get(3).getDealDescription());
         assertEquals(deal3.getDescription(), dayDTOs.get(4).getDealDescription());
         assertEquals(deal6.getDescription(), dayDTOs.get(5).getDealDescription());
+        assertEquals(deal7.getDescription(), dayDTOs.get(6).getDealDescription());
+    }
+
+    @Test
+    void testFindAllActiveSortsByDealStartTimeEndTimePlaceName() {
+        final Place place1 = TestObjects.place("first");
+        final Deal deal1 = TestObjects.deal(place1, "z10:30 - 15:00 deal", DayOfWeek.MONDAY);
+        final Deal deal2 = TestObjects.deal(place1, "a11:00 - 11:00 deal", DayOfWeek.MONDAY);
+        deal2.setEndTime("11:00");
+        final Place place2 = TestObjects.place("asecond");
+        final Deal deal3 = TestObjects.deal(place2, "aa 11:00 - 12:30 deal", DayOfWeek.MONDAY);
+        deal3.setStartTime("11:00");
+        deal3.setEndTime("12:30");
+        final Deal deal4 = TestObjects.deal(place2, "aaa 10:30 - 12:30 deal", DayOfWeek.MONDAY);
+        deal4.setStartTime("10:30");
+        deal4.setEndTime("12:30");
+        final Deal deal5 = TestObjects.deal(place2, "aaa 10:30 - 11:00 deal", DayOfWeek.MONDAY);
+        deal5.setStartTime("10:30");
+        deal5.setEndTime("11:00");
+        final Deal deal6 = TestObjects.deal(place2, "null start and end time", DayOfWeek.MONDAY);
+        deal6.setStartTime(null);
+        deal6.setEndTime(null);
+        final Deal deal7 = TestObjects.deal(place2, "null start - 12:30", DayOfWeek.MONDAY);
+        deal7.setStartTime(null);
+        deal7.setEndTime(null);
+
+        final List<Day> days = new ArrayList<>();
+        for (Deal d : List.of(deal1, deal2, deal3, deal4, deal5, deal6, deal7)) {
+            days.addAll(d.getDays());
+        }
+        when(dayRepository.findAllActive()).thenReturn(days);
+
+        final List<DayDTO> dayDTOs = service.findAllActive();
+
+        assertEquals(deal5.getDescription(), dayDTOs.get(0).getDealDescription());
+        assertEquals(deal2.getDescription(), dayDTOs.get(1).getDealDescription());
+        assertEquals(deal4.getDescription(), dayDTOs.get(2).getDealDescription());
+        assertEquals(deal1.getDescription(), dayDTOs.get(3).getDealDescription());
+        assertEquals(deal3.getDescription(), dayDTOs.get(4).getDealDescription());
+        assertEquals(deal6.getDescription(), dayDTOs.get(5).getDealDescription());
+        assertEquals(deal7.getDescription(), dayDTOs.get(6).getDealDescription());
     }
 
     @Test
