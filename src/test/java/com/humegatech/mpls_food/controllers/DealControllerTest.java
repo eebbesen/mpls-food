@@ -6,14 +6,12 @@ import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DealDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.validation.BindingResult;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -34,9 +32,6 @@ public class DealControllerTest extends MFControllerTest {
     private Deal deal;
     @Autowired
     private DealController controller;
-
-    @Mock
-    private BindingResult bindingResult;
 
     @BeforeEach
     void setUp() {

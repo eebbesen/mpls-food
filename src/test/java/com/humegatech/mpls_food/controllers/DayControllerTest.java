@@ -662,7 +662,6 @@ public class DayControllerTest extends MFControllerTest {
     void testPostDeleteAdmin() throws Exception {
         final Day day = deal.getDays().stream().findFirst().get();
         day.setId(1L);
-        doNothing().when(dayService).delete(day.getId());
 
         mvc.perform(MockMvcRequestBuilders.post(String.format("/days/delete/%d", day.getId()))
                         .with(csrf()))

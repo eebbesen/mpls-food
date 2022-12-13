@@ -1,18 +1,22 @@
 package com.humegatech.mpls_food.controllers;
 
 import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.DealLog;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.domains.Upload;
 import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.models.DealLogDTO;
 import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.models.UploadDTO;
 import com.humegatech.mpls_food.services.*;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.transaction.Transactional;
@@ -40,12 +44,22 @@ public class MFControllerTest {
     @MockBean
     UploadService uploadService;
 
+    @Mock
+    BindingResult bindingResult;
+
 
     List<DealDTO> dealsToDealDTOs(final List<Deal> deals) {
         final List<DealDTO> dealDTOs = new ArrayList<>();
         deals.stream().forEach(d -> dealDTOs.add(ReflectionTestUtils
                 .invokeMethod(dealService, "mapToDTO", d, new DealDTO())));
         return dealDTOs;
+    }
+
+    List<DealLogDTO> dealLogsToDealLogDTOs(final List<DealLog> dealLogs) {
+        final List<DealLogDTO> dealLogDTOs = new ArrayList<>();
+        dealLogs.stream().forEach(d -> dealLogDTOs.add(ReflectionTestUtils
+                .invokeMethod(dealLogService, "mapToDTO", d, new DealLogDTO())));
+        return dealLogDTOs;
     }
 
     List<PlaceDTO> placesToPlaceDTOs(final List<Place> places) {
