@@ -715,11 +715,4 @@ public class DayControllerTest extends MFControllerTest {
         assertNull(dish);
     }
 
-    private List<DayDTO> daysToDayDTOs(final List<Day> days) {
-        final List<DayDTO> dayDTOs = new ArrayList<>();
-        days.stream().forEach(d -> dayDTOs.add(ReflectionTestUtils
-                .invokeMethod(dayService, "mapToDTO", d, new DayDTO())));
-        return dayDTOs;
-    }
-
 }

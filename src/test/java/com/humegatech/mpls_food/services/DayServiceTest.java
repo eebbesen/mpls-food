@@ -5,17 +5,14 @@ import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DayDTO;
-import com.humegatech.mpls_food.repositories.DayRepository;
-import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -28,19 +25,10 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class DayServiceTest {
-    @MockBean
-    private DayRepository dayRepository;
-
-    @MockBean
-    private DealRepository dealRepository;
-
-    @Autowired
-    private DayService service;
-
+public class DayServiceTest extends MFServiceTest {
     @Test
     void testCreate() {
         final Deal deal = TestObjects.deal();
@@ -209,5 +197,70 @@ public class DayServiceTest {
         assertEquals(DayOfWeek.SATURDAY, day.getDayOfWeek());
         assertEquals(deal.getId(), day.getDeal().getId());
         assertNotNull(day.getDeal().getPlace().getId());
+    }
+
+    @Test
+    void testMapToEntityDealNotFound() {
+        final DayDTO dto = DayDTO.builder()
+                .dayOfWeek(DayOfWeek.SATURDAY)
+                .deal(99L)
+                .id(88L).build();
+
+        when(dealRepository.findById(dto.getDeal())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () ->
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dto, new Day())
+        );
+    }
+
+    @Test
+    void testGet() {
+        final Day day = TestObjects.day(TestObjects.deal(), DayOfWeek.MONDAY);
+        day.setId(99L);
+
+        when(dayRepository.findById(day.getId())).thenReturn(Optional.of(day));
+
+        DayDTO dayDTO = service.get(day.getId());
+
+        assertEquals(day.getDayOfWeek(), dayDTO.getDayOfWeek());
+        assertEquals(day.getId(), dayDTO.getId());
+    }
+
+    @Test
+    void testGetNoDay() {
+        final Day day = TestObjects.day(TestObjects.deal(), DayOfWeek.MONDAY);
+        day.setId(99L);
+
+        when(dayRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> service.get(99L));
+    }
+
+    @Test
+    void testUpdate() {
+        final Day day = TestObjects.day(TestObjects.deal(), DayOfWeek.MONDAY);
+        day.setId(99L);
+        final DayDTO dayDTO = DayDTO.builder()
+                .id(99L).build();
+
+        when(dayRepository.findById(day.getId())).thenReturn(Optional.of(day));
+
+        service.update(day.getId(), dayDTO);
+
+        verify(dayRepository, times(1)).save(day);
+    }
+
+    @Test
+    void testUpdateNoDay() {
+        when(dayRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> service.update(99L, new DayDTO()));
+    }
+
+    @Test
+    void testDelete() {
+        service.delete(99L);
+
+        verify(dayRepository, times(1)).deleteById(99L);
     }
 }

@@ -1,13 +1,7 @@
 package com.humegatech.mpls_food.controllers;
 
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.DealLog;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.domains.Upload;
-import com.humegatech.mpls_food.models.DealDTO;
-import com.humegatech.mpls_food.models.DealLogDTO;
-import com.humegatech.mpls_food.models.PlaceDTO;
-import com.humegatech.mpls_food.models.UploadDTO;
+import com.humegatech.mpls_food.domains.*;
+import com.humegatech.mpls_food.models.*;
 import com.humegatech.mpls_food.services.*;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +41,6 @@ public class MFControllerTest {
     @Mock
     BindingResult bindingResult;
 
-
     List<DealDTO> dealsToDealDTOs(final List<Deal> deals) {
         final List<DealDTO> dealDTOs = new ArrayList<>();
         deals.stream().forEach(d -> dealDTOs.add(ReflectionTestUtils
@@ -74,6 +67,13 @@ public class MFControllerTest {
         uploads.stream().forEach(u -> uploadDTOs.add(ReflectionTestUtils
                 .invokeMethod(uploadService, "mapToDTO", u, new UploadDTO())));
         return uploadDTOs;
+    }
+
+    List<DayDTO> daysToDayDTOs(final List<Day> days) {
+        final List<DayDTO> dayDTOs = new ArrayList<>();
+        days.stream().forEach(d -> dayDTOs.add(ReflectionTestUtils
+                .invokeMethod(dayService, "mapToDTO", d, new DayDTO())));
+        return dayDTOs;
     }
 
 }

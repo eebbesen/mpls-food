@@ -106,7 +106,7 @@ public class DayService {
 
     public DayDTO get(final Long id) {
         return dayRepository.findById(id)
-                .map(deal -> mapToDTO(deal, new DayDTO()))
+                .map(day -> mapToDTO(day, new DayDTO()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 

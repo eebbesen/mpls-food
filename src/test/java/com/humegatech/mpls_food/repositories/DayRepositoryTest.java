@@ -1,12 +1,9 @@
-package com.humegatech.mpls_food.services;
+package com.humegatech.mpls_food.repositories;
 
 import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.repositories.DayRepository;
-import com.humegatech.mpls_food.repositories.DealRepository;
-import com.humegatech.mpls_food.repositories.PlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
