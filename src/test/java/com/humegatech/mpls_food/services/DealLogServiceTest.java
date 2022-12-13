@@ -40,6 +40,18 @@ public class DealLogServiceTest extends MFServiceTest {
     }
 
     @Test
+    void testMapToEntityPlaceNull() {
+        final DealLogDTO dealLogDTO = DealLogDTO.builder()
+                .build();
+
+        final Exception exception = assertThrows(ResponseStatusException.class, () ->
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, new DealLog())
+        );
+
+        assertEquals(String.format("%s \"place not found\"", HttpStatus.NOT_FOUND), exception.getMessage());
+    }
+
+    @Test
     void testMapToEntityDealNotFound() {
         final Deal deal = TestObjects.deal();
         final DealLogDTO dealLogDTO = DealLogDTO.builder()
@@ -54,6 +66,20 @@ public class DealLogServiceTest extends MFServiceTest {
         );
 
         assertEquals(String.format("%s \"deal not found\"", HttpStatus.NOT_FOUND), exception.getMessage());
+    }
+
+    @Test
+    void testMapToEntityDealNull() {
+        final Deal deal = TestObjects.deal();
+        final DealLogDTO dealLogDTO = DealLogDTO.builder()
+                .place(deal.getPlace().getId())
+                .build();
+
+        when(placeRepository.findById(deal.getPlace().getId())).thenReturn(Optional.of(deal.getPlace()));
+
+        final DealLog dealLog = ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, new DealLog());
+
+        assertEquals(deal.getPlace().getId(), dealLog.getPlace().getId());
     }
 
     @Test

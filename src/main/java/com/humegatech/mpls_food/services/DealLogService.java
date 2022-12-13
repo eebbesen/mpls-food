@@ -78,11 +78,8 @@ public class DealLogService {
     }
 
     private DealLog mapToEntity(final DealLogDTO dealLogDTO, final DealLog dealLog) {
-        final Place place = dealLogDTO.getPlace() == null ? null : placeRepository.findById(dealLogDTO.getPlace())
+        final Place place = placeRepository.findById(dealLogDTO.getPlace())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "place not found"));
-        if (null == place) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "place not found");
-        }
 
         final Deal deal = dealLogDTO.getDeal() == null ? null : dealRepository.findById(dealLogDTO.getDeal())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
