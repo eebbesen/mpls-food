@@ -4,13 +4,10 @@ import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Upload;
 import com.humegatech.mpls_food.models.UploadDTO;
-import com.humegatech.mpls_food.repositories.DealRepository;
-import com.humegatech.mpls_food.repositories.UploadRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,14 +16,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class UploadServiceTest {
-    @MockBean
-    private DealRepository dealRepository;
-    @MockBean
-    private UploadRepository uploadRepository;
+public class UploadServiceTest extends MFServiceTest {
 
     @Autowired
     private UploadService service;
@@ -108,7 +102,46 @@ public class UploadServiceTest {
 
     @Test
     void testFindByDealIdNoDeal() {
-        when(uploadRepository.findByDealId(deal.getId())).thenReturn(new ArrayList<Upload>());
+        when(uploadRepository.findByDealId(deal.getId())).thenReturn(new ArrayList<>());
         assertEquals(0, service.findByDealId(deal.getId()).size());
+    }
+
+    @Test
+    void testCreate() {
+        deal.setId(77L);
+
+        final Upload upload = TestObjects.upload(deal);
+        upload.setId(99L);
+
+        final UploadDTO uploadDTO = UploadDTO.builder()
+                .image(upload.getImage())
+                .dealId(upload.getDeal().getId())
+                .build();
+
+        when(dealRepository.findById(upload.getDeal().getId())).thenReturn(Optional.of(deal));
+        when(uploadRepository.save(any(Upload.class))).thenReturn(upload);
+
+        service.create(uploadDTO);
+
+        verify(uploadRepository, times(1)).save(upload);
+    }
+
+    @Test
+    void testGet() {
+        final Upload upload = TestObjects.upload(TestObjects.deal());
+        upload.setId(99L);
+
+        when(uploadRepository.findById(upload.getId())).thenReturn(Optional.of(upload));
+
+        final UploadDTO uploadDTO = service.get(upload.getId());
+
+        assertEquals(upload.getId(), uploadDTO.getId());
+    }
+
+    @Test
+    void testGetNoUpload() {
+        when(uploadRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> service.get(99L));
     }
 }

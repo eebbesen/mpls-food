@@ -9,6 +9,7 @@ import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ObjectUtils;
@@ -29,6 +30,9 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class DayServiceTest extends MFServiceTest {
+    @Autowired
+    private DayService service;
+
     @Test
     void testCreate() {
         final Deal deal = TestObjects.deal();
