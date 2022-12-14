@@ -145,26 +145,6 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testListWithCuisine() throws Exception {
-        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
-
-        mvc.perform(MockMvcRequestBuilders.get("/days?cuisine=Italian").accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Login")))
-                .andExpect(content().string(containsString("slices")));
-    }
-
-    @Test
-    void testListWithCuisineNoRecords() throws Exception {
-        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
-
-        mvc.perform(MockMvcRequestBuilders.get("/days?cuisine=Thai").accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Login")))
-                .andExpect(content().string(not(containsString("slices"))));
-    }
-
-    @Test
     void testListSortByPriceHtml() throws Exception {
         final Deal deal99 = TestObjects.deal(place, "z 99 cent deal",
                 LocalDateTime.now(ZoneId.systemDefault()).getDayOfWeek());

@@ -68,4 +68,6 @@ MN 55402',true,'2022-10-13 10:55:04.962617','2022-10-13 10:55:04.962617','Jimmy 
 	 (47,'50 South 10th St, Nicollet Mall
 Minneapolis, MN 55403',true,'2022-10-13 11:18:58.565185','2022-10-13 11:18:58.565185','Qdoba',true,'https://locations.qdoba.com/us/mn/minneapolis/50-south-10th-st.html','admin','admin'),
 	 (48,'809 Nicollet Mall
-Minneapolis, MN 55402',true,'2022-10-13 11:33:56.752244','2022-10-13 11:33:56.752244','Panera Bread',true,'https://www.panerabread.com','admin','admin');
+Minneapolis, MN 55402',true,'2022-10-13 11:33:56.752244','2022-10-13 11:33:56.752244','Panera Bread',true,'https://www.panerabread.com','admin','admin'),
+	 (49,'601 S Marquette Ave
+Minneapolis, MN 55402',false,'2022-11-20 16:08:33.677729','2022-11-20 16:08:33.677729','My Burger',true,'https://www.myburgerusa.com/','admin','admin');

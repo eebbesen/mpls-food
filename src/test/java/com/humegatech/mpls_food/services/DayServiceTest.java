@@ -210,7 +210,6 @@ public class DayServiceTest extends MFServiceTest {
         assertEquals(deal.getPlace().getName(), dto.getPlaceName());
         assertEquals(DayOfWeek.WEDNESDAY, dto.getDayOfWeek());
         assertEquals(deal.getDish(), dto.getDish());
-        assertEquals(deal.getCuisine(), dto.getCuisine());
         assertEquals(MplsFoodUtils.capitalizeFirst(DayOfWeek.WEDNESDAY.name()), dto.getDayOfWeekDisplay());
         assertEquals(MplsFoodUtils.getRange(deal.getMinPrice(), deal.getMaxPrice(), "$"), dto.getPriceRange());
         assertEquals(MplsFoodUtils.getRange(deal.getMinDiscount(), deal.getMaxDiscount(), "$"), dto.getDiscountRange());
@@ -233,7 +232,6 @@ public class DayServiceTest extends MFServiceTest {
                 .deal(deal.getId())
                 .dealDescription(deal.getDescription())
                 .placeName(deal.getPlace().getName())
-                .cuisine(deal.getCuisine())
                 .id(88L).build();
 
         when(dealRepository.findById(deal.getId())).thenReturn(Optional.of(deal));

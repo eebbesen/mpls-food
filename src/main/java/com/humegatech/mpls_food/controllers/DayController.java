@@ -126,7 +126,6 @@ public class DayController {
         final DayOfWeek dayOfWeekFilter = handleDayOfWeekFilter(request.getParameter("dayOfWeek"));
         final String dishFilter = handleFilter(request.getParameter("dish"));
         final String placeFilter = handleFilter(request.getParameter("place"));
-        final String cuisineFilter = handleFilter(request.getParameter("cuisine"));
         final String happyHourFilter = handleFilter(request.getParameter("happyHour"));
         final String sortBy = handleFilter(request.getParameter("sortBy"));
         final List<DayDTO> days = dayService.findAllActive();
@@ -134,7 +133,6 @@ public class DayController {
         model.addAttribute("selectedDay", dayOfWeekFilter);
         model.addAttribute("selectedDish", dishFilter);
         model.addAttribute("selectedPlace", placeFilter);
-        model.addAttribute("selectedCuisine", cuisineFilter);
         model.addAttribute("selectedSortBy", sortBy);
         model.addAttribute("nextPriceSort", calculateNextSort(sortBy, "price"));
         model.addAttribute("nextDiscountSort", calculateNextSort(sortBy, "discount"));
@@ -144,8 +142,6 @@ public class DayController {
                 days.stream().map(dayDTO -> dayDTO.getDish()).distinct().sorted().collect(Collectors.toList()));
         model.addAttribute("places",
                 days.stream().map(dayDTO -> dayDTO.getPlaceName()).distinct().sorted().collect(Collectors.toList()));
-        model.addAttribute("cuisines",
-                days.stream().map(dayDTO -> dayDTO.getCuisine()).distinct().sorted().collect(Collectors.toList()));
 
         handleSort(days, sortBy);
 
@@ -158,9 +154,6 @@ public class DayController {
                 })
                 .filter(d -> {
                     return null == placeFilter || d.getPlaceName().equals(placeFilter);
-                })
-                .filter(d -> {
-                    return null == cuisineFilter || d.getCuisine().equals(cuisineFilter);
                 })
                 .filter(d -> {
                     return (null != happyHourFilter && happyHourFilter.equals("on"))

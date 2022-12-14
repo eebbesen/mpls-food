@@ -70,7 +70,6 @@ public class DayService {
         dayDTO.setPlaceName(day.getDeal().getPlace().getName());
         dayDTO.setDayOfWeekDisplay(MplsFoodUtils.capitalizeFirst(day.getDayOfWeek().name()));
         dayDTO.setDish(day.getDeal().getDish());
-        dayDTO.setCuisine(day.getDeal().getCuisine());
         dayDTO.setPriceRange(MplsFoodUtils.getRange(day.getDeal().getMinPrice(),
                 day.getDeal().getMaxPrice(), "$"));
         dayDTO.setDiscountRange(MplsFoodUtils.getRange(day.getDeal().getMinDiscount(),

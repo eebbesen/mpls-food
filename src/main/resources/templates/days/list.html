@@ -9,7 +9,6 @@
       document.getElementById("dayOfWeek").value = '';
       document.getElementById("dish").value = '';
       document.getElementById("place").value = '';
-      document.getElementById("cuisine").value = '';
       document.getElementById("happyHour").checked = false;
     }
 
@@ -17,7 +16,6 @@
       if (document.getElementById("dayOfWeek").value === ''
           && document.getElementById("dish").value === ''
           && document.getElementById("place").value === ''
-          && document.getElementById("cuisine").value === ''
           && document.getElementById("happyHour").checked == false)
       {
         document.getElementById("filtersDiv").classList.remove("show")
@@ -55,13 +53,6 @@
                 th:selected="${place == selectedPlace}"
                 th:text="${place}"
                 th:value="${place}"></option>
-      </select>
-      <select class="form-select w-25" id="cuisine" name="cuisine">
-        <option th:text="#{cuisine.empty.label}" value=""/>
-        <option th:each="cuisine : ${cuisines}"
-                th:selected="${cuisine == selectedCuisine}"
-                th:text="${cuisine}"
-                th:value="${cuisine}"></option>
       </select>
       <label for="happyHour" th:checked value="happyHour" >Include Happy Hour?</label>
       <input id="happyHour" name="happyHour" th:checked="${happyHour}" type="checkbox" />
