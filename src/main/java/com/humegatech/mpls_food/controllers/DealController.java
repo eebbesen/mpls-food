@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ public class DealController {
         return placeService.findAll().stream()
                 .collect(Collectors.toMap(PlaceDTO::getId, PlaceDTO::getName))
                 .entrySet().stream().sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (k, v) -> k, LinkedHashMap::new));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k, v) -> k, LinkedHashMap::new));
     }
 
     @GetMapping
@@ -81,6 +82,25 @@ public class DealController {
             return "deal/edit";
         }
         dealService.update(id, dealDTO);
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
+        return "redirect:/deals";
+    }
+
+    @GetMapping("/copy/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String copy(@PathVariable final Long id, final Model model) {
+        model.addAttribute("deal", dealService.get(id));
+        return "deal/copy";
+    }
+
+    @PostMapping("/copy/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String copy(@PathVariable final Long dealIdToCopy, @RequestParam final String[] placeIds,
+                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "deal/copy";
+        }
+        dealService.copy(dealIdToCopy, Arrays.stream(placeIds).map(Long::getLong).toList());
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
         return "redirect:/deals";
     }

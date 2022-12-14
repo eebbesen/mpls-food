@@ -467,4 +467,35 @@ public class DealServiceTest {
         verify(dealRepository, times(1)).save(any(Deal.class));
     }
 
+    @Test
+    void testCopy() {
+        dealMonTues.setId(99L);
+        final List<Long> placeIds = List.of(2L, 3L, 72L);
+        final List<Place> places = List.of(TestObjects.place("place 1"), TestObjects.place("place 2"), TestObjects.place("place 3"));
+
+        when(dealRepository.findById(dealMonTues.getId())).thenReturn(Optional.of(dealMonTues));
+        when(placeRepository.findByIdIn(placeIds)).thenReturn(places);
+
+        service.copy(dealMonTues.getId(), placeIds);
+    }
+
+    @Test
+    void testCopyPlaceNotFound() {
+        dealMonTues.setId(99L);
+
+        when(dealRepository.findById(dealMonTues.getId())).thenReturn(Optional.of(dealMonTues));
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> service.copy(dealMonTues.getId(), List.of(2L, 3L, 72L)));
+
+        assertEquals("404 NOT_FOUND \"one or more places not found\"", ex.getMessage());
+        assertEquals("one or more places not found", ex.getReason());
+    }
+
+    @Test
+    void testCopyDealNotFound() {
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> service.copy(dealMonTues.getId(), List.of(2L, 3L, 72L)));
+
+        assertEquals("404 NOT_FOUND \"deal not found\"", ex.getMessage());
+        assertEquals("deal not found", ex.getReason());
+    }
 }

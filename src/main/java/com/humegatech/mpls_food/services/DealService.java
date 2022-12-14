@@ -101,6 +101,16 @@ public class DealService {
         dealRepository.deleteById(id);
     }
 
+    public void copy(final Long dealId, List<Long> placeIds) {
+        final Deal deal = dealRepository.findById(dealId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
+        final List<Place> places = placeRepository.findByIdIn(placeIds);
+        if (places.size() < placeIds.size()) {
+            // todo log/message which place(s) are not found
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "one or more places not found");
+        }
+    }
+
     private DealDTO mapToDTO(final Deal deal, final DealDTO dealDTO) {
         dealDTO.setId(deal.getId());
         dealDTO.setDescription(deal.getDescription());
