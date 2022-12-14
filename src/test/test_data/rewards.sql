@@ -43,4 +43,5 @@ https://chipotle.com/rewards',2,46),
 	 (31,'admin','2022-10-13 11:18:58.64721','2022-10-13 11:18:58.64721','admin','Earn 1 point per $1 spent. Periodic offers.
 https://www.qdoba.com/rewards',2,47),
 	 (32,'admin','2022-10-13 11:33:56.760696','2022-10-13 11:33:56.760696','admin','Earn points for purchases. Periodic offers.
-https://www.panerabread.com/en-us/mypanera/rewards.html',2,48);
+https://www.panerabread.com/en-us/mypanera/rewards.html',2,48),
+	 (33,'admin','2022-11-20 16:08:33.692624','2022-11-20 16:08:33.692624','admin','Periodic deals in via email. $2.00 off next order after first online order',3,49);

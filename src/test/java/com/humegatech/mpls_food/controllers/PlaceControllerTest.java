@@ -233,7 +233,6 @@ public class PlaceControllerTest extends MFControllerTest {
         place.setId(99L);
         final DealDTO dealDTO = DealDTO.builder()
                 .place(deal.getPlace().getId())
-                .cuisine(deal.getCuisine())
                 .dish(deal.getDish())
                 .placeName(deal.getPlace().getName())
                 .description(deal.getDescription())

@@ -55,7 +55,6 @@ public class TestObjects {
                 .place(tacoJohns)
                 .id(dealId())
                 .dish("Taco")
-                .cuisine("Tex Mex")
                 .build();
 
         deal.getDays().add(Day.builder()
@@ -92,7 +91,6 @@ public class TestObjects {
                 .description("$5.00 for two slices from 10:30 - 11:00")
                 .id(dealId())
                 .place(ginellis)
-                .cuisine("Italian")
                 .startTime("10:30")
                 .endTime("11:00")
                 .minPrice(5d)
@@ -144,7 +142,6 @@ public class TestObjects {
                 .id(dealId())
                 .place(ginellis())
                 .dish("Pizza")
-                .cuisine("Italian")
                 .minPrice(5d)
                 .minDiscount(2.4d)
                 .minDiscountPercent(32d)
@@ -169,7 +166,6 @@ public class TestObjects {
                 .place(place)
                 .id(dealId())
                 .dish("Pizza")
-                .cuisine("Italian")
                 .minPrice(3.20D)
                 .maxPrice(3.20d)
                 .minDiscount(.50d)

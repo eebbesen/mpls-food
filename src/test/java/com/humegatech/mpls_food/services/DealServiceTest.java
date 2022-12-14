@@ -54,7 +54,6 @@ public class DealServiceTest {
         dealMonTuesDTO.setPlace(dealMonTues.getPlace().getId());
         dealMonTuesDTO.setPlaceName(dealMonTues.getPlace().getName());
         dealMonTuesDTO.setDish(dealMonTues.getDish());
-        dealMonTuesDTO.setCuisine(dealMonTues.getCuisine());
         dealMonTuesDTO.setId(dealMonTues.getId());
         dealMonTuesDTO.setMinPrice(dealMonTues.getMinPrice());
         dealMonTuesDTO.setMaxPrice(dealMonTues.getMaxPrice());
@@ -287,7 +286,6 @@ public class DealServiceTest {
         assertEquals(dealMonTues.getDescription(), deal.getDescription());
         assertEquals(dealMonTues.getId(), deal.getId());
         assertEquals(dealMonTues.getDish(), deal.getDish());
-        assertEquals(dealMonTues.getCuisine(), deal.getCuisine());
         assertEquals(dealMonTues.getMaxPrice(), deal.getMaxPrice());
         assertEquals(dealMonTues.getMinPrice(), deal.getMinPrice());
         assertEquals(dealMonTues.getMaxDiscount(), deal.getMaxDiscount());
@@ -422,7 +420,6 @@ public class DealServiceTest {
                     dealMonTues.getMaxDiscountPercent()), dto.getDiscountPercentRange());
             assertEquals("MT-----", dto.getDaysDisplay());
             assertEquals(dealMonTues.getDish(), dto.getDish());
-            assertEquals(dealMonTues.getCuisine(), dto.getCuisine());
             assertEquals(dealMonTues.getStartTime(), dto.getStartTime());
             assertEquals(dealMonTues.getEndTime(), dto.getEndTime());
             assertEquals(dealMonTues.getStartDate(), dto.getStartDate());

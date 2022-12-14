@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS public.deals
     description text COLLATE pg_catalog."default" NOT NULL,
     last_updated timestamp without time zone NOT NULL,
     place_id bigint NOT NULL,
-    cuisine varchar(255) NULL,
     dish text NULL,
     CONSTRAINT deal_pkey PRIMARY KEY (id),
     CONSTRAINT fk_deals_places FOREIGN KEY (place_id)

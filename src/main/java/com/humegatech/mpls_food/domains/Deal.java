@@ -31,8 +31,6 @@ public class Deal extends BaseEntity {
     @Column(nullable = false, columnDefinition = "text")
     private String description;
     @Column(columnDefinition = "text")
-    private String cuisine;
-    @Column(columnDefinition = "text")
     private String dish;
     @ManyToOne
     @JsonBackReference
@@ -99,7 +97,6 @@ public class Deal extends BaseEntity {
         return "Deal{" +
                 "taxIncluded=" + taxIncluded +
                 ", description='" + description + '\'' +
-                ", cuisine='" + cuisine + '\'' +
                 ", dish='" + dish + '\'' +
                 ", place=" + place +
                 ", days=" + days +
