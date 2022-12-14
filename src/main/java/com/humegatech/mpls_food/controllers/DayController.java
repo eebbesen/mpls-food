@@ -139,7 +139,7 @@ public class DayController {
         model.addAttribute("nextDiscountPercentSort", calculateNextSort(sortBy, "discountPercent"));
         model.addAttribute("happyHour", happyHourFilter);
         model.addAttribute("dishes",
-                days.stream().map(dayDTO -> dayDTO.getDish()).distinct().sorted().collect(Collectors.toList()));
+                days.stream().map(dayDTO -> dayDTO.getDish()).distinct().sorted(Comparator.nullsLast(Comparator.naturalOrder())).collect(Collectors.toList())); // Comparator.nullsLast(Comparator.naturalOrder())
         model.addAttribute("places",
                 days.stream().map(dayDTO -> dayDTO.getPlaceName()).distinct().sorted().collect(Collectors.toList()));
 
@@ -150,7 +150,7 @@ public class DayController {
                     return null == dayOfWeekFilter || d.getDayOfWeek().equals(dayOfWeekFilter);
                 })
                 .filter(d -> {
-                    return null == dishFilter || d.getDish().equals(dishFilter);
+                    return null == dishFilter || (null != d.getDish() && d.getDish().equals(dishFilter));
                 })
                 .filter(d -> {
                     return null == placeFilter || d.getPlaceName().equals(placeFilter);

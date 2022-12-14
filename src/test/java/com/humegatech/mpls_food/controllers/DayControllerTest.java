@@ -599,6 +599,34 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
+    void testListDayWithNullDish() throws Exception {
+        final Day day1 = TestObjects.day(deal, DayOfWeek.WEDNESDAY);
+        final Day day2 = TestObjects.day(deal, DayOfWeek.SUNDAY);
+        final List<DayDTO> dayDTOs = daysToDayDTOs(List.of(day1, day2));
+        dayDTOs.get(0).setDish(null);
+
+        when(dayService.findAllActive()).thenReturn(dayDTOs);
+
+        mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Ginelli&#39;s Pizza")));
+    }
+
+    @Test
+    void testListDayWithNullDishFilterDish() throws Exception {
+        final Day day1 = TestObjects.day(deal, DayOfWeek.WEDNESDAY);
+        final Day day2 = TestObjects.day(deal, DayOfWeek.SUNDAY);
+        final List<DayDTO> dayDTOs = daysToDayDTOs(List.of(day1, day2));
+        dayDTOs.get(0).setDish(null);
+
+        when(dayService.findAllActive()).thenReturn(dayDTOs);
+
+        mvc.perform(MockMvcRequestBuilders.get("/days?dish=Pizza").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Ginelli&#39;s Pizza")));
+    }
+
+    @Test
     @WithMockUser
     void testListUser() throws Exception {
         when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
