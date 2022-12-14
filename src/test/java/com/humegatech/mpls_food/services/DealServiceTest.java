@@ -237,7 +237,9 @@ public class DealServiceTest {
         dealStartDateEndDate2.setStartDate(LocalDate.now());
         dealStartDateEndDate2.setEndDate(LocalDate.now());
 
-        when(dealRepository.findAll()).thenReturn(List.of(dealStartDateEndDate1, dealStartDateEndDate2, dealNoStartDateNoEndDate));
+        when(dealRepository.findAll()).thenReturn(List.of(dealStartDateEndDate1,
+                dealStartDateEndDate2,
+                dealNoStartDateNoEndDate));
 
         final List<DealDTO> dealDTOs = service.findAll();
 
@@ -310,14 +312,19 @@ public class DealServiceTest {
     @Test
     void testMapToEntityPlaceNotFound() {
         final DealDTO dealDTO = DealDTO.builder().place(99L).build();
-        Exception ex = assertThrows(ResponseStatusException.class, () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal()));
+        Exception ex = assertThrows(ResponseStatusException.class, () ->
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal())
+        );
         assertEquals("404 NOT_FOUND \"place not found\"", ex.getMessage());
     }
 
     @Test
     void testMapToEntityNullPlace() {
         final DealDTO dealDTO = DealDTO.builder().build();
-        Exception ex = assertThrows(ResponseStatusException.class, () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal()));
+        Exception ex = assertThrows(ResponseStatusException.class, () ->
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal())
+        );
+
         assertEquals("404 NOT_FOUND \"place not found\"", ex.getMessage());
     }
 
@@ -409,8 +416,10 @@ public class DealServiceTest {
             assertEquals(dealMonTues.isVerified(), dto.isVerified());
             assertEquals(dealMonTues.isTaxIncluded(), dto.isTaxIncluded());
             assertEquals(String.format("$%.2f", dealMonTues.getMinPrice()), dto.getPriceRange());
-            assertEquals(String.format("$%.2f - $%.2f", dealMonTues.getMinDiscount(), dealMonTues.getMaxDiscount()), dto.getDiscountRange());
-            assertEquals(String.format("%.0f%% - %.0f%%", dealMonTues.getMinDiscountPercent(), dealMonTues.getMaxDiscountPercent()), dto.getDiscountPercentRange());
+            assertEquals(String.format("$%.2f - $%.2f", dealMonTues.getMinDiscount(),
+                    dealMonTues.getMaxDiscount()), dto.getDiscountRange());
+            assertEquals(String.format("%.0f%% - %.0f%%", dealMonTues.getMinDiscountPercent(),
+                    dealMonTues.getMaxDiscountPercent()), dto.getDiscountPercentRange());
             assertEquals("MT-----", dto.getDaysDisplay());
             assertEquals(dealMonTues.getDish(), dto.getDish());
             assertEquals(dealMonTues.getCuisine(), dto.getCuisine());
