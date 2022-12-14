@@ -223,6 +223,32 @@ public class DealServiceTest {
     }
 
     @Test
+    void testFindAllSorting() {
+        final Deal dealNoStartDateNoEndDate = TestObjects.deal();
+        dealNoStartDateNoEndDate.setDescription("dealNoStartDateNoEndDate");
+        dealNoStartDateNoEndDate.setStartDate(null);
+        dealNoStartDateNoEndDate.setEndDate(null);
+        final Deal dealStartDateEndDate1 = TestObjects.deal();
+        dealStartDateEndDate1.setDescription("dealStartDateEndDate1");
+        dealStartDateEndDate1.setStartDate(LocalDate.now().minusDays(1));
+        dealStartDateEndDate1.setEndDate(LocalDate.now().plusDays(1));
+        final Deal dealStartDateEndDate2 = TestObjects.deal();
+        dealStartDateEndDate2.setDescription("dealStartDateEndDate2");
+        dealStartDateEndDate2.setStartDate(LocalDate.now());
+        dealStartDateEndDate2.setEndDate(LocalDate.now());
+
+        when(dealRepository.findAll()).thenReturn(List.of(dealStartDateEndDate1,
+                dealStartDateEndDate2,
+                dealNoStartDateNoEndDate));
+
+        final List<DealDTO> dealDTOs = service.findAll();
+
+        assertEquals(dealNoStartDateNoEndDate.getDescription(), dealDTOs.get(0).getDescription());
+        assertEquals(dealStartDateEndDate1.getDescription(), dealDTOs.get(1).getDescription());
+        assertEquals(dealStartDateEndDate2.getDescription(), dealDTOs.get(2).getDescription());
+    }
+
+    @Test
     void testupdateNotFound() {
         Exception ex = assertThrows(ResponseStatusException.class, () -> service.update(99L, new DealDTO()));
         assertEquals("404 NOT_FOUND", ex.getMessage());
@@ -286,21 +312,35 @@ public class DealServiceTest {
     @Test
     void testMapToEntityPlaceNotFound() {
         final DealDTO dealDTO = DealDTO.builder().place(99L).build();
-        Exception ex = assertThrows(ResponseStatusException.class, () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal()));
+        Exception ex = assertThrows(ResponseStatusException.class, () ->
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal())
+        );
         assertEquals("404 NOT_FOUND \"place not found\"", ex.getMessage());
     }
 
     @Test
     void testMapToEntityNullPlace() {
         final DealDTO dealDTO = DealDTO.builder().build();
-        Exception ex = assertThrows(ResponseStatusException.class, () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal()));
+        Exception ex = assertThrows(ResponseStatusException.class, () ->
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal())
+        );
+
         assertEquals("404 NOT_FOUND \"place not found\"", ex.getMessage());
     }
 
     @Test
+    void testGet() {
+        dealMonTues.setId(99L);
+        when(dealRepository.findById(dealMonTues.getId())).thenReturn(Optional.of(dealMonTues));
+
+        final DealDTO dealDTO = service.get(dealMonTues.getId());
+
+        assertEquals(dealMonTues.getId(), dealDTO.getId());
+    }
+
+    @Test
     void testGetNotFound() {
-        Exception ex = assertThrows(ResponseStatusException.class, () -> service.get(99L));
-        assertEquals("404 NOT_FOUND", ex.getMessage());
+        assertThrows(ResponseStatusException.class, () -> service.get(99L));
     }
 
     @Test
@@ -376,8 +416,10 @@ public class DealServiceTest {
             assertEquals(dealMonTues.isVerified(), dto.isVerified());
             assertEquals(dealMonTues.isTaxIncluded(), dto.isTaxIncluded());
             assertEquals(String.format("$%.2f", dealMonTues.getMinPrice()), dto.getPriceRange());
-            assertEquals(String.format("$%.2f - $%.2f", dealMonTues.getMinDiscount(), dealMonTues.getMaxDiscount()), dto.getDiscountRange());
-            assertEquals(String.format("%.0f%% - %.0f%%", dealMonTues.getMinDiscountPercent(), dealMonTues.getMaxDiscountPercent()), dto.getDiscountPercentRange());
+            assertEquals(String.format("$%.2f - $%.2f", dealMonTues.getMinDiscount(),
+                    dealMonTues.getMaxDiscount()), dto.getDiscountRange());
+            assertEquals(String.format("%.0f%% - %.0f%%", dealMonTues.getMinDiscountPercent(),
+                    dealMonTues.getMaxDiscountPercent()), dto.getDiscountPercentRange());
             assertEquals("MT-----", dto.getDaysDisplay());
             assertEquals(dealMonTues.getDish(), dto.getDish());
             assertEquals(dealMonTues.getCuisine(), dto.getCuisine());
@@ -408,6 +450,24 @@ public class DealServiceTest {
         ReflectionTestUtils.invokeMethod(service, "applyUploadsToDTO", dealMonTues, dto);
 
         assertEquals(2, dto.getUploads().size());
+    }
+
+    @Test
+    void testDelete() {
+        service.delete(99L);
+        verify(dealRepository, times(1)).deleteById(99L);
+    }
+
+    @Test
+    void testCreate() {
+        dealMonTues.setId(99L);
+        when(placeRepository.findById(dealMonTuesDTO.getPlace())).thenReturn(Optional.of(dealMonTues.getPlace()));
+        when(dealRepository.save(any(Deal.class))).thenReturn(dealMonTues);
+
+        Long id = service.create(dealMonTuesDTO);
+
+        assertEquals(dealMonTues.getId(), id);
+        verify(dealRepository, times(1)).save(any(Deal.class));
     }
 
 }

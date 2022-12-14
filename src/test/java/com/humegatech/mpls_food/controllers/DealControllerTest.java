@@ -4,30 +4,24 @@ import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DealDTO;
-import com.humegatech.mpls_food.services.PlaceService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.util.NestedServletException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,27 +30,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DealControllerTest extends MFControllerTest {
     private Place place;
     private Deal deal;
-    private DealController controller;
-
     @Autowired
-    private PlaceService placeService;
-    @Mock
-    private BindingResult bindingResult;
+    private DealController controller;
 
     @BeforeEach
     void setUp() {
-        place = placeRepository.save(TestObjects.ginellis());
-        Deal d = TestObjects.fridayTwofer();
-        d.setPlace(place);
-        deal = dealRepository.save(d);
-
-        controller = new DealController(null, placeService);
+        place = TestObjects.ginellis();
+        deal = TestObjects.fridayTwofer();
+        deal.setPlace(place);
 
         when(bindingResult.hasErrors()).thenReturn(false);
     }
 
     @Test
     void testList() throws Exception {
+        when(dealService.findAll()).thenReturn(dealsToDealDTOs(List.of(deal)));
+
         mvc.perform(MockMvcRequestBuilders.get("/deals").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -67,6 +56,8 @@ public class DealControllerTest extends MFControllerTest {
     @Test
     @WithMockUser
     void testListUser() throws Exception {
+        when(dealService.findAll()).thenReturn(dealsToDealDTOs(List.of(deal)));
+
         mvc.perform(MockMvcRequestBuilders.get("/deals").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Logout")))
@@ -91,43 +82,42 @@ public class DealControllerTest extends MFControllerTest {
     @Test
     @WithMockUser
     void testPostAddUser() throws Exception {
-        final int dealCount = dealRepository.findAll().size();
         mvc.perform(MockMvcRequestBuilders.post("/deals/add")
                         .with(csrf())
                         .param("description", "Test deal")
                         .param("friday", "true")
                         .param("place", place.getId().toString()))
                 .andExpect(status().is3xxRedirection());
-        assertEquals(dealCount + 1, dealRepository.findAll().size());
+
+        verify(dealService, times(1)).create(any(DealDTO.class));
     }
 
     @Test
     @WithMockUser
     void testPostAddUserBindingResultError() throws Exception {
         when(bindingResult.hasErrors()).thenReturn(true);
-        final int dealCount = dealRepository.findAll().size();
 
         final String ret = controller.add(new DealDTO(), bindingResult, null);
         assertEquals("deal/add", ret);
-
-        assertEquals(dealCount, dealRepository.findAll().size());
     }
 
-    // todo this test will fail once the app handles bad payloads better
-    // for now the expectation is never used
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void testPostAddAdminBadPayload() {
-        Assertions.assertThrows(NestedServletException.class, () -> mvc.perform(MockMvcRequestBuilders.post("/deals/add")
-                        .with(csrf())
-                        .param("friday", "true")
-                        .param("place", place.getId().toString()))
-                .andExpect(status().is4xxClientError()));
-    }
+//    // todo this test will fail once the app handles bad payloads better
+//    // for now the expectation is never used
+//    @Test
+//    @WithMockUser(roles = "ADMIN")
+//    void testPostAddAdminBadPayload() {
+//        Assertions.assertThrows(NestedServletException.class, () -> mvc.perform(MockMvcRequestBuilders.post("/deals/add")
+//                        .with(csrf())
+//                        .param("friday", "true")
+//                        .param("place", place.getId().toString()))
+//                .andExpect(status().is4xxClientError()));
+//    }
 
     @Test
     @WithMockUser(roles = "USER")
     void testGetEditUser() throws Exception {
+        when(dealService.get(deal.getId())).thenReturn(dealsToDealDTOs(List.of(deal)).get(0));
+
         mvc.perform(MockMvcRequestBuilders.get(String.format("/deals/edit/%d", deal.getId())).accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Edit Deal")));
@@ -148,7 +138,6 @@ public class DealControllerTest extends MFControllerTest {
                         .param("description", updatedDescription)
                         .param("place", place.getId().toString()))
                 .andExpect(status().is3xxRedirection());
-        assertEquals(updatedDescription, dealRepository.findById(deal.getId()).get().getDescription());
     }
 
     @Test
@@ -159,7 +148,6 @@ public class DealControllerTest extends MFControllerTest {
                         .param("description", "Test deal updated")
                         .param("place", place.getId().toString()))
                 .andExpect(status().is3xxRedirection());
-        assertEquals("Test deal updated", dealRepository.findById(deal.getId()).get().getDescription());
     }
 
     @Test
@@ -178,7 +166,6 @@ public class DealControllerTest extends MFControllerTest {
         mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/delete/%d", deal.getId()))
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
-        assertEquals(Optional.empty(), dealRepository.findById(deal.getId()));
     }
 
     @Test
@@ -187,14 +174,13 @@ public class DealControllerTest extends MFControllerTest {
         mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/delete/%d", deal.getId()))
                         .with(csrf()))
                 .andExpect(status().is4xxClientError());
-        assertNotNull(dealRepository.findById(deal.getId()));
     }
 
     @Test
     void testSortedPlaces() {
+        controller = new DealController(dealService, placeService);
         final Place newPlace = TestObjects.tacoJohns();
-        newPlace.setId(null);
-        placeRepository.save(newPlace);
+        when(placeService.findAll()).thenReturn(placesToPlaceDTOs(List.of(place, newPlace)));
 
         Map<Long, String> placeMap = ReflectionTestUtils.invokeMethod(controller, "sortedPlaces");
         Iterator<Map.Entry<Long, String>> places = placeMap.entrySet().iterator();

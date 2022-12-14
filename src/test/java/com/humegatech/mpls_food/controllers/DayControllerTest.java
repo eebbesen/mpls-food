@@ -5,6 +5,7 @@ import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DayDTO;
+import com.humegatech.mpls_food.models.DealDTO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -22,11 +23,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,20 +37,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DayControllerTest extends MFControllerTest {
     private Place place;
     private Deal deal;
+    private DealDTO dealDTO;
 
     @Autowired
     private DayController controller;
 
     @BeforeEach
     void setUp() {
-        place = placeRepository.save(TestObjects.ginellis());
-        Deal d = TestObjects.fridayTwofer();
-        d.setPlace(place);
-        deal = dealRepository.save(d);
+        place = TestObjects.ginellis();
+        deal = TestObjects.fridayTwofer();
+        deal.setPlace(place);
     }
 
     @Test
     void testList() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -57,6 +62,8 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithDayOfWeek() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days?dayOfWeek=FRIDAY").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -66,6 +73,8 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithDayOfWeekNoRecords() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days?dayOfWeek=MONDAY").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -74,6 +83,8 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithDayOfWeekNoDay() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days?dayOfWeek=").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -83,6 +94,8 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithDayOfInvalidDay() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days?dayOfWeek=BLORTSDAY").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -92,6 +105,8 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithDish() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days?dish=Pizza").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -101,6 +116,8 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithDishNoRecords() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days?dish=Curry").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -109,6 +126,8 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithPlace() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days?place=Ginelli's Pizza").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -117,6 +136,8 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithPlaceNoMatch() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days?place=Taco Bell").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -125,6 +146,8 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithCuisine() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days?cuisine=Italian").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -133,6 +156,8 @@ public class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithCuisineNoRecords() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days?cuisine=Thai").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
@@ -147,14 +172,17 @@ public class DayControllerTest extends MFControllerTest {
         deal99.setId(null);
         deal99.getDays().forEach(d -> d.setId(null));
         place.getDeals().add(deal99);
-        dealRepository.save(deal99);
+
         final Deal deal199 = TestObjects.deal(place, "a 199 cent deal",
                 LocalDateTime.now(ZoneId.systemDefault()).getDayOfWeek());
         deal199.setMinPrice(1.99d);
         deal199.setId(null);
         deal199.getDays().forEach(d -> d.setId(null));
         place.getDeals().add(deal199);
-        dealRepository.save(deal199);
+
+        final List<Day> days = Stream.of(deal99.getDays(), deal199.getDays(), deal.getDays()).flatMap(Set::stream).toList();
+
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(days));
 
         final MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/days?sortBy=price")
                         .accept(MediaType.APPLICATION_XML))
@@ -173,7 +201,7 @@ public class DayControllerTest extends MFControllerTest {
     @Test
     void testListWithHappyHourFilterStartTimeAtCutoff() throws Exception {
         deal.setStartTime("13:00");
-        dealRepository.save(deal);
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
@@ -187,7 +215,7 @@ public class DayControllerTest extends MFControllerTest {
     @Test
     void testListWithHappyHourFilterStartTimeAfterCutoff() throws Exception {
         deal.setStartTime("13:01");
-        dealRepository.save(deal);
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
@@ -201,7 +229,7 @@ public class DayControllerTest extends MFControllerTest {
     @Test
     void testListWithHappyHourFilterStartTimeJustBeforeCutoff() throws Exception {
         deal.setStartTime("12:59");
-        dealRepository.save(deal);
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
@@ -215,7 +243,7 @@ public class DayControllerTest extends MFControllerTest {
     @Test
     void testListWithHappyHourFilterNoStartTime() throws Exception {
         deal.setStartTime(null);
-        dealRepository.save(deal);
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
@@ -229,7 +257,7 @@ public class DayControllerTest extends MFControllerTest {
     @Test
     void testListWithHappyHourFilterIncorrectFilterValue() throws Exception {
         deal.setStartTime("14:00");
-        dealRepository.save(deal);
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
@@ -593,6 +621,8 @@ public class DayControllerTest extends MFControllerTest {
     @Test
     @WithMockUser
     void testListUser() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Logout")))
@@ -603,6 +633,8 @@ public class DayControllerTest extends MFControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void testListAdmin() throws Exception {
+        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
+
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Logout")))
@@ -615,21 +647,27 @@ public class DayControllerTest extends MFControllerTest {
     @Test
     @WithMockUser
     void testPostDeleteNotAllowed() throws Exception {
-        final Day day = dealRepository.findById(deal.getId()).get().getDays().stream().findFirst().get();
+        final Day day = deal.getDays().stream().findFirst().get();
+        day.setId(1L);
+
         mvc.perform(MockMvcRequestBuilders.post(String.format("/days/delete/%d", day.getId()))
                         .accept(MediaType.APPLICATION_XML))
                 .andExpect(status().is4xxClientError());
-        assertEquals(day.getId(), dayRepository.findById(day.getId()).get().getId());
+
+        verify(dayService, times(0)).delete(day.getId());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void testPostDeleteAdmin() throws Exception {
-        final Day day = dealRepository.findById(deal.getId()).get().getDays().stream().findFirst().get();
+        final Day day = deal.getDays().stream().findFirst().get();
+        day.setId(1L);
+
         mvc.perform(MockMvcRequestBuilders.post(String.format("/days/delete/%d", day.getId()))
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
-        assertEquals(Optional.empty(), dayRepository.findById(day.getId()));
+
+        verify(dayService, times(1)).delete(day.getId());
     }
 
     @Test

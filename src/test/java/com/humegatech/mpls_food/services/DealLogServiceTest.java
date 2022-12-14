@@ -4,14 +4,11 @@ import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.DealLog;
 import com.humegatech.mpls_food.domains.DealType;
+import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DealLogDTO;
-import com.humegatech.mpls_food.repositories.DealLogRepository;
-import com.humegatech.mpls_food.repositories.DealRepository;
-import com.humegatech.mpls_food.repositories.PlaceRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,26 +19,29 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class DealLogServiceTest {
+public class DealLogServiceTest extends MFServiceTest {
     @Autowired
     private DealLogService service;
-
-    @MockBean
-    private DealRepository dealRepository;
-
-    @MockBean
-    private PlaceRepository placeRepository;
-
-    @MockBean
-    private DealLogRepository dealLogRepository;
 
     @Test
     void testMapToEntityPlaceNotFound() {
         final DealLogDTO dealLogDTO = DealLogDTO.builder()
                 .place(99L)
+                .build();
+
+        final Exception exception = assertThrows(ResponseStatusException.class, () ->
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, new DealLog())
+        );
+
+        assertEquals(String.format("%s \"place not found\"", HttpStatus.NOT_FOUND), exception.getMessage());
+    }
+
+    @Test
+    void testMapToEntityPlaceNull() {
+        final DealLogDTO dealLogDTO = DealLogDTO.builder()
                 .build();
 
         final Exception exception = assertThrows(ResponseStatusException.class, () ->
@@ -66,6 +66,20 @@ public class DealLogServiceTest {
         );
 
         assertEquals(String.format("%s \"deal not found\"", HttpStatus.NOT_FOUND), exception.getMessage());
+    }
+
+    @Test
+    void testMapToEntityDealNull() {
+        final Deal deal = TestObjects.deal();
+        final DealLogDTO dealLogDTO = DealLogDTO.builder()
+                .place(deal.getPlace().getId())
+                .build();
+
+        when(placeRepository.findById(deal.getPlace().getId())).thenReturn(Optional.of(deal.getPlace()));
+
+        final DealLog dealLog = ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, new DealLog());
+
+        assertEquals(deal.getPlace().getId(), dealLog.getPlace().getId());
     }
 
     @Test
@@ -122,5 +136,88 @@ public class DealLogServiceTest {
 
         List<DealLogDTO> dealLogDTOs = service.findAll();
 
+    }
+
+    @Test
+    void testCreate() {
+        final Deal deal = TestObjects.deal();
+        deal.setId(77L);
+        deal.getPlace().setId(88L);
+
+        final DealLogDTO dealLogDTO = DealLogDTO.builder()
+                .id(99L)
+                .deal(deal.getId())
+                .place(deal.getPlace().getId())
+                .build();
+
+        final DealLog dealLog = TestObjects.dealLog();
+        dealLog.setId(dealLogDTO.getId());
+
+        when(placeRepository.findById(deal.getPlace().getId())).thenReturn(Optional.of(deal.getPlace()));
+        when(dealRepository.findById(deal.getId())).thenReturn(Optional.of(deal));
+        when(dealLogRepository.save(any(DealLog.class))).thenReturn(dealLog);
+
+        service.create(dealLogDTO);
+
+        verify(dealLogRepository, times(1)).save(any(DealLog.class));
+    }
+
+    @Test
+    void testUpdate() {
+        final Place place = TestObjects.place("Taco Bell");
+        place.setId(88L);
+        final Deal deal = TestObjects.deal();
+        deal.setId(77L);
+        deal.setPlace(place);
+
+        final DealLogDTO dealLogDTO = DealLogDTO.builder()
+                .id(99L)
+                .deal(deal.getId())
+                .place(place.getId())
+                .build();
+
+        final DealLog dealLog = TestObjects.dealLog();
+        dealLog.setId(99L);
+
+        when(placeRepository.findById(place.getId())).thenReturn(Optional.of(place));
+        when(dealRepository.findById(deal.getId())).thenReturn(Optional.of(deal));
+
+
+        when(dealLogRepository.findById(dealLog.getId())).thenReturn(Optional.of(dealLog));
+
+        service.update(dealLog.getId(), dealLogDTO);
+
+        verify(dealLogRepository, times(1)).save(dealLog);
+    }
+
+    @Test
+    void testUpdateNoDealLog() {
+        when(dealLogRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> service.update(99L, new DealLogDTO()));
+    }
+
+    @Test
+    void testDelete() {
+        service.delete(99L);
+
+        verify(dealLogRepository, times(1)).deleteById(99L);
+    }
+
+    @Test
+    void testGet() {
+        final DealLog dealLog = TestObjects.dealLog();
+        dealLog.setId(99L);
+
+        when(dealLogRepository.findById(dealLog.getId())).thenReturn(Optional.of(dealLog));
+
+        final DealLogDTO dealLogDTO = service.get(dealLog.getId());
+
+        assertEquals(dealLog.getId(), dealLogDTO.getId());
+    }
+
+    @Test
+    void testGetNoDealLog() {
+        assertThrows(ResponseStatusException.class, () -> service.get(99L));
     }
 }

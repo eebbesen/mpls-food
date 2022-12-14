@@ -42,10 +42,9 @@ public class DayService {
                 .collect(Collectors.toList());
     }
 
-    public List<DayDTO> findAll() {
+    private List<DayDTO> sortDays(final List<Day> days) {
         final Map<DayOfWeek, Integer> order = MplsFoodUtils.getSortOrderFromDay(LocalDateTime.now().getDayOfWeek());
-        return dayRepository.findAll()
-                .stream()
+        return days.stream()
                 .map(day -> mapToDTO(day, new DayDTO()))
                 .sorted(Comparator.comparing((DayDTO d) -> order.get(d.getDayOfWeek()))
                         .thenComparing((DayDTO d) -> null == d.getStartTime() ? "zzz" : d.getStartTime())
@@ -54,16 +53,12 @@ public class DayService {
                 .collect(Collectors.toList());
     }
 
+    public List<DayDTO> findAll() {
+        return sortDays(dayRepository.findAll());
+    }
+
     public List<DayDTO> findAllActive() {
-        final Map<DayOfWeek, Integer> order = MplsFoodUtils.getSortOrderFromDay(LocalDateTime.now().getDayOfWeek());
-        return dayRepository.findAllActive()
-                .stream()
-                .map(day -> mapToDTO(day, new DayDTO()))
-                .sorted(Comparator.comparing((DayDTO d) -> order.get(d.getDayOfWeek()))
-                        .thenComparing((DayDTO d) -> null == d.getStartTime() ? "zzz" : d.getStartTime())
-                        .thenComparing((DayDTO d) -> null == d.getEndTime() ? "zzz" : d.getEndTime())
-                        .thenComparing((DayDTO d) -> d.getPlaceName()))
-                .collect(Collectors.toList());
+        return sortDays(dayRepository.findAllActive());
     }
 
     private DayDTO mapToDTO(final Day day, final DayDTO dayDTO) {
@@ -106,7 +101,7 @@ public class DayService {
 
     public DayDTO get(final Long id) {
         return dayRepository.findById(id)
-                .map(deal -> mapToDTO(deal, new DayDTO()))
+                .map(day -> mapToDTO(day, new DayDTO()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 

@@ -5,17 +5,15 @@ import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DayDTO;
-import com.humegatech.mpls_food.repositories.DayRepository;
-import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -28,16 +26,10 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class DayServiceTest {
-    @MockBean
-    private DayRepository dayRepository;
-
-    @MockBean
-    private DealRepository dealRepository;
-
+public class DayServiceTest extends MFServiceTest {
     @Autowired
     private DayService service;
 
@@ -109,10 +101,10 @@ public class DayServiceTest {
     }
 
     @Test
-    void testFindAllSortsByDealStartTimeDealEndTimePlaceName() {
+    void testFindAllSortsByDealStartTimeEndTimePlaceName() {
         final Place place1 = TestObjects.place("first");
         final Deal deal1 = TestObjects.deal(place1, "z10:30 - 15:00 deal", DayOfWeek.MONDAY);
-        final Deal deal2 = TestObjects.deal(place1, "a10:30 - 11:00 deal", DayOfWeek.MONDAY);
+        final Deal deal2 = TestObjects.deal(place1, "a11:00 - 11:00 deal", DayOfWeek.MONDAY);
         deal2.setEndTime("11:00");
         final Place place2 = TestObjects.place("asecond");
         final Deal deal3 = TestObjects.deal(place2, "aa 11:00 - 12:30 deal", DayOfWeek.MONDAY);
@@ -127,9 +119,12 @@ public class DayServiceTest {
         final Deal deal6 = TestObjects.deal(place2, "null start and end time", DayOfWeek.MONDAY);
         deal6.setStartTime(null);
         deal6.setEndTime(null);
+        final Deal deal7 = TestObjects.deal(place2, "null start - 12:30", DayOfWeek.MONDAY);
+        deal7.setStartTime(null);
+        deal7.setEndTime(null);
 
         final List<Day> days = new ArrayList<>();
-        for (Deal d : List.of(deal1, deal2, deal3, deal4, deal5, deal6)) {
+        for (Deal d : List.of(deal1, deal2, deal3, deal4, deal5, deal6, deal7)) {
             days.addAll(d.getDays());
         }
         when(dayRepository.findAll()).thenReturn(days);
@@ -142,6 +137,47 @@ public class DayServiceTest {
         assertEquals(deal1.getDescription(), dayDTOs.get(3).getDealDescription());
         assertEquals(deal3.getDescription(), dayDTOs.get(4).getDealDescription());
         assertEquals(deal6.getDescription(), dayDTOs.get(5).getDealDescription());
+        assertEquals(deal7.getDescription(), dayDTOs.get(6).getDealDescription());
+    }
+
+    @Test
+    void testFindAllActiveSortsByDealStartTimeEndTimePlaceName() {
+        final Place place1 = TestObjects.place("first");
+        final Deal deal1 = TestObjects.deal(place1, "z10:30 - 15:00 deal", DayOfWeek.MONDAY);
+        final Deal deal2 = TestObjects.deal(place1, "a11:00 - 11:00 deal", DayOfWeek.MONDAY);
+        deal2.setEndTime("11:00");
+        final Place place2 = TestObjects.place("asecond");
+        final Deal deal3 = TestObjects.deal(place2, "aa 11:00 - 12:30 deal", DayOfWeek.MONDAY);
+        deal3.setStartTime("11:00");
+        deal3.setEndTime("12:30");
+        final Deal deal4 = TestObjects.deal(place2, "aaa 10:30 - 12:30 deal", DayOfWeek.MONDAY);
+        deal4.setStartTime("10:30");
+        deal4.setEndTime("12:30");
+        final Deal deal5 = TestObjects.deal(place2, "aaa 10:30 - 11:00 deal", DayOfWeek.MONDAY);
+        deal5.setStartTime("10:30");
+        deal5.setEndTime("11:00");
+        final Deal deal6 = TestObjects.deal(place2, "null start and end time", DayOfWeek.MONDAY);
+        deal6.setStartTime(null);
+        deal6.setEndTime(null);
+        final Deal deal7 = TestObjects.deal(place2, "null start - 12:30", DayOfWeek.MONDAY);
+        deal7.setStartTime(null);
+        deal7.setEndTime(null);
+
+        final List<Day> days = new ArrayList<>();
+        for (Deal d : List.of(deal1, deal2, deal3, deal4, deal5, deal6, deal7)) {
+            days.addAll(d.getDays());
+        }
+        when(dayRepository.findAllActive()).thenReturn(days);
+
+        final List<DayDTO> dayDTOs = service.findAllActive();
+
+        assertEquals(deal5.getDescription(), dayDTOs.get(0).getDealDescription());
+        assertEquals(deal2.getDescription(), dayDTOs.get(1).getDealDescription());
+        assertEquals(deal4.getDescription(), dayDTOs.get(2).getDealDescription());
+        assertEquals(deal1.getDescription(), dayDTOs.get(3).getDealDescription());
+        assertEquals(deal3.getDescription(), dayDTOs.get(4).getDealDescription());
+        assertEquals(deal6.getDescription(), dayDTOs.get(5).getDealDescription());
+        assertEquals(deal7.getDescription(), dayDTOs.get(6).getDealDescription());
     }
 
     @Test
@@ -209,5 +245,70 @@ public class DayServiceTest {
         assertEquals(DayOfWeek.SATURDAY, day.getDayOfWeek());
         assertEquals(deal.getId(), day.getDeal().getId());
         assertNotNull(day.getDeal().getPlace().getId());
+    }
+
+    @Test
+    void testMapToEntityDealNotFound() {
+        final DayDTO dto = DayDTO.builder()
+                .dayOfWeek(DayOfWeek.SATURDAY)
+                .deal(99L)
+                .id(88L).build();
+
+        when(dealRepository.findById(dto.getDeal())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () ->
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dto, new Day())
+        );
+    }
+
+    @Test
+    void testGet() {
+        final Day day = TestObjects.day(TestObjects.deal(), DayOfWeek.MONDAY);
+        day.setId(99L);
+
+        when(dayRepository.findById(day.getId())).thenReturn(Optional.of(day));
+
+        DayDTO dayDTO = service.get(day.getId());
+
+        assertEquals(day.getDayOfWeek(), dayDTO.getDayOfWeek());
+        assertEquals(day.getId(), dayDTO.getId());
+    }
+
+    @Test
+    void testGetNoDay() {
+        final Day day = TestObjects.day(TestObjects.deal(), DayOfWeek.MONDAY);
+        day.setId(99L);
+
+        when(dayRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> service.get(99L));
+    }
+
+    @Test
+    void testUpdate() {
+        final Day day = TestObjects.day(TestObjects.deal(), DayOfWeek.MONDAY);
+        day.setId(99L);
+        final DayDTO dayDTO = DayDTO.builder()
+                .id(99L).build();
+
+        when(dayRepository.findById(day.getId())).thenReturn(Optional.of(day));
+
+        service.update(day.getId(), dayDTO);
+
+        verify(dayRepository, times(1)).save(day);
+    }
+
+    @Test
+    void testUpdateNoDay() {
+        when(dayRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> service.update(99L, new DayDTO()));
+    }
+
+    @Test
+    void testDelete() {
+        service.delete(99L);
+
+        verify(dayRepository, times(1)).deleteById(99L);
     }
 }

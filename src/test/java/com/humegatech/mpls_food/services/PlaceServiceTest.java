@@ -8,13 +8,19 @@ import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class PlaceServiceTest {
+public class PlaceServiceTest extends MFServiceTest {
     @Autowired
     private PlaceService service;
 
@@ -133,6 +139,16 @@ public class PlaceServiceTest {
     }
 
     @Test
+    void testGet() {
+        final Place place = TestObjects.place("place");
+        when(placeRepository.findById(place.getId())).thenReturn(Optional.of(place));
+
+        final PlaceDTO placeDTO = service.get(place.getId());
+
+        assertEquals(place.getName(), placeDTO.getName());
+    }
+
+    @Test
     void testGetNotFound() {
         Exception exception = assertThrows(ResponseStatusException.class, () -> service.get(99L));
         assertEquals("404 NOT_FOUND", exception.getMessage());
@@ -144,4 +160,72 @@ public class PlaceServiceTest {
         assertEquals("404 NOT_FOUND", exception.getMessage());
     }
 
+    @Test
+    void testFindAll() {
+        final List<Place> places = TestObjects.places();
+        places.get(0).setName("Zinelli's");
+        when(placeRepository.findAll(Sort.by("name"))).thenReturn(places);
+
+        List<PlaceDTO> placeDTOs = service.findAll();
+
+        assertEquals("Ginelli's Pizza", placeDTOs.get(1).getName());
+        assertEquals("Zinelli's", placeDTOs.get(0).getName());
+    }
+
+    @Test
+    void testCreate() {
+        final Place place = TestObjects.place("Taco Bell");
+        place.setId(99L);
+
+        final PlaceDTO placeDTO = PlaceDTO.builder()
+                .id(place.getId())
+                .name(place.getName())
+                .build();
+
+        when(placeRepository.save(any(Place.class))).thenReturn(place);
+
+        final Long id = service.create(placeDTO);
+
+        assertEquals(place.getId(), id);
+    }
+
+    @Test
+    void testNameExistsNameExists() {
+        when(placeRepository.existsByNameIgnoreCase("exists")).thenReturn(true);
+
+        assertTrue(service.nameExists("exists"));
+    }
+
+    @Test
+    void testNameExistsNameDoesNotExist() {
+        when(placeRepository.existsByNameIgnoreCase("exists")).thenReturn(false);
+
+        assertFalse(service.nameExists("exists"));
+    }
+
+    @Test
+    void testDelete() {
+        service.delete(99L);
+
+        verify(placeRepository, times(1)).deleteById(99L);
+    }
+
+    @Test
+    void testUpdate() {
+        final Place place = TestObjects.place("Taco Bell");
+        final PlaceDTO placeDTO = PlaceDTO.builder()
+                .name(place.getName())
+                .build();
+
+        when(placeRepository.findById(place.getId())).thenReturn(Optional.of(place));
+
+        service.update(place.getId(), placeDTO);
+
+        verify(placeRepository, times(1)).findById(place.getId());
+    }
+
+    @Test
+    void testUpdateNoPlace() {
+        assertThrows(ResponseStatusException.class, () -> service.update(99L, new PlaceDTO()));
+    }
 }

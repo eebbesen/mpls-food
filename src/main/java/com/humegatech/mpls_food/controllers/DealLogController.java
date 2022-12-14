@@ -87,7 +87,7 @@ public class DealLogController {
     public String add(@ModelAttribute("dealLog") @Valid final DealLogDTO dealLogDto,
                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return "deal_logs/list";
+            return "deal_logs/add";
         }
         dealLogService.create(dealLogDto);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("dealLog.create.success"));
