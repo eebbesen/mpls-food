@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.DayOfWeek;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -139,26 +140,19 @@ public class DayController {
         model.addAttribute("nextDiscountPercentSort", calculateNextSort(sortBy, "discountPercent"));
         model.addAttribute("happyHour", happyHourFilter);
         model.addAttribute("dishes",
-                days.stream().map(dayDTO -> dayDTO.getDish()).distinct().sorted(Comparator.nullsLast(Comparator.naturalOrder())).collect(Collectors.toList())); // Comparator.nullsLast(Comparator.naturalOrder())
+                days.stream().map(DayDTO::getDish).filter(Objects::nonNull).distinct().sorted()
+                        .collect(Collectors.toList()));
         model.addAttribute("places",
-                days.stream().map(dayDTO -> dayDTO.getPlaceName()).distinct().sorted().collect(Collectors.toList()));
+                days.stream().map(DayDTO::getPlaceName).distinct().sorted().collect(Collectors.toList()));
 
         handleSort(days, sortBy);
 
         final List<DayDTO> dayDTOs = days.stream()
-                .filter(d -> {
-                    return null == dayOfWeekFilter || d.getDayOfWeek().equals(dayOfWeekFilter);
-                })
-                .filter(d -> {
-                    return null == dishFilter || (null != d.getDish() && d.getDish().equals(dishFilter));
-                })
-                .filter(d -> {
-                    return null == placeFilter || d.getPlaceName().equals(placeFilter);
-                })
-                .filter(d -> {
-                    return (null != happyHourFilter && happyHourFilter.equals("on"))
-                            || (null == d.getStartTime() || 0 > d.getStartTime().compareTo(HH_CUTOFF));
-                })
+                .filter(d -> null == dayOfWeekFilter || d.getDayOfWeek().equals(dayOfWeekFilter))
+                .filter(d -> null == dishFilter || (null != d.getDish() && d.getDish().equals(dishFilter)))
+                .filter(d -> null == placeFilter || d.getPlaceName().equals(placeFilter))
+                .filter(d -> (null != happyHourFilter && happyHourFilter.equals("on"))
+                        || (null == d.getStartTime() || 0 > d.getStartTime().compareTo(HH_CUTOFF)))
                 .collect(Collectors.toList());
 
         model.addAttribute("days", dayDTOs);
