@@ -29,7 +29,8 @@
                     </thead>
                     <tbody>
                         <tr name="place-row" th:each="place : ${places}">
-                            <td name="place-name" ><a th:href="@{/places/show/{id}(id=${place.id})}" th:text="${place.name}" /></td>
+                            <td name="place-name" ><a th:href="@{/places/show/{id}(id=${place.id})}"
+                                                      th:text="${place.name}" /></td>
                             <td name="place-address" th:text="${place.truncatedAddress}" />
                             <td>
                                 <i class="bi bi-check-circle-fill" name="order-ahead-ind" th:if="${place.orderAhead}"></i>
@@ -38,9 +39,13 @@
                                 <i class="bi bi-check-circle-fill" name="rewards-ind" th:if="${null != place.rewardType}"></i>
                             </td>
                             <td sec:authorize="hasRole('ROLE_ADMIN')" style="white-space:nowrap">
-                                <form class="js-submit-confirm float-end" method="post" th:action="@{/places/delete/{id}(id=${place.id})}" th:data-confirm-message="#{delete.confirm}">
-                                    <a class="btn btn-sm btn-info" th:href="@{/places/edit/{id}(id=${place.id})}" th:text="#{place.list.edit}" />
-                                    <button class="btn btn-sm btn-danger" th:text="#{place.list.delete}" type="submit" />
+                                <form class="js-submit-confirm float-end" method="post"
+                                      th:action="@{/places/delete/{id}(id=${place.id})}"
+                                      th:data-confirm-message="#{delete.confirm}">
+                                    <a class="btn btn-sm btn-info" th:href="@{/places/edit/{id}(id=${place.id})}">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger" type="submit"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
                         </tr>

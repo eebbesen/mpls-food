@@ -41,9 +41,12 @@
                 </td>
                 <td name="deal-log-redemption-date" th:text="${dealLog.redemptionDate}" />
                 <td sec:authorize="hasRole('ROLE_ADMIN')" style="white-space:nowrap">
-                    <form class="js-submit-confirm float-end" method="post" th:action="@{/deal_logs/delete/{id}(id=${dealLog.id})}" th:data-confirm-message="#{delete.confirm}">
-                        <a class="btn btn-sm btn-info" th:href="@{/deal_logs/edit/{id}(id=${dealLog.id})}" th:text="#{dealLog.list.edit}" />
-                        <button class="btn btn-sm btn-danger" th:text="#{dealLog.list.delete}" type="submit" />
+                    <form class="js-submit-confirm float-end" method="post" th:action="@{/deal_logs/delete/{id}(id=${dealLog.id})}"
+                          th:data-confirm-message="#{delete.confirm}">
+                        <a class="btn btn-sm btn-info" th:href="@{/deal_logs/edit/{id}(id=${dealLog.id})}">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button class="btn btn-sm btn-danger" type="submit"><i class="bi bi-trash"></i></button>
                     </form>
                 </td>
             </tr>

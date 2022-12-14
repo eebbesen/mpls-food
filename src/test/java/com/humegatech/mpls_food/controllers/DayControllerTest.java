@@ -619,8 +619,8 @@ public class DayControllerTest extends MFControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Logout")))
                 .andExpect(content().string(containsString("slices")))
-                .andExpect(content().string(containsString("Edit")))
-                .andExpect(content().string(containsString("Delete")))
+                .andExpect(content().string(containsString("bi-pencil")))
+                .andExpect(content().string(containsString("bi-trash")))
                 .andExpect(content().string(containsString("Ginelli&#39;s")));
     }
 
