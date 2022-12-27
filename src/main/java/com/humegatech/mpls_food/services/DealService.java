@@ -178,7 +178,8 @@ public class DealService {
 
     private Deal mapToEntity(final DealDTO dealDTO, final Deal deal) {
         final Place place = placeRepository.findById(dealDTO.getPlace())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("place not found: %d", dealDTO.getPlace())));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("place not found: %d", dealDTO.getPlace())));
 
         deal.setDescription(dealDTO.getDescription());
         deal.setId(dealDTO.getId());

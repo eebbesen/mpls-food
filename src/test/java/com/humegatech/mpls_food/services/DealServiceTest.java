@@ -470,7 +470,8 @@ public class DealServiceTest {
     @Test
     void testCopy() {
         dealMonTues.setId(99L);
-        final List<Place> places = List.of(TestObjects.place("place 1"), TestObjects.place("place 2"), TestObjects.place("place 72"));
+        final List<Place> places = List.of(TestObjects.place("place 1"), TestObjects.place("place 2"),
+                TestObjects.place("place 72"));
         final List<Long> placeIds = places.stream().map(Place::getId).toList();
 
         when(dealRepository.findById(dealMonTues.getId())).thenReturn(Optional.of(dealMonTues));
@@ -490,7 +491,8 @@ public class DealServiceTest {
 
         when(dealRepository.findById(dealMonTues.getId())).thenReturn(Optional.of(dealMonTues));
 
-        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> service.copy(dealMonTues.getId(), List.of(2L, 3L, 72L)));
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () ->
+                service.copy(dealMonTues.getId(), List.of(2L, 3L, 72L)));
 
         assertEquals("404 NOT_FOUND \"one or more places not found\"", ex.getMessage());
         assertEquals("one or more places not found", ex.getReason());
@@ -498,7 +500,8 @@ public class DealServiceTest {
 
     @Test
     void testCopyDealNotFound() {
-        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> service.copy(dealMonTues.getId(), List.of(2L, 3L, 72L)));
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () ->
+                service.copy(dealMonTues.getId(), List.of(2L, 3L, 72L)));
 
         assertEquals("404 NOT_FOUND \"deal not found\"", ex.getMessage());
         assertEquals("deal not found", ex.getReason());
