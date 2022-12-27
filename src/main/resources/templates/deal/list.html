@@ -52,7 +52,11 @@
                             <a class="btn btn-sm btn-info" th:href="@{/deals/edit/{id}(id=${deal.id})}">
                                 <i class="bi bi-pencil"></i>
                             </a>
+                            <a class="btn btn-sm btn-info" th:href="@{/deals/copy/{id}(id=${deal.id})}">
+                                <i class="bi bi-stickies"></i>
+                            </a>
                             <button class="btn btn-sm btn-danger" type="submit"><i class="bi bi-trash"></i></button>
+
                         </form>
                     </td>
                 </tr>

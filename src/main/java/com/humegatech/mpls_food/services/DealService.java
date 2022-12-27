@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -101,6 +102,28 @@ public class DealService {
         dealRepository.deleteById(id);
     }
 
+    public void copy(final Long dealId, List<Long> placeIds) {
+        final Deal deal = dealRepository.findById(dealId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
+        final List<Place> places = placeRepository.findByIdIn(placeIds);
+        if (places.size() < placeIds.size()) {
+            // todo log/message which place(s) are not found
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "one or more places not found");
+        }
+
+        final List<Deal> newDeals = new ArrayList<>();
+        places.forEach(p -> {
+            final DealDTO dealDTO = new DealDTO();
+            mapToDTO(deal, dealDTO);
+            dealDTO.setId(null);
+            dealDTO.setPlace(p.getId());
+            newDeals.add(mapToEntity(dealDTO, new Deal()));
+        });
+
+        // todo log creation
+        dealRepository.saveAll(newDeals);
+    }
+
     private DealDTO mapToDTO(final Deal deal, final DealDTO dealDTO) {
         dealDTO.setId(deal.getId());
         dealDTO.setDescription(deal.getDescription());
@@ -155,7 +178,8 @@ public class DealService {
 
     private Deal mapToEntity(final DealDTO dealDTO, final Deal deal) {
         final Place place = placeRepository.findById(dealDTO.getPlace())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "place not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("place not found: %d", dealDTO.getPlace())));
 
         deal.setDescription(dealDTO.getDescription());
         deal.setId(dealDTO.getId());

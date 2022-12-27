@@ -163,13 +163,13 @@ public class PlaceServiceTest extends MFServiceTest {
     @Test
     void testFindAll() {
         final List<Place> places = TestObjects.places();
-        places.get(0).setName("Zinelli's");
+
         when(placeRepository.findAll(Sort.by("name"))).thenReturn(places);
 
         List<PlaceDTO> placeDTOs = service.findAll();
 
-        assertEquals("Ginelli's Pizza", placeDTOs.get(1).getName());
-        assertEquals("Zinelli's", placeDTOs.get(0).getName());
+        assertEquals("Taco John's", placeDTOs.get(1).getName());
+        assertEquals("Ginelli's Pizza", placeDTOs.get(0).getName());
     }
 
     @Test

@@ -12,10 +12,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @RequestMapping("/deals")
@@ -38,7 +40,7 @@ public class DealController {
         return placeService.findAll().stream()
                 .collect(Collectors.toMap(PlaceDTO::getId, PlaceDTO::getName))
                 .entrySet().stream().sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (k, v) -> k, LinkedHashMap::new));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k, v) -> k, LinkedHashMap::new));
     }
 
     @GetMapping
@@ -83,6 +85,29 @@ public class DealController {
         dealService.update(id, dealDTO);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
         return "redirect:/deals";
+    }
+
+    @GetMapping("/copy/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String copy(@PathVariable final Long id, final Model model) {
+        model.addAttribute("deal", dealService.get(id));
+        return "deal/copy";
+    }
+
+    @PostMapping("/copy/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String copy(@PathVariable final Long id, HttpServletRequest request,
+                       final RedirectAttributes redirectAttributes) {
+        // multiple place params so need to manually extract them (or create a DTO to hold them)
+        final String[] places = request.getParameterMap().get("places");
+        if (0 < places.length) {
+            dealService.copy(id, Stream.of(places).map(Long::parseLong).toList());
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
+            return "redirect:/deals";
+        }
+
+        //todo add error about needing to select one or more place(s)
+        return "deal/copy";
     }
 
     @PostMapping("/delete/{id}")

@@ -127,13 +127,7 @@ public class TestObjects {
     }
 
     public static List<Place> places() {
-        final Place place = deal().getPlace();
-
-        final List<Place> places = new ArrayList<>();
-        places.add(ginellis());
-        places.add(place);
-
-        return places;
+        return List.of(deal().getPlace(), tacoJohns());
     }
 
     public static Deal deal() {
