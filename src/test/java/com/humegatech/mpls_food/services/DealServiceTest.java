@@ -313,7 +313,7 @@ public class DealServiceTest {
         Exception ex = assertThrows(ResponseStatusException.class, () ->
                 ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal())
         );
-        assertEquals("404 NOT_FOUND \"place not found\"", ex.getMessage());
+        assertEquals("404 NOT_FOUND \"place not found: 99\"", ex.getMessage());
     }
 
     @Test
@@ -323,7 +323,7 @@ public class DealServiceTest {
                 ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal())
         );
 
-        assertEquals("404 NOT_FOUND \"place not found\"", ex.getMessage());
+        assertEquals("404 NOT_FOUND \"place not found: null\"", ex.getMessage());
     }
 
     @Test
@@ -470,13 +470,18 @@ public class DealServiceTest {
     @Test
     void testCopy() {
         dealMonTues.setId(99L);
-        final List<Long> placeIds = List.of(2L, 3L, 72L);
-        final List<Place> places = List.of(TestObjects.place("place 1"), TestObjects.place("place 2"), TestObjects.place("place 3"));
+        final List<Place> places = List.of(TestObjects.place("place 1"), TestObjects.place("place 2"), TestObjects.place("place 72"));
+        final List<Long> placeIds = places.stream().map(Place::getId).toList();
 
         when(dealRepository.findById(dealMonTues.getId())).thenReturn(Optional.of(dealMonTues));
         when(placeRepository.findByIdIn(placeIds)).thenReturn(places);
+        when(placeRepository.findById(placeIds.get(0))).thenReturn(Optional.of(places.get(0)));
+        when(placeRepository.findById(placeIds.get(1))).thenReturn(Optional.of(places.get(1)));
+        when(placeRepository.findById(placeIds.get(2))).thenReturn(Optional.of(places.get(2)));
 
         service.copy(dealMonTues.getId(), placeIds);
+
+        verify(dealRepository, times(1)).saveAll(argThat(l -> ((List<?>) l).size() == 3));
     }
 
     @Test

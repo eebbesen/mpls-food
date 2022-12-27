@@ -12,11 +12,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @RequestMapping("/deals")
@@ -95,14 +96,18 @@ public class DealController {
 
     @PostMapping("/copy/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String copy(@PathVariable final Long dealIdToCopy, @RequestParam final String[] placeIds,
-                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            return "deal/copy";
+    public String copy(@PathVariable final Long id, HttpServletRequest request,
+                       final RedirectAttributes redirectAttributes) {
+        // multiple place params so need to manually extract them (or create a DTO to hold them)
+        final String[] places = request.getParameterMap().get("places");
+        if (0 < places.length) {
+            dealService.copy(id, Stream.of(places).map(Long::parseLong).toList());
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
+            return "redirect:/deals";
         }
-        dealService.copy(dealIdToCopy, Arrays.stream(placeIds).map(Long::getLong).toList());
-        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
-        return "redirect:/deals";
+
+        //todo add error about needing to select one or more place(s)
+        return "deal/copy";
     }
 
     @PostMapping("/delete/{id}")

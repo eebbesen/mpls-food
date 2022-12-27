@@ -14,8 +14,15 @@
   </div>
   <div th:replace="fragments/forms::globalErrors('deal')" />
   <form method="post" th:action="${#httpServletRequest.requestURI}">
-    <div th:replace="fragments/forms::inputRow(object='deal', field='place', type='multiselect')" />
-    <input class="btn btn-primary mt-4" th:value="#{deal.add.headline}" type="submit" />
+    <div class="row mb-3">
+      <label class="col-md-2 col-form-label" for="places" th:text="#{place.list.headline}"/>
+      <div class="col-md-10">
+        <select class="form-select" id="places" multiple="multiple" name="places">
+          <option th:each="place : ${placeValues}" th:text="${place.value}" th:value="${place.key}" />
+        </select>
+      </div>
+    </div>
+    <input class="btn btn-primary mt-4" th:value="#{deal.copy.headline}" type="submit" />
   </form>
 </div>
 </body>
