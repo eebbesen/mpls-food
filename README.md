@@ -39,6 +39,15 @@ This requires a running Docker container locally
 qodana scan --show-report
 ```
 
+#### Sonar
+https://docs.sonarqube.org/latest/try-out-sonarqube/ for setup and run instructions
+```
+./gradlew sonar \
+-Dsonar.projectKey=mpls-food \
+-Dsonar.host.url=http://localhost:9000 \
+-Dsonar.login=sqp_xxxx
+```
+
 #### Checkstyle
 ```bash
 gradle checkstyleMain

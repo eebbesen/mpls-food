@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class PlaceServiceTest extends MFServiceTest {
+class PlaceServiceTest extends MFServiceTest {
     @Autowired
     private PlaceService service;
 
@@ -150,13 +150,14 @@ public class PlaceServiceTest extends MFServiceTest {
 
     @Test
     void testGetNotFound() {
-        Exception exception = assertThrows(ResponseStatusException.class, () -> service.get(99L));
+        final Exception exception = assertThrows(ResponseStatusException.class, () -> service.get(99L));
         assertEquals("404 NOT_FOUND", exception.getMessage());
     }
 
     @Test
     void testUpdateNotFound() {
-        Exception exception = assertThrows(ResponseStatusException.class, () -> service.update(99L, new PlaceDTO()));
+        final PlaceDTO dto = new PlaceDTO();
+        final Exception exception = assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
         assertEquals("404 NOT_FOUND", exception.getMessage());
     }
 
@@ -166,7 +167,7 @@ public class PlaceServiceTest extends MFServiceTest {
 
         when(placeRepository.findAll(Sort.by("name"))).thenReturn(places);
 
-        List<PlaceDTO> placeDTOs = service.findAll();
+        final List<PlaceDTO> placeDTOs = service.findAll();
 
         assertEquals("Taco John's", placeDTOs.get(1).getName());
         assertEquals("Ginelli's Pizza", placeDTOs.get(0).getName());
@@ -226,6 +227,7 @@ public class PlaceServiceTest extends MFServiceTest {
 
     @Test
     void testUpdateNoPlace() {
-        assertThrows(ResponseStatusException.class, () -> service.update(99L, new PlaceDTO()));
+        final PlaceDTO dto = new PlaceDTO();
+        assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
     }
 }

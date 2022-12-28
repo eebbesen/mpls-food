@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class DealControllerTest extends MFControllerTest {
+class DealControllerTest extends MFControllerTest {
     private Place place;
     private Deal deal;
     @Autowired

@@ -12,12 +12,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MplsFoodControllerTest {
+class MplsFoodControllerTest {
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void getRoot() throws Exception {
+    void getRoot() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is3xxRedirection());
     }

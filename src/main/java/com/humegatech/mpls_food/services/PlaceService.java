@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -27,7 +26,7 @@ public class PlaceService {
         return placeRepository.findAll(Sort.by("name"))
                 .stream()
                 .map(place -> mapToDTO(place, new PlaceDTO()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public PlaceDTO get(final Long id) {

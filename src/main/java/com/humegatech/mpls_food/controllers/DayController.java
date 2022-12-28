@@ -57,29 +57,29 @@ public class DayController {
         return filter;
     }
 
-    private static Comparator priceComparator() {
+    private static Comparator<DayDTO> priceComparator() {
         return Comparator.comparing((DayDTO day) -> null == day.getMinPrice() ? 99999d : day.getMinPrice());
     }
 
-    private static Comparator priceComparatorReversed() {
+    private static Comparator<DayDTO> priceComparatorReversed() {
         return Comparator.comparing((DayDTO day) -> null == day.getMinPrice() ? 0d : day.getMinPrice()).reversed();
     }
 
-    private static Comparator discountComparator() {
+    private static Comparator<DayDTO> discountComparator() {
         return Comparator.comparing((DayDTO day) -> null == day.getMinDiscount() ? 99999d : day.getMinDiscount());
     }
 
-    private static Comparator discountComparatorReversed() {
+    private static Comparator<DayDTO> discountComparatorReversed() {
         return Comparator.comparing((DayDTO day) -> null == day.getMinDiscount() ? 0d
                 : day.getMinDiscount()).reversed();
     }
 
-    private static Comparator discountPercentComparator() {
+    private static Comparator<DayDTO> discountPercentComparator() {
         return Comparator.comparing((DayDTO day) -> null == day.getMinDiscountPercent() ? 99999d
                 : day.getMinDiscountPercent());
     }
 
-    private static Comparator discountPercentComparatorReversed() {
+    private static Comparator<DayDTO> discountPercentComparatorReversed() {
         return Comparator.comparing((DayDTO day) -> null == day.getMinDiscountPercent() ? 0d
                 : day.getMinDiscountPercent()).reversed();
     }
@@ -143,7 +143,7 @@ public class DayController {
                 days.stream().map(DayDTO::getDish).filter(Objects::nonNull).distinct().sorted()
                         .collect(Collectors.toList()));
         model.addAttribute("places",
-                days.stream().map(DayDTO::getPlaceName).distinct().sorted().collect(Collectors.toList()));
+                days.stream().map(DayDTO::getPlaceName).distinct().sorted().toList());
 
         handleSort(days, sortBy);
 
@@ -153,7 +153,7 @@ public class DayController {
                 .filter(d -> null == placeFilter || d.getPlaceName().equals(placeFilter))
                 .filter(d -> (null != happyHourFilter && happyHourFilter.equals("on"))
                         || (null == d.getStartTime() || 0 > d.getStartTime().compareTo(HH_CUTOFF)))
-                .collect(Collectors.toList());
+                .toList();
 
         model.addAttribute("days", dayDTOs);
 

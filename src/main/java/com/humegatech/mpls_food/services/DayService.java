@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class DayService {
@@ -38,8 +37,8 @@ public class DayService {
         return dayRepository.findByDayOfWeek(dayOfWeek)
                 .stream()
                 .map(day -> mapToDTO(day, new DayDTO()))
-                .sorted(Comparator.comparing((DayDTO c) -> c.getPlaceName()))
-                .collect(Collectors.toList());
+                .sorted(Comparator.comparing(DayDTO::getPlaceName))
+                .toList();
     }
 
     private List<DayDTO> sortDays(final List<Day> days) {
@@ -49,8 +48,8 @@ public class DayService {
                 .sorted(Comparator.comparing((DayDTO d) -> order.get(d.getDayOfWeek()))
                         .thenComparing((DayDTO d) -> null == d.getStartTime() ? "zzz" : d.getStartTime())
                         .thenComparing((DayDTO d) -> null == d.getEndTime() ? "zzz" : d.getEndTime())
-                        .thenComparing((DayDTO d) -> d.getPlaceName()))
-                .collect(Collectors.toList());
+                        .thenComparing(DayDTO::getPlaceName))
+                .toList();
     }
 
     public List<DayDTO> findAll() {
@@ -88,7 +87,7 @@ public class DayService {
     }
 
     private Day mapToEntity(final DayDTO dayDTO, final Day day) {
-        final Deal deal = dayDTO.getDeal() == null ? null : dealRepository.findById(dayDTO.getDeal())
+        final Deal deal = dealRepository.findById(dayDTO.getDeal())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
 
         return Day.builder()

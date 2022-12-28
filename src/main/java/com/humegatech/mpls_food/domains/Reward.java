@@ -41,9 +41,7 @@ public class Reward extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof Reward)) return false;
-
-        Reward reward = (Reward) o;
+        if (!(o instanceof Reward reward)) return false;
 
         if (!Objects.equals(notes, reward.notes)) return false;
         if (rewardType != reward.rewardType) return false;

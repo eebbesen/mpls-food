@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class MplsFoodUtilsTest {
+class MplsFoodUtilsTest {
 
     @Test
     void testDowAbbreviation() {
@@ -59,17 +59,17 @@ public class MplsFoodUtilsTest {
     }
 
     @Test
-    public void testTruncateAddress() {
+    void testTruncateAddress() {
         assertEquals("123 Marquette Ave", MplsFoodUtils.truncateAddress("123 Marquette Ave\nMinneapolis, MN 55402"));
     }
 
     @Test
-    public void testTruncateAddressMultipleCarriageReturns() {
+    void testTruncateAddressMultipleCarriageReturns() {
         assertEquals("123 Marquette Ave Minneapolis, MN", MplsFoodUtils.truncateAddress("123 Marquette Ave\nMinneapolis, MN\n55402"));
     }
 
     @Test
-    public void testTruncateAddressNoCarriageReturns() {
+    void testTruncateAddressNoCarriageReturns() {
         assertEquals("123 Marquette Ave Minneapolis, MN 55402", MplsFoodUtils.truncateAddress("123 Marquette Ave Minneapolis, MN 55402"));
     }
 

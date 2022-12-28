@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -39,13 +40,11 @@ public class Day extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof Day)) return false;
+        if (!(o instanceof Day day)) return false;
 
-        Day day = (Day) o;
-
-        if (deal != null ? !deal.equals(day.deal) : day.deal != null) return false;
+        if (!Objects.equals(deal, day.deal)) return false;
         if (dayOfWeek != day.dayOfWeek) return false;
-        return date != null ? date.equals(day.date) : day.date == null;
+        return Objects.equals(date, day.date);
     }
 
     @Override
