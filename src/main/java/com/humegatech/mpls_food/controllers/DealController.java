@@ -1,7 +1,6 @@
 package com.humegatech.mpls_food.controllers;
 
 import com.humegatech.mpls_food.models.DealDTO;
-import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.util.WebUtils;
@@ -14,15 +13,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
 @RequestMapping("/deals")
 @Controller
-public class DealController {
+public class DealController extends MFController {
     private final DealService dealService;
     private final PlaceService placeService;
 
@@ -33,14 +29,8 @@ public class DealController {
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        model.addAttribute("placeValues", sortedPlaces());
-    }
-
-    private Map<Long, String> sortedPlaces() {
-        return placeService.findAll().stream()
-                .collect(Collectors.toMap(PlaceDTO::getId, PlaceDTO::getName))
-                .entrySet().stream().sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k, v) -> k, LinkedHashMap::new));
+        model.addAttribute("placeValues", sortedPlaces(placeService));
+        model.addAttribute("dealTypeValues", dealTypeDisplay());
     }
 
     @GetMapping

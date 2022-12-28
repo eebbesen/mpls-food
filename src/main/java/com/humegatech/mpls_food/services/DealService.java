@@ -147,6 +147,7 @@ public class DealService {
         dealDTO.setEndTime(deal.getEndTime());
         dealDTO.setStartDate(deal.getStartDate());
         dealDTO.setEndDate(deal.getEndDate());
+        dealDTO.setDealType(deal.getDealType());
         applyDaysToDTO(deal, dealDTO);
         applyUploadsToDTO(deal, dealDTO);
 
@@ -197,6 +198,7 @@ public class DealService {
         deal.setEndTime(dealDTO.getEndTime());
         deal.setStartDate(dealDTO.getStartDate());
         deal.setEndDate(dealDTO.getEndDate());
+        deal.setDealType(dealDTO.getDealType());
         applyDaysToEntity(dealDTO, deal);
 
         return deal;

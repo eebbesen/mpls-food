@@ -1,10 +1,7 @@
 package com.humegatech.mpls_food.services;
 
 import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.domains.Upload;
+import com.humegatech.mpls_food.domains.*;
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
@@ -63,6 +60,7 @@ public class DealServiceTest {
         dealMonTuesDTO.setMaxDiscountPercent(dealMonTues.getMaxDiscountPercent());
         dealMonTuesDTO.setVerified(dealMonTues.isVerified());
         dealMonTuesDTO.setTaxIncluded(dealMonTues.isTaxIncluded());
+        dealMonTuesDTO.setDealType(DealType.DEAL);
     }
 
     @Test
@@ -298,6 +296,7 @@ public class DealServiceTest {
         assertEquals(dealMonTuesDTO.getEndTime(), deal.getEndTime());
         assertEquals(dealMonTuesDTO.getStartDate(), deal.getStartDate());
         assertEquals(dealMonTuesDTO.getEndDate(), deal.getEndDate());
+        assertEquals(dealMonTues.getDealType(), deal.getDealType());
 
         // confirm days
         Set<DayOfWeek> days = deal.getDays().stream().map(Day::getDayOfWeek)
@@ -428,6 +427,7 @@ public class DealServiceTest {
             assertEquals(upload.getImage(), dto.getUploads().get(0).getImage());
             assertEquals(upload.getDeal().getId(), dto.getUploads().get(0).getDealId());
             assertEquals(upload.isVerified(), dto.getUploads().get(0).isVerified());
+            assertEquals(dealMonTues.getDealType(), dto.getDealType());
         }
     }
 
