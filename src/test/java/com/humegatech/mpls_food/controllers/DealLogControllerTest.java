@@ -20,7 +20,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class DealLogControllerTest extends MFControllerTest {
+class DealLogControllerTest extends MFControllerTest {
     @Autowired
     private DealLogController controller;
 

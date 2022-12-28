@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class DealServiceTest {
+class DealServiceTest {
     @MockBean
     PlaceRepository placeRepository;
     @Autowired
@@ -247,7 +247,8 @@ public class DealServiceTest {
 
     @Test
     void testupdateNotFound() {
-        Exception ex = assertThrows(ResponseStatusException.class, () -> service.update(99L, new DealDTO()));
+        final DealDTO dto = new DealDTO();
+        final Exception ex = assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
         assertEquals("404 NOT_FOUND", ex.getMessage());
     }
 
@@ -309,8 +310,10 @@ public class DealServiceTest {
     @Test
     void testMapToEntityPlaceNotFound() {
         final DealDTO dealDTO = DealDTO.builder().place(99L).build();
-        Exception ex = assertThrows(ResponseStatusException.class, () ->
-                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal())
+        final Deal deal = new Deal();
+
+        final Exception ex = assertThrows(ResponseStatusException.class, () ->
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, deal)
         );
         assertEquals("404 NOT_FOUND \"place not found: 99\"", ex.getMessage());
     }
@@ -318,8 +321,10 @@ public class DealServiceTest {
     @Test
     void testMapToEntityNullPlace() {
         final DealDTO dealDTO = DealDTO.builder().build();
-        Exception ex = assertThrows(ResponseStatusException.class, () ->
-                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, new Deal())
+        final Deal deal = new Deal();
+
+        final Exception ex = assertThrows(ResponseStatusException.class, () ->
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealDTO, deal)
         );
 
         assertEquals("404 NOT_FOUND \"place not found: null\"", ex.getMessage());
@@ -488,11 +493,13 @@ public class DealServiceTest {
     @Test
     void testCopyPlaceNotFound() {
         dealMonTues.setId(99L);
+        final Long dealId = dealMonTues.getId();
+        final List<Long> ids = List.of(2L, 3L, 72L);
 
         when(dealRepository.findById(dealMonTues.getId())).thenReturn(Optional.of(dealMonTues));
 
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () ->
-                service.copy(dealMonTues.getId(), List.of(2L, 3L, 72L)));
+                service.copy(dealId, ids));
 
         assertEquals("404 NOT_FOUND \"one or more places not found\"", ex.getMessage());
         assertEquals("one or more places not found", ex.getReason());
@@ -500,8 +507,11 @@ public class DealServiceTest {
 
     @Test
     void testCopyDealNotFound() {
+        final Long dealId = dealMonTues.getId();
+        final List<Long> ids = List.of(2L, 3L, 72L);
+
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () ->
-                service.copy(dealMonTues.getId(), List.of(2L, 3L, 72L)));
+                service.copy(dealId, ids));
 
         assertEquals("404 NOT_FOUND \"deal not found\"", ex.getMessage());
         assertEquals("deal not found", ex.getReason());

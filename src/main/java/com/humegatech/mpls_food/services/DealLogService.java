@@ -13,7 +13,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DealLogService {
@@ -48,7 +47,7 @@ public class DealLogService {
                 .sorted(Comparator.comparing(DealLogDTO::getRedemptionDate,
                                 Comparator.nullsLast(Comparator.naturalOrder()))
                         .thenComparing(DealLogDTO::getDescription))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void delete(final Long id) {

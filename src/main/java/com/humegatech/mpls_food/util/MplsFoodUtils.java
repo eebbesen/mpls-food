@@ -20,6 +20,9 @@ public class MplsFoodUtils {
             DayOfWeek.SUNDAY, "s"
     );
 
+    private MplsFoodUtils() {
+    }
+
     public static String decorateValue(final Double value, final String punctuation) {
         if (null == value) {
             return null;
@@ -51,7 +54,7 @@ public class MplsFoodUtils {
             return null;
         }
 
-        final String[] workingString = string.split("_|\\s");
+        final String[] workingString = string.split("[_\\s]");
         return Arrays.stream(workingString)
                 .map(s -> s.substring(0, 1).toUpperCase().concat(s.substring(1).toLowerCase()))
                 .collect(Collectors.joining(" "));
@@ -88,7 +91,7 @@ public class MplsFoodUtils {
             return address;
         }
 
-        return address.substring(0, address.lastIndexOf("\n")).replaceAll("\n", " ");
+        return address.substring(0, address.lastIndexOf("\n")).replace("\n", " ");
     }
 
     public static String truncateDealDescription(final String description) {

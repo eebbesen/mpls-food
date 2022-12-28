@@ -19,7 +19,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PlaceControllerTest extends MFControllerTest {
+class PlaceControllerTest extends MFControllerTest {
     private Place place;
     private PlaceDTO placeDTO;
     private Deal deal;

@@ -23,8 +23,9 @@ public class MFController {
     protected UsernamePasswordAuthenticationToken getUser(final HttpServletRequest request) {
         UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken) request.getUserPrincipal();
         if (null != user) {
-            System.out.printf("USER: %s\nAUTHORITY: %s%n", user.getName(),
-                    user.getAuthorities().stream().findFirst().get().getAuthority());
+            user.getAuthorities().stream().findFirst().ifPresent(authority ->
+                    System.out.printf("USER: %s%nAUTHORITY: %s%n", user.getName(), authority.getAuthority())
+            );
         }
 
         return user;

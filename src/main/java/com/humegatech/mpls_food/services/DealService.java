@@ -212,7 +212,7 @@ public class DealService {
                 final Method isDay = DealDTO.class.getDeclaredMethod(methodName);
                 final Boolean result = (Boolean) isDay.invoke(dealDTO);
 
-                if (result) {
+                if (result.booleanValue()) {
                     addDay(deal, d);
                 } else {
                     removeDay(deal, d);

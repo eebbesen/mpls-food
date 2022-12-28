@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UploadService {
@@ -37,7 +36,7 @@ public class UploadService {
     public List<UploadDTO> findByDealId(final Long dealId) {
         return uploadRepository.findByDealId(dealId)
                 .stream().map(upload -> mapToDTO(upload, new UploadDTO()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private UploadDTO mapToDTO(final Upload upload, final UploadDTO uploadDTO) {

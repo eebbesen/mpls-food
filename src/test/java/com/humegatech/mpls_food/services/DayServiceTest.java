@@ -29,7 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class DayServiceTest extends MFServiceTest {
+class DayServiceTest extends MFServiceTest {
     @Autowired
     private DayService service;
 
@@ -284,11 +284,15 @@ public class DayServiceTest extends MFServiceTest {
 
     @Test
     void testUpdate() {
-        final Day day = TestObjects.day(TestObjects.deal(), DayOfWeek.MONDAY);
+        final Deal deal = TestObjects.deal();
+        final Day day = TestObjects.day(deal, DayOfWeek.MONDAY);
         day.setId(99L);
         final DayDTO dayDTO = DayDTO.builder()
-                .id(99L).build();
+                .id(day.getId())
+                .deal(deal.getId())
+                .build();
 
+        when(dealRepository.findById(deal.getId())).thenReturn(Optional.of(deal));
         when(dayRepository.findById(day.getId())).thenReturn(Optional.of(day));
 
         service.update(day.getId(), dayDTO);

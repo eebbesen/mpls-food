@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DealTest extends MFSeleniumTest {
+class DealTest extends MFSeleniumTest {
     @Test
     void testDealEdit() {
         loginAdmin();

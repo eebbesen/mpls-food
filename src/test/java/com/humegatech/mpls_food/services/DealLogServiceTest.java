@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class DealLogServiceTest extends MFServiceTest {
+class DealLogServiceTest extends MFServiceTest {
     @Autowired
     private DealLogService service;
 
@@ -31,9 +31,10 @@ public class DealLogServiceTest extends MFServiceTest {
         final DealLogDTO dealLogDTO = DealLogDTO.builder()
                 .place(99L)
                 .build();
+        final DealLog dealLog = new DealLog();
 
         final Exception exception = assertThrows(ResponseStatusException.class, () ->
-                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, new DealLog())
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, dealLog)
         );
 
         assertEquals(String.format("%s \"place not found\"", HttpStatus.NOT_FOUND), exception.getMessage());
@@ -43,9 +44,10 @@ public class DealLogServiceTest extends MFServiceTest {
     void testMapToEntityPlaceNull() {
         final DealLogDTO dealLogDTO = DealLogDTO.builder()
                 .build();
+        final DealLog dealLog = new DealLog();
 
         final Exception exception = assertThrows(ResponseStatusException.class, () ->
-                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, new DealLog())
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, dealLog)
         );
 
         assertEquals(String.format("%s \"place not found\"", HttpStatus.NOT_FOUND), exception.getMessage());
@@ -58,11 +60,12 @@ public class DealLogServiceTest extends MFServiceTest {
                 .place(deal.getPlace().getId())
                 .deal(99L)
                 .build();
+        final DealLog dealLog = new DealLog();
 
         when(placeRepository.findById(deal.getPlace().getId())).thenReturn(Optional.of(deal.getPlace()));
 
         final Exception exception = assertThrows(ResponseStatusException.class, () ->
-                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, new DealLog())
+                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, dealLog)
         );
 
         assertEquals(String.format("%s \"deal not found\"", HttpStatus.NOT_FOUND), exception.getMessage());
@@ -193,8 +196,9 @@ public class DealLogServiceTest extends MFServiceTest {
     @Test
     void testUpdateNoDealLog() {
         when(dealLogRepository.findById(99L)).thenReturn(Optional.empty());
+        final DealLogDTO dto = new DealLogDTO();
 
-        assertThrows(ResponseStatusException.class, () -> service.update(99L, new DealLogDTO()));
+        assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
     }
 
     @Test

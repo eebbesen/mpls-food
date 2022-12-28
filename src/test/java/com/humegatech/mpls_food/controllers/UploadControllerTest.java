@@ -20,7 +20,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UploadControllerTest extends MFControllerTest {
+class UploadControllerTest extends MFControllerTest {
     private Place place;
     private Deal deal;
 

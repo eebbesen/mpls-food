@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class UploadServiceTest extends MFServiceTest {
+class UploadServiceTest extends MFServiceTest {
 
     @Autowired
     private UploadService service;
@@ -66,9 +66,10 @@ public class UploadServiceTest extends MFServiceTest {
                 .image(TestObjects.image())
                 .dealId(deal.getId())
                 .verified(true).build();
+        final Upload upload = new Upload();
 
-        Exception ex = assertThrows(ResponseStatusException.class,
-                () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", uploadDTO, new Upload()));
+        final Exception ex = assertThrows(ResponseStatusException.class,
+                () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", uploadDTO, upload));
 
         assertEquals("404 NOT_FOUND \"deal not found\"", ex.getMessage());
     }
@@ -78,16 +79,17 @@ public class UploadServiceTest extends MFServiceTest {
         final UploadDTO uploadDTO = UploadDTO.builder()
                 .image(TestObjects.image())
                 .verified(true).build();
+        final Upload upload = new Upload();
 
-        Exception ex = assertThrows(ResponseStatusException.class,
-                () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", uploadDTO, new Upload()));
+        final Exception ex = assertThrows(ResponseStatusException.class,
+                () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", uploadDTO, upload));
 
         assertEquals("404 NOT_FOUND \"deal not found\"", ex.getMessage());
     }
 
     @Test
     void testGetNotFound() {
-        Exception exception = assertThrows(ResponseStatusException.class, () -> service.get(99L));
+        final Exception exception = assertThrows(ResponseStatusException.class, () -> service.get(99L));
         assertEquals("404 NOT_FOUND", exception.getMessage());
     }
 

@@ -11,6 +11,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -34,7 +36,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class DayControllerTest extends MFControllerTest {
+class DayControllerTest extends MFControllerTest {
     private Place place;
     private Deal deal;
     private DealDTO dealDTO;
@@ -56,19 +58,19 @@ public class DayControllerTest extends MFControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
-                .andExpect(content().string(containsString("slices")))
-                .andExpect(content().string(containsString("Ginelli&#39;s")));
+                .andExpect(content().string(containsString("slices")));
     }
 
-    @Test
-    void testListWithDayOfWeek() throws Exception {
+    // Invalid day of week causes filter to be silently cleared
+    @ParameterizedTest
+    @ValueSource(strings = {"/days?dayOfWeek=FRIDAY", "/days?dayOfWeek=", "/days?dayOfWeek=BLORTSDAY"})
+    void testListWithDayOfWeekFilter(final String url) throws Exception {
         when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
-        mvc.perform(MockMvcRequestBuilders.get("/days?dayOfWeek=FRIDAY").accept(MediaType.APPLICATION_XML))
+        mvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
-                .andExpect(content().string(containsString("slices")))
-                .andExpect(content().string(containsString("Ginelli&#39;s")));
+                .andExpect(content().string(containsString("slices")));
     }
 
     @Test
@@ -82,36 +84,13 @@ public class DayControllerTest extends MFControllerTest {
     }
 
     @Test
-    void testListWithDayOfWeekNoDay() throws Exception {
-        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
-
-        mvc.perform(MockMvcRequestBuilders.get("/days?dayOfWeek=").accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Login")))
-                .andExpect(content().string(containsString("slices")))
-                .andExpect(content().string(containsString("Ginelli&#39;s")));
-    }
-
-    @Test
-    void testListWithDayOfInvalidDay() throws Exception {
-        when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
-
-        mvc.perform(MockMvcRequestBuilders.get("/days?dayOfWeek=BLORTSDAY").accept(MediaType.APPLICATION_XML))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Login")))
-                .andExpect(content().string(containsString("slices")))
-                .andExpect(content().string(containsString("Ginelli&#39;s")));
-    }
-
-    @Test
     void testListWithDish() throws Exception {
         when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/days?dish=Pizza").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Login")))
-                .andExpect(content().string(containsString("slices")))
-                .andExpect(content().string(containsString("Ginelli&#39;s")));
+                .andExpect(content().string(containsString("slices")));
     }
 
     @Test

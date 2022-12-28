@@ -8,9 +8,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PlaceTest extends MFSeleniumTest {
+class PlaceTest extends MFSeleniumTest {
     @Test
-    public void testPlaceList() {
+    void testPlaceList() {
         driver.get("http://localhost:8080/places");
         final List<WebElement> placeRows = driver.findElements(By.name("place-row"));
         final WebElement afroDeliRow = placeRows.get(0);
@@ -28,7 +28,7 @@ public class PlaceTest extends MFSeleniumTest {
     }
 
     @Test
-    public void testPlaceShowNoDeals() {
+    void testPlaceShowNoDeals() {
         driver.get("http://localhost:8080/places/show/16");
 
         assertEquals("Afro Deli", driver.findElement(By.id("name")).getAttribute("value"));
@@ -45,7 +45,7 @@ public class PlaceTest extends MFSeleniumTest {
     }
 
     @Test
-    public void testPlaceShowWithDeals() {
+    void testPlaceShowWithDeals() {
         driver.get("http://localhost:8080/places/show/10000");
 
         assertEquals("Ginelli's Pizza", driver.findElement(By.id("name")).getAttribute("value"));

@@ -2,6 +2,7 @@ package com.humegatech.mpls_food.util;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.LocaleResolver;
@@ -19,13 +20,19 @@ public class WebUtils {
     private static MessageSource messageSource;
     private static LocaleResolver localeResolver;
 
-    public WebUtils(final MessageSource messageSource, final LocaleResolver localeResolver) {
+    private WebUtils(final MessageSource messageSource, final LocaleResolver localeResolver) {
         WebUtils.messageSource = messageSource;
         WebUtils.localeResolver = localeResolver;
     }
 
     public static HttpServletRequest getRequest() {
-        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        final RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+
+        if (null == requestAttributes) {
+            return null;
+        }
+
+        return ((ServletRequestAttributes) requestAttributes).getRequest();
     }
 
     public static String getMessage(final String code, final Object... args) {

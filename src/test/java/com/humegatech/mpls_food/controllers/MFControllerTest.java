@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class MFControllerTest {
+class MFControllerTest {
 
     @Autowired
     MockMvc mvc;

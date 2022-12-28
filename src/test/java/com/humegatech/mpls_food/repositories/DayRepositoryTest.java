@@ -18,7 +18,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class DayRepositoryTest {
+class DayRepositoryTest {
     @Autowired
     private DayRepository dayRepository;
 

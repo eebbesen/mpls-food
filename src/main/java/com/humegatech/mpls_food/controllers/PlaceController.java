@@ -33,7 +33,7 @@ public class PlaceController {
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        Map rewardTypes = Stream.of(RewardType.values())
+        Map<String, String> rewardTypes = Stream.of(RewardType.values())
                 .collect(Collectors.toMap(RewardType::name, rt -> MplsFoodUtils.capitalizeFirst(rt.name())));
         model.addAttribute("rewardTypeValues", rewardTypes);
     }
