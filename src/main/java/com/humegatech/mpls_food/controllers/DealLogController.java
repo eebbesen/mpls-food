@@ -3,7 +3,6 @@ package com.humegatech.mpls_food.controllers;
 import com.humegatech.mpls_food.domains.DealType;
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.models.DealLogDTO;
-import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.services.DealLogService;
 import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
@@ -24,7 +23,7 @@ import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/deal_logs")
-public class DealLogController {
+public class DealLogController extends MFController {
     private final DealLogService dealLogService;
     private final PlaceService placeService;
     private final DealService dealService;
@@ -37,7 +36,7 @@ public class DealLogController {
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        model.addAttribute("placeValues", sortedPlaces());
+        model.addAttribute("placeValues", sortedPlaces(placeService));
         model.addAttribute("dealValues", sortedDeals());
         model.addAttribute("dealPlaces", dealPlaceMap());
         final Map dealTypes = Stream.of(DealType.values())
@@ -53,13 +52,6 @@ public class DealLogController {
     private Map<Long, String> sortedDeals() {
         return dealService.findAll().stream()
                 .collect(Collectors.toMap(DealDTO::getId, DealDTO::getDescription))
-                .entrySet().stream().sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (k, v) -> k, LinkedHashMap::new));
-    }
-
-    private Map<Long, String> sortedPlaces() {
-        return placeService.findAll().stream()
-                .collect(Collectors.toMap(PlaceDTO::getId, PlaceDTO::getName))
                 .entrySet().stream().sorted(Map.Entry.comparingByValue())
                 .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (k, v) -> k, LinkedHashMap::new));
     }

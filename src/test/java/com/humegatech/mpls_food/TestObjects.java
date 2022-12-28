@@ -99,6 +99,7 @@ public class TestObjects {
                 .maxDiscount(3.9)
                 .minDiscountPercent(32d)
                 .maxDiscountPercent(44d)
+                .dealType(DealType.DEAL)
                 .dish("Pizza").build();
 
         deal.getDays().add(Day.builder()
@@ -142,6 +143,7 @@ public class TestObjects {
                 .verified(true)
                 .startTime("10:30")
                 .endTime("11:00")
+                .dealType(DealType.DEAL)
                 .build();
 
         Day day = day(deal, DayOfWeek.THURSDAY);
@@ -170,6 +172,7 @@ public class TestObjects {
                 .taxIncluded(true)
                 .startTime("10:30")
                 .endTime("15:00")
+                .dealType(DealType.DEAL)
                 .build();
 
         for (DayOfWeek day : days) {

@@ -28,6 +28,8 @@ public class Deal extends BaseEntity {
 
     @Column
     boolean taxIncluded;
+    @Column
+    DealType dealType;
     @Column(nullable = false, columnDefinition = "text")
     private String description;
     @Column(columnDefinition = "text")
@@ -44,7 +46,6 @@ public class Deal extends BaseEntity {
     @JsonManagedReference
     @Builder.Default
     private Set<Upload> uploads = new LinkedHashSet<>();
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     @Builder.Default
@@ -96,8 +97,8 @@ public class Deal extends BaseEntity {
     public String toString() {
         return "Deal{" +
                 "taxIncluded=" + taxIncluded +
-                ", description='" + description + '\'' +
-                ", dish='" + dish + '\'' +
+                ", description=" + description +
+                ", dish=" + dish +
                 ", place=" + place +
                 ", days=" + days +
                 ", uploads=" + uploads +
@@ -108,8 +109,11 @@ public class Deal extends BaseEntity {
                 ", minDiscountPercent=" + minDiscountPercent +
                 ", maxDiscountPercent=" + maxDiscountPercent +
                 ", verified=" + verified +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", dealType=" + dealType +
                 '}';
     }
 

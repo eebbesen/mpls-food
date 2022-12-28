@@ -10,14 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -174,18 +171,5 @@ public class DealControllerTest extends MFControllerTest {
         mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/delete/%d", deal.getId()))
                         .with(csrf()))
                 .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    void testSortedPlaces() {
-        controller = new DealController(dealService, placeService);
-        final Place newPlace = TestObjects.tacoJohns();
-        when(placeService.findAll()).thenReturn(placesToPlaceDTOs(List.of(place, newPlace)));
-
-        Map<Long, String> placeMap = ReflectionTestUtils.invokeMethod(controller, "sortedPlaces");
-        Iterator<Map.Entry<Long, String>> places = placeMap.entrySet().iterator();
-
-        assertEquals("Ginelli's Pizza", places.next().getValue());
-        assertEquals("Taco John's", places.next().getValue());
     }
 }
