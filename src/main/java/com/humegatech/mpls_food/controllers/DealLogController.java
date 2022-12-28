@@ -1,12 +1,10 @@
 package com.humegatech.mpls_food.controllers;
 
-import com.humegatech.mpls_food.domains.DealType;
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.models.DealLogDTO;
 import com.humegatech.mpls_food.services.DealLogService;
 import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
-import com.humegatech.mpls_food.util.MplsFoodUtils;
 import com.humegatech.mpls_food.util.WebUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,6 @@ import javax.validation.Valid;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/deal_logs")
@@ -39,9 +36,7 @@ public class DealLogController extends MFController {
         model.addAttribute("placeValues", sortedPlaces(placeService));
         model.addAttribute("dealValues", sortedDeals());
         model.addAttribute("dealPlaces", dealPlaceMap());
-        final Map dealTypes = Stream.of(DealType.values())
-                .collect(Collectors.toMap(DealType::name, rt -> MplsFoodUtils.capitalizeFirst(rt.name())));
-        model.addAttribute("dealTypeValues", dealTypes);
+        model.addAttribute("dealTypeValues", dealTypeDisplay());
     }
 
     private Map<Long, Long> dealPlaceMap() {
@@ -53,7 +48,7 @@ public class DealLogController extends MFController {
         return dealService.findAll().stream()
                 .collect(Collectors.toMap(DealDTO::getId, DealDTO::getDescription))
                 .entrySet().stream().sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (k, v) -> k, LinkedHashMap::new));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k, v) -> k, LinkedHashMap::new));
     }
 
     @GetMapping

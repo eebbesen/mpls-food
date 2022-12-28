@@ -1,10 +1,8 @@
 package com.humegatech.mpls_food.controllers;
 
-import com.humegatech.mpls_food.domains.DealType;
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
-import com.humegatech.mpls_food.util.MplsFoodUtils;
 import com.humegatech.mpls_food.util.WebUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,8 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -34,9 +30,7 @@ public class DealController extends MFController {
     @ModelAttribute
     public void prepareContext(final Model model) {
         model.addAttribute("placeValues", sortedPlaces(placeService));
-        final Map<String, String> dealTypes = Stream.of(DealType.values())
-                .collect(Collectors.toMap(DealType::name, rt -> MplsFoodUtils.capitalizeFirst(rt.name())));
-        model.addAttribute("dealTypeValues", dealTypes);
+        model.addAttribute("dealTypeValues", dealTypeDisplay());
     }
 
     @GetMapping

@@ -91,7 +91,7 @@ public class DealControllerTest extends MFControllerTest {
 
     @Test
     @WithMockUser
-    void testPostAddUserBindingResultError() throws Exception {
+    void testPostAddUserBindingResultError() {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         final String ret = controller.add(new DealDTO(), bindingResult, null);
@@ -149,7 +149,7 @@ public class DealControllerTest extends MFControllerTest {
 
     @Test
     @WithMockUser
-    void testPostEditUserBindingResultError() throws Exception {
+    void testPostEditUserBindingResultError() {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         final String ret = controller.edit(1L, new DealDTO(), bindingResult, null);
