@@ -17,6 +17,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -171,5 +172,65 @@ class DealControllerTest extends MFControllerTest {
         mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/delete/%d", deal.getId()))
                         .with(csrf()))
                 .andExpect(status().is4xxClientError());
+    }
+
+
+    @Test
+    @WithMockUser
+    void testGetCopyUser() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/deals/copy/99")
+                        .with(csrf()))
+                .andExpect((status().is4xxClientError()))
+                .andExpect(content().string(not(containsString("Copy"))));
+    }
+
+    @Test
+    void testGetCopyNotLoggedIn() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/deals/copy/99")
+                        .with(csrf()))
+                .andExpect((status().is3xxRedirection()))
+                .andExpect(content().string(not(containsString("Copy"))));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testGetCopyAdmin() throws Exception {
+        final List<DealDTO> dtos = dealsToDealDTOs(List.of(deal));
+        when(dealService.get(deal.getId())).thenReturn(dtos.get(0));
+
+        mvc.perform(MockMvcRequestBuilders.get(String.format("/deals/copy/%d", deal.getId()))
+                        .with(csrf()))
+                .andExpect((status().is2xxSuccessful()))
+                .andExpect(content().string(containsString("Copy")));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testPostCopyAdmin() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/copy/%d?places=98&places=97", deal.getId()))
+                        .with(csrf()))
+                .andExpect((status().is3xxRedirection()));
+
+        verify(dealService, times(1)).copy(deal.getId(), List.of(98L, 97L));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testPostCopyAdminNoPlaces() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/copy/%d", deal.getId()))
+                        .with(csrf()))
+                .andExpect((status().is3xxRedirection()));
+
+        verify(dealService, times(0)).copy(eq(deal.getId()), any(List.class));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testPostCopyAdminEmptyPlaces() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post(String.format("/deals/copy/%d?places=", deal.getId()))
+                        .with(csrf()))
+                .andExpect((status().is3xxRedirection()));
+
+        verify(dealService, times(0)).copy(eq(deal.getId()), any(List.class));
     }
 }
