@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 
@@ -90,14 +91,14 @@ public class DealController extends MFController {
                        final RedirectAttributes redirectAttributes) {
         // multiple place params so need to manually extract them (or create a DTO to hold them)
         final String[] places = request.getParameterMap().get("places");
-        if (0 < places.length) {
+        if (null != places && 0 < places.length && 0 < Arrays.stream(places).findFirst().get().length()) {
             dealService.copy(id, Stream.of(places).map(Long::parseLong).toList());
             redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
             return "redirect:/deals";
         }
 
         //todo add error about needing to select one or more place(s)
-        return "deal/copy";
+        return String.format("redirect:/deals/copy/%d", id);
     }
 
     @PostMapping("/delete/{id}")
