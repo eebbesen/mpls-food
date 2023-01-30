@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -129,7 +130,7 @@ public class DayController {
         final String placeFilter = handleFilter(request.getParameter("place"));
         final String happyHourFilter = handleFilter(request.getParameter("happyHour"));
         final String sortBy = handleFilter(request.getParameter("sortBy"));
-        final List<DayDTO> days = dayService.findAllActive();
+        final List<DayDTO> days = new ArrayList(dayService.findAllActive());
 
         model.addAttribute("selectedDay", dayOfWeekFilter);
         model.addAttribute("selectedDish", dishFilter);
