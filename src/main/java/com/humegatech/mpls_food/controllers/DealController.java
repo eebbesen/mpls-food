@@ -91,7 +91,7 @@ public class DealController extends MFController {
                        final RedirectAttributes redirectAttributes) {
         // multiple place params so need to manually extract them (or create a DTO to hold them)
         final String[] places = request.getParameterMap().get("places");
-        if (null != places && 0 < places.length && 0 < Arrays.stream(places).findFirst().get().length()) {
+        if (null != places && 0 < places.length && !Arrays.stream(places).findFirst().get().isEmpty()) {
             dealService.copy(id, Stream.of(places).map(Long::parseLong).toList());
             redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
             return "redirect:/deals";

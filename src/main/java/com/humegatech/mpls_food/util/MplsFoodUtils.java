@@ -50,7 +50,7 @@ public class MplsFoodUtils {
     }
 
     public static String capitalizeFirst(final String string) {
-        if (null == string || string.length() < 1) {
+        if (null == string || string.isEmpty()) {
             return null;
         }
 
@@ -95,7 +95,7 @@ public class MplsFoodUtils {
     }
 
     public static String truncateDealDescription(final String description) {
-        if (null == description || description.length() < 1) {
+        if (null == description || description.isEmpty()) {
             return "";
         }
 

@@ -55,7 +55,7 @@ public class DealService {
     // Sorts by place name, then by the earliest day of the weak the deal is active.
     // Replacing '-' with '~' for the sorting because '~' is the last character alphabetically
     // and '-' is before all letters.
-    // I prefer to display '-' so I'm taking the hit on the replace
+    // I prefer to display '-' so I'm taking the hit on the replacement
     public List<DealDTO> findAll() {
         return dealRepository.findAll()
                 .stream()
@@ -212,7 +212,7 @@ public class DealService {
                 final Method isDay = DealDTO.class.getDeclaredMethod(methodName);
                 final Boolean result = (Boolean) isDay.invoke(dealDTO);
 
-                if (result.booleanValue()) {
+                if (result) {
                     addDay(deal, d);
                 } else {
                     removeDay(deal, d);

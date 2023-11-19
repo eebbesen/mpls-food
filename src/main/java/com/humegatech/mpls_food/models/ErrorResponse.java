@@ -1,8 +1,11 @@
 package com.humegatech.mpls_food.models;
 
+import lombok.Getter;
+
 import java.util.List;
 
 
+@Getter
 public class ErrorResponse {
 
     private Integer httpStatus;
@@ -10,32 +13,16 @@ public class ErrorResponse {
     private String message;
     private List<FieldError> fieldErrors;
 
-    public Integer getHttpStatus() {
-        return httpStatus;
-    }
-
     public void setHttpStatus(final Integer httpStatus) {
         this.httpStatus = httpStatus;
-    }
-
-    public String getException() {
-        return exception;
     }
 
     public void setException(final String exception) {
         this.exception = exception;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
     public void setMessage(final String message) {
         this.message = message;
-    }
-
-    public List<FieldError> getFieldErrors() {
-        return fieldErrors;
     }
 
     public void setFieldErrors(final List<FieldError> fieldErrors) {
