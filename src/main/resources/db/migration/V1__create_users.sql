@@ -4,9 +4,8 @@ CREATE TABLE users (
 	"password" varchar(500) NOT NULL,
 	enabled bool NOT NULL,
 	CONSTRAINT users_pkey PRIMARY KEY (username)
-);
-
+)
 TABLESPACE pg_default;
 
-ALTER TABLE public.users
+ALTER TABLE users
     OWNER to postgres;
