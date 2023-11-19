@@ -85,7 +85,7 @@ class DayRepositoryTest {
         deal.setPlace(place);
         deal.setStartDate(today);
         deal.setEndDate(today);
-        deal.setDays(new HashSet<Day>());
+        deal.setDays(new HashSet<>());
         final Day day = Day.builder()
                 .dayOfWeek(today.getDayOfWeek())
                 .deal(deal)

@@ -6,8 +6,9 @@ Created with https://bootify.io
 Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Minneapolis.svg
 
 ## Required
-* A relational database. Out of the box this will work with a local PostgreSQL instance
-* [chromedriver](https://chromedriver.chromium.org/downloads) on your path that matches your current Chrome version
+* A relational database
+  * Out of the box this will work with a local PostgreSQL instance (default) and h2 (when starting with `h2` profile)
+* [chrome for testing](https://googlechromelabs.github.io/chrome-for-testing/#stable) on your path that matches your current Chrome version
   * this is only needed if you are running end-to-end tests
 
 ## Start
@@ -27,10 +28,23 @@ gradle bootRun --args='--spring.profiles.active=default'
 ```bash
 gradle -q dependencies
 ```
-### add users
-Fixtures for all models can be found in src/main/test/resources/seeds. The default password for the user and the admin is `retek01!`
+### data
+Note that Spring has built-in data population that is not in use by default but that you can employ.
+#### add users
+Fixtures for all models can be found in src/main/test/resources/test_data. The default password for the user and the admin is `retek01!`
 
-To generate your own credentials you'll need to bcrypt passwords, then assign your user to a role in `authorities`. You can bcrypt a password using https://www.devglan.com/online-tools/bcrypt-hash-generator.
+To generate your own credentials you'll need to bcrypt passwords, then assign users to a roles in `authorities`. You can bcrypt a password using https://www.devglan.com/online-tools/bcrypt-hash-generator.
+
+#### add all data
+In the following order -- note that uploads is a large file
+* users
+* authorities
+* places
+* deals
+* days
+* rewards
+* deal_log
+* uploads
 
 ### linting
 #### Qodana

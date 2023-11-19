@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface UploadRepository extends JpaRepository<Upload, Long> {
-    public List<Upload> findByDealId(final Long dealId);
+    List<Upload> findByDealId(final Long dealId);
 }

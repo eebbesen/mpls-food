@@ -22,6 +22,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @Getter
 public class BaseEntity implements Serializable {
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,10 +34,6 @@ public class BaseEntity implements Serializable {
     private String createdBy;
     @LastModifiedBy
     private String modifiedBy;
-
-    public Long getId() {
-        return id;
-    }
 
     public void setId(Long id) {
         this.id = id;

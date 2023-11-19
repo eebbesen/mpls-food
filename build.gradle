@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.1'
+    id 'org.springframework.boot' version '2.7.17'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'org.flywaydb.flyway' version '9.0.2'
@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.humegatech'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 // sourceCompatibility = '17' // took out to avoid Heroku deployment issues
 
 bootRun {
@@ -31,7 +31,7 @@ gradleEnterprise {
 
 dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -51,9 +51,9 @@ dependencies {
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    testImplementation 'io.github.bonigarcia:webdrivermanager:5.3.1'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.6.2'
     testImplementation 'org.jsoup:jsoup:1.15.3'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.7.1'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.15.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

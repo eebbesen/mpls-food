@@ -36,7 +36,7 @@ public class DayController {
             return null;
         }
 
-        DayOfWeek dayOfWeek = null;
+        DayOfWeek dayOfWeek;
 
         try {
             dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
@@ -130,7 +130,7 @@ public class DayController {
         final String placeFilter = handleFilter(request.getParameter("place"));
         final String happyHourFilter = handleFilter(request.getParameter("happyHour"));
         final String sortBy = handleFilter(request.getParameter("sortBy"));
-        final List<DayDTO> days = new ArrayList(dayService.findAllActive());
+        final List<DayDTO> days = new ArrayList<>(dayService.findAllActive());
 
         model.addAttribute("selectedDay", dayOfWeekFilter);
         model.addAttribute("selectedDish", dishFilter);

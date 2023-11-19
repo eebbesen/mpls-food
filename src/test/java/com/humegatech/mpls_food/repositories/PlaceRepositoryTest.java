@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ class PlaceRepositoryTest {
 
     @Test
     void testFindByIdIn() {
-        final Set<Place> places = TestObjects.places().stream().collect(Collectors.toSet());
+        final Set<Place> places = new HashSet<>(TestObjects.places());
         final List<Place> persistedPlaces = repository.saveAll(places);
         final List<Long> placeIds = List.of(persistedPlaces.get(0).getId(), persistedPlaces.get(1).getId());
 

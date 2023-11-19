@@ -8,6 +8,7 @@ import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 
 @Configuration
@@ -16,7 +17,7 @@ public class LocalDevConfig {
 
     public LocalDevConfig(final TemplateEngine templateEngine) throws IOException {
         File sourceRoot = new ClassPathResource("application.yml").getFile().getParentFile();
-        while (sourceRoot.listFiles((dir, name) -> name.equals("gradlew")).length != 1) {
+        while (Objects.requireNonNull(sourceRoot.listFiles((dir, name) -> name.equals("gradlew"))).length != 1) {
             sourceRoot = sourceRoot.getParentFile();
         }
         final FileTemplateResolver fileTemplateResolver = new FileTemplateResolver();
