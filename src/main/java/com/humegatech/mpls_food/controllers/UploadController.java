@@ -29,7 +29,7 @@ public class UploadController {
                          @RequestParam("file") final MultipartFile file,
                          final RedirectAttributes attributes) {
         if (null != file) {
-            byte[] image = null;
+            byte[] image;
 
             try {
                 image = file.getBytes();

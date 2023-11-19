@@ -36,7 +36,7 @@ public class DayController {
             return null;
         }
 
-        DayOfWeek dayOfWeek = null;
+        DayOfWeek dayOfWeek;
 
         try {
             dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);

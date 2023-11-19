@@ -9,6 +9,7 @@ import org.springframework.web.servlet.LocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 
 @Component
@@ -16,7 +17,7 @@ public class WebUtils {
 
     public static final String MSG_SUCCESS = "MSG_SUCCESS";
     public static final String MSG_INFO = "MSG_INFO";
-    public static final String MSG_ERROR = "MSG_ERROR";
+//    public static final String MSG_ERROR = "MSG_ERROR";
     private static MessageSource messageSource;
     private static LocaleResolver localeResolver;
 
@@ -36,9 +37,10 @@ public class WebUtils {
     }
 
     public static String getMessage(final String code, final Object... args) {
-        return messageSource.getMessage(code, args, code, localeResolver.resolveLocale(getRequest()));
+        return messageSource.getMessage(code, args, code, localeResolver.resolveLocale(Objects.requireNonNull(getRequest())));
     }
 
+    // used by Thymeleaf -- do not remove
     public static boolean isRequiredField(final Object dto, final String fieldName) throws
             NoSuchFieldException {
         return dto.getClass().getDeclaredField(fieldName).getAnnotation(NotNull.class) != null;
