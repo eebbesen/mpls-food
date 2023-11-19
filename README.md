@@ -6,7 +6,8 @@ Created with https://bootify.io
 Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Minneapolis.svg
 
 ## Required
-* A relational database. Out of the box this will work with a local PostgreSQL instance
+* A relational database
+  * Out of the box this will work with a local PostgreSQL instance (default) and h2 (when starting with `h2` profile)
 * [chromedriver](https://chromedriver.chromium.org/downloads) on your path that matches your current Chrome version
   * this is only needed if you are running end-to-end tests
 
