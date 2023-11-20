@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import javax.sql.DataSource;
 
@@ -30,40 +32,75 @@ public class SecurityConfig {
                 .authoritiesByUsernameQuery("select username, authority from authorities where username=?");
     }
 
+    /**
+     * Due to H2's additional servlet MvcRequestMatcher must be used
+     *
+     * @param http
+     * @param introspector
+     * @return SecurityFilterChain
+     * @throws Exception
+     */
     @Bean
-    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    protected SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                      final HandlerMappingIntrospector introspector) throws Exception {
+        final MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
+        final MvcRequestMatcher h2 = filterPattern(mvcMatcherBuilder, "/**", "/h2-console");
+
         http.formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.ignoringRequestMatchers(h2))
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(
-                        "/",
-                        "/css/**",
-                        "/places",
-                        "/days",
-                        "/deals",
-                        "/deal_logs",
-                        "/deal_logs/show/*",
-                        "/images/**",
-                        "/js/**",
-                        "/login",
-                        "/places/show/*").permitAll()
+                        h2,
+                        filterPattern(mvcMatcherBuilder, "/"),
+                        filterPattern(mvcMatcherBuilder, "/css/**"),
+                        filterPattern(mvcMatcherBuilder, "/places"),
+                        filterPattern(mvcMatcherBuilder, "/days"),
+                        filterPattern(mvcMatcherBuilder, "/deals"),
+                        filterPattern(mvcMatcherBuilder, "/deal_logs"),
+                        filterPattern(mvcMatcherBuilder, "/deal_logs/show/*"),
+                        filterPattern(mvcMatcherBuilder, "/images/**"),
+                        filterPattern(mvcMatcherBuilder, "/js/**"),
+                        filterPattern(mvcMatcherBuilder, "/login"),
+                        filterPattern(mvcMatcherBuilder, "/places/show/*")).permitAll()
                 .requestMatchers(
-                        "/deals/add",
-                        "/deals/edit/*",
-                        "/deal_logs/add",
-                        "/deal_logs/edit/*",
-                        "/places/add",
-                        "/uploads/**")
+                        filterPattern(mvcMatcherBuilder, "/deals/add"),
+                        filterPattern(mvcMatcherBuilder, "/deals/edit/*"),
+                        filterPattern(mvcMatcherBuilder, "/deal_logs/add"),
+                        filterPattern(mvcMatcherBuilder, "/deal_logs/edit/*"),
+                        filterPattern(mvcMatcherBuilder, "/places/add"),
+                        filterPattern(mvcMatcherBuilder, "/uploads/**"))
                 .authenticated()
                 .requestMatchers(
-                        "/*/edit/*",
-                        "/actuator",
-                        "/actuator/*",
-                        "/deals/delete/*",
-                        "/deals/copy/*",
-                        "/days/delete/*",
-                        "/deal_logs/delete/*",
-                        "/places/delete/*"
+                        filterPattern(mvcMatcherBuilder, "/*/edit/*"),
+                        filterPattern(mvcMatcherBuilder, "/actuator/**"),
+                        filterPattern(mvcMatcherBuilder, "/deals/delete/*"),
+                        filterPattern(mvcMatcherBuilder, "/deals/copy/*"),
+                        filterPattern(mvcMatcherBuilder, "/days/delete/*"),
+                        filterPattern(mvcMatcherBuilder, "/deal_logs/delete/*"),
+                        filterPattern(mvcMatcherBuilder, "/places/delete/*")
                         ).hasRole("ADMIN")
                 .anyRequest().denyAll());
         return http.build();
+    }
+
+    /**
+     * Helper to create MvcRequestMatcher
+     *
+     * @param builder
+     * @param pattern
+     * @param servletPath if null default SpringMVC path used
+     * @return MvcRequestMatcher
+     */
+    private static MvcRequestMatcher filterPattern(final MvcRequestMatcher.Builder builder, final String pattern, final String servletPath) {
+        MvcRequestMatcher matcher = builder.pattern(pattern);
+
+        if (null != servletPath) {
+            matcher.setServletPath(servletPath);
+        }
+
+        return matcher;
+    }
+
+    private static MvcRequestMatcher filterPattern(final MvcRequestMatcher.Builder builder, final String pattern) {
+        return filterPattern(builder, pattern, null);
     }
 }
