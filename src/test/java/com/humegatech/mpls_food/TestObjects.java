@@ -229,7 +229,7 @@ public class TestObjects {
     }
 
     public static byte[] image() {
-        byte[] bytes = null;
+        byte[] bytes;
         MockMultipartFile multipartFile = new MockMultipartFile("file",
                 "test.png", MediaType.MULTIPART_FORM_DATA_VALUE, "abcd".getBytes());
 

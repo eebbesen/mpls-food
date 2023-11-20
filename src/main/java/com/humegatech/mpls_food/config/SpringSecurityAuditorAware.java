@@ -1,5 +1,6 @@
 package com.humegatech.mpls_food.config;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
@@ -14,7 +15,7 @@ import java.util.Optional;
 class SpringSecurityAuditorAware implements AuditorAware<String> {
     // maybe change to users.id at some point, or lock down users.username changes
     @Override
-    public Optional<String> getCurrentAuditor() {
+    public @NotNull Optional<String> getCurrentAuditor() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)

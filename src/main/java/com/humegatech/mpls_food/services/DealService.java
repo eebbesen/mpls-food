@@ -8,6 +8,7 @@ import com.humegatech.mpls_food.models.UploadDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Slf4j
 public class DealService {
     private final DealRepository dealRepository;
     private final PlaceRepository placeRepository;
@@ -107,8 +109,11 @@ public class DealService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
         final List<Place> places = placeRepository.findByIdIn(placeIds);
         if (places.size() < placeIds.size()) {
-            // todo log/message which place(s) are not found
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "one or more places not found");
+            List<Long> notFound = new ArrayList<>(placeIds);
+            notFound.removeAll(places.stream().map(Place::getId).toList());
+            final String message = "one or more places not found:\n %s".formatted(notFound);
+            log.warn(message);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
 
         final List<Deal> newDeals = new ArrayList<>();
@@ -120,7 +125,7 @@ public class DealService {
             newDeals.add(mapToEntity(dealDTO, new Deal()));
         });
 
-        // todo log creation
+        log.info("Deals created: %s".formatted(newDeals.stream().map(Deal::getId)));
         dealRepository.saveAll(newDeals);
     }
 

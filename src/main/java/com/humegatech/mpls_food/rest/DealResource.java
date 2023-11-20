@@ -2,7 +2,7 @@ package com.humegatech.mpls_food.rest;
 
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.services.DealService;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+//import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class DealResource {
     }
 
     @PostMapping
-    @ApiResponse(responseCode = "201")
+//    @ApiResponse(responseCode = "201")
     public ResponseEntity<Long> createDeal(@RequestBody @Valid final DealDTO dealDTO) {
         return new ResponseEntity<>(dealService.create(dealDTO), HttpStatus.CREATED);
     }
@@ -46,7 +46,7 @@ public class DealResource {
     }
 
     @DeleteMapping("/{id}")
-    @ApiResponse(responseCode = "204")
+//    @ApiResponse(responseCode = "204")
     public ResponseEntity<Void> deleteDeal(@PathVariable final Long id) {
         dealService.delete(id);
         return ResponseEntity.noContent().build();

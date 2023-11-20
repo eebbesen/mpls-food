@@ -41,7 +41,7 @@ public class DealLog extends BaseEntity {
     @JoinColumn(name = "place_id", foreignKey = @ForeignKey(name = "fk_deal_log_places"))
     private Place place;
 
-    @ManyToOne(optional = true)
+    @ManyToOne()
     @JsonBackReference
     @JoinColumn(name = "deal_id", foreignKey = @ForeignKey(name = "fk_deal_log_deals"))
     private Deal deal;

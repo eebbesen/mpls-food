@@ -20,12 +20,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UploadControllerTest extends MFControllerTest {
-    private Place place;
     private Deal deal;
 
     @BeforeEach
     void setUp() {
-        place = TestObjects.ginellis();
+        Place place = TestObjects.ginellis();
         deal = TestObjects.fridayTwofer();
         deal.setPlace(place);
     }

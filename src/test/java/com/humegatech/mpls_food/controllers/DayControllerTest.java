@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -151,7 +152,7 @@ class DayControllerTest extends MFControllerTest {
         final String htmlBody = fullHtml.substring(fullHtml.indexOf("<body"), fullHtml.lastIndexOf("</body>") + 7);
 
         Document doc = Jsoup.parse(htmlBody);
-        Elements rows = doc.getElementById("daysTable").getElementsByTag("tr");
+        Elements rows = Objects.requireNonNull(doc.getElementById("daysTable")).getElementsByTag("tr");
         assertTrue(rows.get(1).text().contains("$0.99"));
         assertTrue(rows.get(2).text().contains("$1.99"));
         assertTrue(rows.get(3).text().contains("$5.00"));
@@ -531,7 +532,7 @@ class DayControllerTest extends MFControllerTest {
         assertEquals(day101.getPlaceName(), days.get(0).getPlaceName());
 
         final String nullString = null;
-        ReflectionTestUtils.invokeMethod(DayController.class, "handleSort", days, nullString);
+        ReflectionTestUtils.invokeMethod(DayController.class, "handleSort", days, null);
 
         assertEquals(day101.getMinPrice(), days.get(0).getMinPrice());
     }

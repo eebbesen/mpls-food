@@ -59,7 +59,7 @@ class DealLogControllerTest extends MFControllerTest {
 
     @Test
     @WithMockUser
-    void testPostEditUserBindingResultError() throws Exception {
+    void testPostEditUserBindingResultError() {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         final String ret = controller.edit(1L, new DealLogDTO(), bindingResult, null);
