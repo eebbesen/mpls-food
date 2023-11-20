@@ -41,7 +41,7 @@ class PlaceTest extends MFSeleniumTest {
         assertEquals("TOAST", driver.findElement(By.id("rewardType")).getAttribute("value"));
         assertEquals("1 point for every $2 you spend and receive a $5 discount for every 100 points you redeem",
                 driver.findElement(By.id("rewardNotes")).getText());
-        assertEquals("No deals found", driver.findElement(By.id("deal-rows")).getText());
+        assertEquals("No Deals found", driver.findElement(By.id("deal-rows")).getText());
     }
 
     @Test

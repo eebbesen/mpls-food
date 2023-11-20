@@ -14,6 +14,9 @@ class MFSeleniumTest {
 
     @BeforeAll
     static void setDriver() {
+//        https://bonigarcia.dev/webdrivermanager/#advanced-configuration
+//        WebDriverManager.chromedriver().clearDriverCache();
+//        WebDriverManager.chromedriver().driverVersion("119.0.6045.105").setup();
         WebDriverManager.chromedriver().setup();
     }
 
