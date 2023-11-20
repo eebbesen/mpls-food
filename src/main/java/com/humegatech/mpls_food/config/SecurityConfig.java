@@ -1,21 +1,23 @@
 package com.humegatech.mpls_food.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true)
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    // https://docs.spring.io/spring-security/site/docs/5.3.9.RELEASE/reference/html5/#servlet-authorization
+public class SecurityConfig {
+    // https://docs.spring.io/spring-security/reference/servlet/authorization/index.html
 
     @Autowired
     private DataSource dataSource;
@@ -28,28 +30,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("select username, authority from authorities where username=?");
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .mvcMatchers("/css/**", "/places", "/deals", "/days", "/deal_logs", "/login", "/", "/js/**",
-                        "/images/**", "/places/show/*", "/deal_logs/show/*").permitAll()
-                .mvcMatchers("/deals/add", "/places/add", "/uploads/**", "/deals/edit/*", "/deal_logs/add",
-                        "/deal_logs/edit/*")
+    @Bean
+    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers(
+                        "/",
+                        "/css/**",
+                        "/places",
+                        "/days",
+                        "/deals",
+                        "/deal_logs",
+                        "/deal_logs/show/*",
+                        "/images/**",
+                        "/js/**",
+                        "/login",
+                        "/places/show/*").permitAll()
+                .requestMatchers(
+                        "/deals/add",
+                        "/deals/edit/*",
+                        "/deal_logs/add",
+                        "/deal_logs/edit/*",
+                        "/places/add",
+                        "/uploads/**")
                 .authenticated()
-                .mvcMatchers("/places/delete/*", "/*/edit/*", "/deals/delete/*", "/deals/copy/*",
-                        "/days/delete/*", "/deal_logs/delete/*", "/actuator", "/actuator/*", "").hasRole("ADMIN")
-
-                .anyRequest().denyAll();
-        // http.httpBasic();
-        http.formLogin();
+                .requestMatchers(
+                        "/*/edit/*",
+                        "/actuator",
+                        "/actuator/*",
+                        "/deals/delete/*",
+                        "/deals/copy/*",
+                        "/days/delete/*",
+                        "/deal_logs/delete/*",
+                        "/places/delete/*"
+                        ).hasRole("ADMIN")
+                .anyRequest().denyAll());
+        return http.build();
     }
-
-    //    @Autowired
-    //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    //        auth
-    //            .inMemoryAuthentication()
-    //            .withUser("user").password("password").roles("USER");
-    //    }
-
 }
