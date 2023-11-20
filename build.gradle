@@ -64,7 +64,7 @@ test {
 
     // used to exclude Selenium tests in CI
     if (project.hasProperty('excludeTests')) {
-        exclude project.property('excludeTests') as Closure
+        exclude project.property('excludeTests')
     }
 }
 
