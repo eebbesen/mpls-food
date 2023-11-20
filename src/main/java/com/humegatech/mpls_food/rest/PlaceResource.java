@@ -2,7 +2,7 @@ package com.humegatech.mpls_food.rest;
 
 import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.services.PlaceService;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+//import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class PlaceResource {
     }
 
     @PostMapping
-    @ApiResponse(responseCode = "201")
+//    @ApiResponse(responseCode = "201")
     public ResponseEntity<Long> createPlace(@RequestBody @Valid final PlaceDTO placeDTO) {
         return new ResponseEntity<>(placeService.create(placeDTO), HttpStatus.CREATED);
     }
@@ -46,7 +46,7 @@ public class PlaceResource {
     }
 
     @DeleteMapping("/{id}")
-    @ApiResponse(responseCode = "204")
+//    @ApiResponse(responseCode = "204")
     public ResponseEntity<Void> deletePlace(@PathVariable final Long id) {
         placeService.delete(id);
         return ResponseEntity.noContent().build();
