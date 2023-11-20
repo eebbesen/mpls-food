@@ -16,7 +16,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import javax.sql.DataSource;
 
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 @Configuration
 public class SecurityConfig {
     // https://docs.spring.io/spring-security/reference/servlet/authorization/index.html
@@ -35,8 +35,8 @@ public class SecurityConfig {
     /**
      * Due to H2's additional servlet MvcRequestMatcher must be used
      *
-     * @param http
-     * @param introspector
+     * @param http HttpSecurity
+     * @param introspector HandlerMappingIntrospector
      * @return SecurityFilterChain
      * @throws Exception
      */
@@ -85,8 +85,8 @@ public class SecurityConfig {
     /**
      * Helper to create MvcRequestMatcher
      *
-     * @param builder
-     * @param pattern
+     * @param builder MvcRequestMatcher.Builder
+     * @param pattern String
      * @param servletPath if null default SpringMVC path used
      * @return MvcRequestMatcher
      */

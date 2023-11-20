@@ -3,6 +3,7 @@ package com.humegatech.mpls_food.controllers;
 import com.humegatech.mpls_food.models.DayDTO;
 import com.humegatech.mpls_food.services.DayService;
 import com.humegatech.mpls_food.util.WebUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
+@Slf4j
 @RequestMapping("/days")
 public class DayController {
     private static final String HH_CUTOFF = "13:00";
@@ -41,9 +43,7 @@ public class DayController {
         try {
             dayOfWeek = DayOfWeek.valueOf(dayOfWeekString);
         } catch (IllegalArgumentException e) {
-            // todo log error
-            // result.addError(new ObjectError("globalError",
-            // String.format("Invalid day of the week: %s", dayOfWeekString)));
+            log.warn("Invalid day of the week received: %s".formatted(dayOfWeekString));
             return null;
         }
 

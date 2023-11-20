@@ -7,7 +7,6 @@ import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

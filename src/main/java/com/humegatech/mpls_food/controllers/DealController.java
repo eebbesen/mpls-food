@@ -100,7 +100,6 @@ public class DealController extends MFController {
             return "redirect:/deals";
         }
 
-        //todo add error about needing to select one or more place(s)
         return String.format("redirect:/deals/copy/%d", id);
     }
 

@@ -31,7 +31,7 @@ gradleEnterprise {
 
 dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+//    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -64,7 +64,7 @@ test {
 
     // used to exclude Selenium tests in CI
     if (project.hasProperty('excludeTests')) {
-        exclude project.property('excludeTests')
+        exclude project.property('excludeTests') as Closure
     }
 }
 

@@ -6,6 +6,7 @@ import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DealDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -98,18 +99,6 @@ class DealControllerTest extends MFControllerTest {
         final String ret = controller.add(new DealDTO(), bindingResult, null);
         assertEquals("deal/add", ret);
     }
-
-//    // todo this test will fail once the app handles bad payloads better
-//    // for now the expectation is never used
-//    @Test
-//    @WithMockUser(roles = "ADMIN")
-//    void testPostAddAdminBadPayload() {
-//        Assertions.assertThrows(NestedServletException.class, () -> mvc.perform(MockMvcRequestBuilders.post("/deals/add")
-//                        .with(csrf())
-//                        .param("friday", "true")
-//                        .param("place", place.getId().toString()))
-//                .andExpect(status().is4xxClientError()));
-//    }
 
     @Test
     @WithMockUser(roles = "USER")
@@ -221,7 +210,8 @@ class DealControllerTest extends MFControllerTest {
                         .with(csrf()))
                 .andExpect((status().is3xxRedirection()));
 
-        verify(dealService, times(0)).copy(eq(deal.getId()), any(List.class));
+        verify(dealService, times(0)).copy(eq(deal.getId()),
+                ArgumentMatchers.<List>any(List.class));
     }
 
     @Test
@@ -231,6 +221,7 @@ class DealControllerTest extends MFControllerTest {
                         .with(csrf()))
                 .andExpect((status().is3xxRedirection()));
 
-        verify(dealService, times(0)).copy(eq(deal.getId()), any(List.class));
+        verify(dealService, times(0)).copy(eq(deal.getId()),
+                ArgumentMatchers.<List>any(List.class));
     }
 }

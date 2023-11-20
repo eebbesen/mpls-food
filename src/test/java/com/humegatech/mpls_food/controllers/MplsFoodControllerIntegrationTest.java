@@ -14,7 +14,7 @@ class MplsFoodControllerIntegrationTest {
     private TestRestTemplate template;
 
     @Test
-    void getRoot() throws Exception {
+    void getRoot() {
         ResponseEntity<String> response = template.getForEntity("/", String.class);
         assertTrue(response.getStatusCode().is3xxRedirection());
     }

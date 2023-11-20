@@ -501,8 +501,8 @@ class DealServiceTest {
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () ->
                 service.copy(dealId, ids));
 
-        assertEquals("404 NOT_FOUND \"one or more places not found\"", ex.getMessage());
-        assertEquals("one or more places not found", ex.getReason());
+        assertEquals("404 NOT_FOUND \"one or more places not found:\n" +
+                " [2, 3, 72]\"", ex.getMessage());
     }
 
     @Test
