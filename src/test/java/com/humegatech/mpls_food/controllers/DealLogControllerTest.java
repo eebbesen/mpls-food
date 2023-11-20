@@ -135,9 +135,8 @@ class DealLogControllerTest extends MFControllerTest {
         final List<DealLogDTO> dealLogDTOs = dealLogsToDealLogDTOs(List.of(TestObjects.dealLog()));
         when(dealLogService.findAll()).thenReturn(dealLogDTOs);
 
-        mvc.perform(MockMvcRequestBuilders.get("/deal_logs/")
-                        .with(csrf()))
-                .andExpect((status().isOk()));
+        mvc.perform(MockMvcRequestBuilders.get("/deal_logs")
+                        .with(csrf())).andExpect(status().isOk());
 
         verify(dealLogService, times(1)).findAll();
     }
