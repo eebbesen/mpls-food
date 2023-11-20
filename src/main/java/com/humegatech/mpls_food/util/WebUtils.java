@@ -6,6 +6,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
@@ -46,4 +47,9 @@ public class WebUtils {
         return dto.getClass().getDeclaredField(fieldName).getAnnotation(NotNull.class) != null;
     }
 
+    // used by Thymeleaf -- do not remove
+    // https://stackoverflow.com/questions/77227498/pagination-fragment-using-servleturicomponentsbuilder-within-thymeleaf
+    public static ServletUriComponentsBuilder fromCurrentRequest() {
+        return ServletUriComponentsBuilder.fromCurrentRequest();
+    }
 }

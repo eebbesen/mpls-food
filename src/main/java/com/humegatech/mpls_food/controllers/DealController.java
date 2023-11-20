@@ -42,7 +42,8 @@ public class DealController extends MFController {
 
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public String add(@ModelAttribute("deal") final DealDTO dealDto) {
+    public String add(@ModelAttribute("deal") final DealDTO dealDto, final Model model, final HttpServletRequest request) {
+        model.addAttribute("requestURI", request.getRequestURI());
         return "deal/add";
     }
 
@@ -60,8 +61,9 @@ public class DealController extends MFController {
 
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('USER')")
-    public String edit(@PathVariable final Long id, final Model model) {
+    public String edit(@PathVariable final Long id, final Model model, final HttpServletRequest request) {
         model.addAttribute("deal", dealService.get(id));
+        model.addAttribute("requestURI", request.getRequestURI());
         return "deal/edit";
     }
 
@@ -80,8 +82,9 @@ public class DealController extends MFController {
 
     @GetMapping("/copy/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String copy(@PathVariable final Long id, final Model model) {
+    public String copy(@PathVariable final Long id, final Model model, final HttpServletRequest request) {
         model.addAttribute("deal", dealService.get(id));
+        model.addAttribute("requestURI", request.getRequestURI());
         return "deal/copy";
     }
 

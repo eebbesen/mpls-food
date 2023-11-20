@@ -145,6 +145,7 @@ public class DayController {
                         .collect(Collectors.toList()));
         model.addAttribute("places",
                 days.stream().map(DayDTO::getPlaceName).distinct().sorted().toList());
+        model.addAttribute("requestURI", request.getRequestURI());
 
         handleSort(days, sortBy);
 
