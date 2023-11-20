@@ -6,6 +6,7 @@ import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
 import com.humegatech.mpls_food.util.WebUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,7 +54,8 @@ public class PlaceController {
 
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public String add(@ModelAttribute("place") final PlaceDTO placeDTO) {
+    public String add(@ModelAttribute("place") final PlaceDTO placeDTO, Model model, HttpServletRequest request) {
+        model.addAttribute("requestURI", request.getRequestURI());
         return "place/add";
     }
 
@@ -75,8 +77,9 @@ public class PlaceController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable final Long id, final Model model) {
+    public String edit(@PathVariable final Long id, final Model model, HttpServletRequest request) {
         model.addAttribute("place", placeService.get(id));
+        model.addAttribute("requestURI", request.getRequestURI());
         return "place/edit";
     }
 

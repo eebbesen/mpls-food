@@ -3,8 +3,8 @@ package com.humegatech.mpls_food.models;
 import com.humegatech.mpls_food.domains.RewardType;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Getter
 @Setter

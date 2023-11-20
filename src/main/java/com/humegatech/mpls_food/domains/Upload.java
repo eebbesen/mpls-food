@@ -6,10 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Arrays;
 
 @Entity
@@ -27,7 +29,7 @@ public class Upload extends BaseEntity {
     private Deal deal;
 
     @Lob
-    @Type(type = "org.hibernate.type.BinaryType")
+    @JdbcTypeCode(SqlTypes.BINARY)
     private byte[] image;
 
     @Column

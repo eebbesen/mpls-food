@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -145,6 +145,7 @@ public class DayController {
                         .collect(Collectors.toList()));
         model.addAttribute("places",
                 days.stream().map(DayDTO::getPlaceName).distinct().sorted().toList());
+        model.addAttribute("requestURI", request.getRequestURI());
 
         handleSort(days, sortBy);
 

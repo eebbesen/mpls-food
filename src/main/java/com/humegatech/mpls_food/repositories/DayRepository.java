@@ -15,7 +15,7 @@ public interface DayRepository extends JpaRepository<Day, Long> {
     @Query("SELECT a " +
             "  FROM Day a, " +
             "       Deal e " +
-            " WHERE a.deal = e.id" +
+            " WHERE a.deal = e" +
             "   AND (e.startDate IS NULL OR e.startDate <= CURRENT_DATE) " +
             "   AND (e.endDate IS NULL OR e.endDate >= CURRENT_DATE)"
     )

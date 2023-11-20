@@ -52,6 +52,7 @@ spring:
 #    org:
 #      hibernate:
 #        type: trace
+
 management:
   endpoints:
     web:

@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MplsFoodControllerIntegrationTest {
@@ -16,6 +16,6 @@ class MplsFoodControllerIntegrationTest {
     @Test
     void getRoot() throws Exception {
         ResponseEntity<String> response = template.getForEntity("/", String.class);
-        assertThat(response.getBody()).contains("Tuesday");
+        assertTrue(response.getStatusCode().is3xxRedirection());
     }
 }

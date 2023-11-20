@@ -6,7 +6,7 @@ import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;

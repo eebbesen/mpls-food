@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div th:replace="fragments/forms::globalErrors('place')" />
-            <form method="post" th:action="${#httpServletRequest.requestURI}">
+            <form method="post" th:action="${requestURI}">
                 <div th:replace="fragments/forms::inputRow(object='place', field='name')" />
                 <div th:replace="fragments/forms::inputRow(object='place', field='address', type='textarea')" />
                 <div th:replace="fragments/forms::inputRow(object='place', field='website')" />

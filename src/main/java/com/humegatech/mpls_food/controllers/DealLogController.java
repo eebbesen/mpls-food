@@ -6,6 +6,8 @@ import com.humegatech.mpls_food.services.DealLogService;
 import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.util.WebUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -58,14 +60,16 @@ public class DealLogController extends MFController {
     }
 
     @GetMapping("/show/{id}")
-    public String show(@PathVariable final Long id, final Model model) {
+    public String show(@PathVariable final Long id, final Model model, final HttpServletRequest request) {
         model.addAttribute("dealLog", dealLogService.get(id));
+        model.addAttribute("requestURI", request.getRequestURI());
         return "deal_logs/show";
     }
 
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public String add(@ModelAttribute("dealLog") final DealLogDTO dealLogDto) {
+    public String add(@ModelAttribute("dealLog") final DealLogDTO dealLogDto, final Model model, final HttpServletRequest request) {
+        model.addAttribute("requestURI", request.getRequestURI());
         return "deal_logs/add";
     }
 
@@ -83,8 +87,9 @@ public class DealLogController extends MFController {
 
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('USER')")
-    public String edit(@PathVariable final Long id, final Model model) {
+    public String edit(@PathVariable final Long id, final Model model, final HttpServletRequest request) {
         model.addAttribute("dealLog", dealLogService.get(id));
+        model.addAttribute("requestURI", request.getRequestURI());
         return "deal_logs/edit";
     }
 
