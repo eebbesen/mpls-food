@@ -62,7 +62,7 @@ test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport // report is always generated after tests run
 
-    // used to exclude Selenium tests in CI since changes aren't deployed yet
+    // used to exclude Selenium tests in CI
     if (project.hasProperty('excludeTests')) {
         exclude project.property('excludeTests')
     }
