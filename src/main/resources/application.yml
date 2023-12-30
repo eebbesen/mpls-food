@@ -33,8 +33,9 @@ spring:
       validation-query: SELECT 1
       validation-query-timeout: 30
   jpa:
-    hibernate:
-      ddl-auto: update
+    # defer-datasource-initialization: true
+    # hibernate:
+    #   ddl-auto: create-drop
     show-sql: true
     open-in-view: true
     properties:
@@ -47,12 +48,12 @@ spring:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
-#logging:
-#  level:
-#    org:
-#      hibernate:
-#        type: trace
-
+  sql:
+    init:
+      platform: postgresql
+      schema-locations: classpath:db/schema.sql
+      data-locations: optional:classpath*:db/data.sql
+      mode: never # change to create and populate the database on startup
 management:
   endpoints:
     web:

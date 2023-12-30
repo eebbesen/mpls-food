@@ -11,7 +11,7 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
   * this is only needed if you are running end-to-end tests
 
 ## Start
-* modify application.yml to point to a running database instance
+* modify application.yml to point to a running database instance (or use H2)
 * run MplsFoodApplication.java
   * DDL will be executed on startup based on application.yml `spring:jpa:hibernate:ddl-auto:` value
 * navigate to http://localhost:8080
@@ -68,7 +68,7 @@ gradle checkstyleMain
 
 #### Schemalint
 https://github.com/kristiandupont/schemalint
-Linter for PostgreSQL based on rules defined in `src/main/resources/db/migration/schemalintrc.js`.
+Linter for PostgreSQL based on rules defined in `src/test/resources/schemalintrc.js`.
 
 Install once
 ```bash
@@ -77,7 +77,7 @@ npm i -g schemalint
 
 Run
 ```bash
-cd src/main/resources/db/migration
+cd src/test/resources/
 npx schemalint
 ```
 
@@ -96,23 +96,18 @@ gradle build --scan -PexcludeTests=**/endtoend*
 
 ```
 
-#### heroku
-Test Heroku locally using `heroku local web`
-
 ### PostgreSQL
 Get size of database
 ```bash
-select pg_size_pretty(pg_database_size('dbname'));
-
-select pg_database_size('dbname')
+select pg_size_pretty(pg_database_size('mpls-food'));
+select pg_database_size('mpls-food')
 ```
 
 ## Chromedriver tests
 https://bonigarcia.dev/webdrivermanager/#advanced-configuration
 
 These tests can be brittle due to dependencies on webdrivermanager.
-If you get errors pointing out a mismatch between your Chrome version and the driver version
-you can try one or more of the following steps:
+If you get errors pointing out a mismatch between your Chrome version and the driver version you can try one or more of the following steps:
 * Add `WebDriverManager.chromedriver().clearDriverCache();` before the setup call to refresh
 * Explicitly pass the Chrome version number `:test --tests "com.humegatech.mpls_food.endtoend.*" -Dwdm.chromeDriverVersion="119.0.6045.105"`
 * Log the version being used and where it is located
