@@ -9,6 +9,7 @@ application-local.yml
 node_modules/
 snippets.md
 .java-version
+bin/
 
 ## IntelliJ IDEA
 .idea
