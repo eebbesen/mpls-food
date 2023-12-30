@@ -66,6 +66,21 @@ https://docs.sonarqube.org/latest/try-out-sonarqube/ for setup and run instructi
 gradle checkstyleMain
 ```
 
+#### Schemalint
+https://github.com/kristiandupont/schemalint
+Linter for PostgreSQL based on rules defined in `src/main/resources/db/migration/schemalintrc.js`.
+
+Install once
+```bash
+npm i -g schemalint
+```
+
+Run
+```bash
+cd src/main/resources/db/migration
+npx schemalint
+```
+
 ### CI
 #### gradle build scan
 This will run the tests and build a jarfile.
@@ -95,8 +110,8 @@ select pg_database_size('dbname')
 ## Chromedriver tests
 https://bonigarcia.dev/webdrivermanager/#advanced-configuration
 
-These tests can be brittle due to dependencies on webdrivermanager. 
-If you get errors pointing out a mismatch between your Chrome version and the driver version 
+These tests can be brittle due to dependencies on webdrivermanager.
+If you get errors pointing out a mismatch between your Chrome version and the driver version
 you can try one or more of the following steps:
 * Add `WebDriverManager.chromedriver().clearDriverCache();` before the setup call to refresh
 * Explicitly pass the Chrome version number `:test --tests "com.humegatech.mpls_food.endtoend.*" -Dwdm.chromeDriverVersion="119.0.6045.105"`
@@ -104,11 +119,11 @@ you can try one or more of the following steps:
 ```java
 System.out.printf("USING chromedriver %s version %s%n",
         WebDriverManager.chromedriver().getDownloadedDriverPath(),
-        WebDriverManager.chromedriver().getDownloadedDriverVersion()); 
+        WebDriverManager.chromedriver().getDownloadedDriverVersion());
 ```
 
 ## data
-Data manually collected using 
+Data manually collected using
 * Google Maps
 * Walking around
 * https://www.mplsdowntown.com/wp-content/uploads/2022/07/220706-restaurant-list.pdf (07/06/2022)
