@@ -1,18 +1,5 @@
 package com.humegatech.mpls_food.services;
 
-import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.models.DealDTO;
-import com.humegatech.mpls_food.models.UploadDTO;
-import com.humegatech.mpls_food.repositories.DealRepository;
-import com.humegatech.mpls_food.repositories.PlaceRepository;
-import com.humegatech.mpls_food.util.MplsFoodUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.DayOfWeek;
@@ -23,6 +10,21 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.humegatech.mpls_food.domains.Day;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.models.UploadDTO;
+import com.humegatech.mpls_food.repositories.DealRepository;
+import com.humegatech.mpls_food.repositories.PlaceRepository;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 @Service
