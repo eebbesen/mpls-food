@@ -25,10 +25,6 @@ class DayRepositoryTest {
     private TestEntityManager entityManager;
     @Autowired
     private DayRepository dayRepository;
-    @Autowired
-    private DealRepository dealRepository;
-    @Autowired
-    private PlaceRepository placeRepository;
     private Place place;
 
 

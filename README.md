@@ -45,7 +45,7 @@ In the following order -- note that uploads is a large file
 
 ### linting
 #### Qodana
-This requires a running Docker container locally
+This documented approach requires Docker running locally and installation of the Qodana CLI: https://github.com/JetBrains/qodana-cli.
 ```bash
 qodana scan --show-report
 ```

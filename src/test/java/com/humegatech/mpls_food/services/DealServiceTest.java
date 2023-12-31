@@ -399,6 +399,7 @@ class DealServiceTest {
             ldt.when(LocalDateTime::now).thenReturn(mon);
             DealDTO dto = ReflectionTestUtils.invokeMethod(service, "mapToDTO", dealMonTues, new DealDTO());
 
+            assertNotNull(dto);
             assertEquals(dealMonTues.getId(), dto.getId());
             assertTrue(dto.isMonday());
             assertTrue(dto.isTuesday());

@@ -211,7 +211,7 @@ class DealControllerTest extends MFControllerTest {
                 .andExpect((status().is3xxRedirection()));
 
         verify(dealService, times(0)).copy(eq(deal.getId()),
-                ArgumentMatchers.<List>any(List.class));
+                ArgumentMatchers.<List<Long>>any());
     }
 
     @Test
@@ -222,6 +222,6 @@ class DealControllerTest extends MFControllerTest {
                 .andExpect((status().is3xxRedirection()));
 
         verify(dealService, times(0)).copy(eq(deal.getId()),
-                ArgumentMatchers.<List>any(List.class));
+                ArgumentMatchers.<List<Long>>any());
     }
 }

@@ -6,3 +6,7 @@ input#fileUploadButton.mt-4 {
     text-decoration: none;
     color: inherit;
 }
+
+#filter-button, #reset-button {
+    width: 100px;
+}

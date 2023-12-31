@@ -90,11 +90,12 @@ public class DayService {
         final Deal deal = dealRepository.findById(dayDTO.getDeal())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
 
-        return Day.builder()
-                .deal(deal)
-                .dayOfWeek(dayDTO.getDayOfWeek())
-                .id(dayDTO.getId())
-                .date(dayDTO.getDate()).build();
+        day.setDeal(deal);
+        day.setDayOfWeek(dayDTO.getDayOfWeek());
+        day.setId(dayDTO.getId());
+        day.setDate(dayDTO.getDate());
+
+        return day;
     }
 
     public DayDTO get(final Long id) {

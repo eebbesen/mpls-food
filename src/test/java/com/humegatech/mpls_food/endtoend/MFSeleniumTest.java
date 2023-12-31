@@ -1,6 +1,9 @@
 package com.humegatech.mpls_food.endtoend;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +13,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 class MFSeleniumTest {
+    static String URL_BASE = Optional.ofNullable(System.getenv("URL_BASE"))
+        .orElse("http://localhost:8080");
     WebDriver driver;
 
     @BeforeAll
@@ -33,7 +38,7 @@ class MFSeleniumTest {
     }
 
     void loginAdmin() {
-        driver.get("http://localhost:8080/login");
+        driver.get(String.format("%s/login", URL_BASE));
         driver.findElement(By.id("username")).sendKeys("admin");
         driver.findElement(By.id("password")).sendKeys("retek01!");
         driver.findElements(By.className("btn")).get(0).click();

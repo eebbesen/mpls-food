@@ -1,5 +1,7 @@
 package com.humegatech.mpls_food.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,16 +15,18 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-import javax.sql.DataSource;
-
 @EnableWebSecurity
 @EnableMethodSecurity()
 @Configuration
 public class SecurityConfig {
     // https://docs.spring.io/spring-security/reference/servlet/authorization/index.html
 
+    private final DataSource dataSource;
+
     @Autowired
-    private DataSource dataSource;
+    public SecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {

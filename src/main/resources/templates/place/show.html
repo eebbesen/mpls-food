@@ -27,7 +27,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr name="deal-row" th:each="deal : ${deals}">
+            <tr class="deal-row" th:each="deal : ${deals}">
                 <td id="deal-days" th:text="${deal.daysDisplay}"/>
                 <td>
                     <i class="bi bi-check-circle" id="deal-verified" th:if="${deal.isVerified}" th:title="#{verified}"></i>

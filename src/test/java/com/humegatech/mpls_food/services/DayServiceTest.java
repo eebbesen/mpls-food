@@ -204,6 +204,7 @@ class DayServiceTest extends MFServiceTest {
         final DayDTO dto = ReflectionTestUtils
                 .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
 
+        assertNotNull(dto);
         assertEquals(deal.getId(), dto.getDeal());
         assertEquals(deal.getDescription(), dto.getDealDescription());
         assertEquals(deal.getPlace().getName(), dto.getPlaceName());
@@ -238,6 +239,7 @@ class DayServiceTest extends MFServiceTest {
         Day day = ReflectionTestUtils
                 .invokeMethod(service, "mapToEntity", dto, new Day());
 
+        assertNotNull(day);
         assertEquals(88, day.getId());
         assertEquals(DayOfWeek.SATURDAY, day.getDayOfWeek());
         assertEquals(deal.getId(), day.getDeal().getId());
@@ -253,9 +255,7 @@ class DayServiceTest extends MFServiceTest {
 
         when(dealRepository.findById(dto.getDeal())).thenReturn(Optional.empty());
 
-        assertThrows(ResponseStatusException.class, () ->
-                ReflectionTestUtils.invokeMethod(service, "mapToEntity", dto, new Day())
-        );
+        assertThrows(ResponseStatusException.class, () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", dto, new Day()));
     }
 
     @Test

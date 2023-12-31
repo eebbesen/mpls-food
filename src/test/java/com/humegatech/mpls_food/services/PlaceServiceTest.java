@@ -29,6 +29,7 @@ class PlaceServiceTest extends MFServiceTest {
 
         final PlaceDTO placeDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", place, new PlaceDTO());
 
+        assertNotNull(placeDTO);
         assertEquals(place.getId(), placeDTO.getId());
         assertEquals(place.getName(), placeDTO.getName());
         assertEquals(place.getAddress(), placeDTO.getAddress());
@@ -47,6 +48,7 @@ class PlaceServiceTest extends MFServiceTest {
 
         final PlaceDTO placeDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", place, new PlaceDTO());
 
+        assertNotNull(placeDTO);
         assertEquals(place.getId(), placeDTO.getId());
         assertEquals(place.getName(), placeDTO.getName());
         assertEquals(place.getAddress(), placeDTO.getAddress());
@@ -70,6 +72,7 @@ class PlaceServiceTest extends MFServiceTest {
 
         Place place = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, new Place());
 
+        assertNotNull(place);
         assertEquals(placeDTO.getName(), place.getName());
         assertEquals(placeDTO.getAddress(), place.getAddress());
         assertEquals(placeDTO.getRewardType(), place.getReward().getRewardType());
@@ -89,6 +92,7 @@ class PlaceServiceTest extends MFServiceTest {
 
         Place updatedPlace = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, new Place());
 
+        assertNotNull(updatedPlace);
         assertEquals(placeDTO.getName(), updatedPlace.getName());
         assertEquals(placeDTO.getAddress(), updatedPlace.getAddress());
         assertEquals(placeDTO.getRewardType(), updatedPlace.getReward().getRewardType());
@@ -110,6 +114,7 @@ class PlaceServiceTest extends MFServiceTest {
 
         Place updatedPlace = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, place);
 
+        assertNotNull(updatedPlace);
         assertEquals(placeDTO.getName(), updatedPlace.getName());
         assertEquals(placeDTO.getAddress(), updatedPlace.getAddress());
         assertEquals(placeDTO.getRewardType(), updatedPlace.getReward().getRewardType());
@@ -131,6 +136,7 @@ class PlaceServiceTest extends MFServiceTest {
 
         Place updatedPlace = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, place);
 
+        assertNotNull(updatedPlace);
         assertEquals(placeDTO.getName(), updatedPlace.getName());
         assertEquals(placeDTO.getAddress(), updatedPlace.getAddress());
         assertEquals(placeDTO.getRewardType(), updatedPlace.getReward().getRewardType());

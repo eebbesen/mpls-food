@@ -5,7 +5,6 @@ import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.models.DayDTO;
-import com.humegatech.mpls_food.models.DealDTO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -40,7 +39,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DayControllerTest extends MFControllerTest {
     private Place place;
     private Deal deal;
-    private DealDTO dealDTO;
 
     @Autowired
     private DayController controller;
@@ -531,7 +529,6 @@ class DayControllerTest extends MFControllerTest {
 
         assertEquals(day101.getPlaceName(), days.get(0).getPlaceName());
 
-        final String nullString = null;
         ReflectionTestUtils.invokeMethod(DayController.class, "handleSort", days, null);
 
         assertEquals(day101.getMinPrice(), days.get(0).getMinPrice());
@@ -692,7 +689,6 @@ class DayControllerTest extends MFControllerTest {
 
     @Test
     void handleFilterNullFilter() {
-        final String nullString = null;
         final String dish = ReflectionTestUtils.invokeMethod(controller, "handleFilter", "Samosas");
         assertEquals("Samosas", dish);
     }

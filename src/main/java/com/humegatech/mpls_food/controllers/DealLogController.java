@@ -1,23 +1,29 @@
 package com.humegatech.mpls_food.controllers;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.models.DealLogDTO;
 import com.humegatech.mpls_food.services.DealLogService;
 import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.util.WebUtils;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/deal_logs")
@@ -58,19 +64,23 @@ public class DealLogController extends MFController {
         return "deal_logs/list";
     }
 
+    private static final String REQUEST_URI = "requestURI";
+
     @GetMapping("/show/{id}")
     public String show(@PathVariable final Long id, final Model model, final HttpServletRequest request) {
         model.addAttribute("dealLog", dealLogService.get(id));
-        model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute(REQUEST_URI, request.getRequestURI());
         return "deal_logs/show";
     }
 
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String add(@ModelAttribute("dealLog") final DealLogDTO dealLogDto, final Model model, final HttpServletRequest request) {
-        model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute(REQUEST_URI, request.getRequestURI());
         return "deal_logs/add";
     }
+
+    private static final String REDIRECT_DEAL_LOGS = "redirect:/deal_logs";
 
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
@@ -81,14 +91,14 @@ public class DealLogController extends MFController {
         }
         dealLogService.create(dealLogDto);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("dealLog.create.success"));
-        return "redirect:/deal_logs";
+        return REDIRECT_DEAL_LOGS;
     }
 
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('USER')")
     public String edit(@PathVariable final Long id, final Model model, final HttpServletRequest request) {
         model.addAttribute("dealLog", dealLogService.get(id));
-        model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute(REQUEST_URI, request.getRequestURI());
         return "deal_logs/edit";
     }
 
@@ -102,7 +112,7 @@ public class DealLogController extends MFController {
         }
         dealLogService.update(id, dealLogDTO);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
-        return "redirect:/deal_logs";
+        return REDIRECT_DEAL_LOGS;
     }
 
     @PostMapping("/delete/{id}")
@@ -110,6 +120,6 @@ public class DealLogController extends MFController {
     public String delete(@PathVariable final Long id, final RedirectAttributes redirectAttributes) {
         dealLogService.delete(id);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("dealLog.delete.success"));
-        return "redirect:/deal_logs";
+        return REDIRECT_DEAL_LOGS;
     }
 }

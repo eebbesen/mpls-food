@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+    xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title th:text="#{deal.list.headline}" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="deal : ${deals}">
+                <tr class="deal-row" th:each="deal : ${deals}">
                     <td class="text-nowrap" th:text="${deal.daysDisplay}"/>
                     <td>
                         <i class="bi bi-check-circle" th:if="${deal.isVerified}" th:title="#{verified}"></i>
