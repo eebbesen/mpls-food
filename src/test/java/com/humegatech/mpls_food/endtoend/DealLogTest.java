@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DealLogTest extends MFSeleniumTest {
     @Test
     void testDealLogShow() {
-        driver.get("http://localhost:8080/deal_logs");
+        driver.get(String.format("%s/deal_logs", URL_BASE));
 
-        assertTrue(driver.findElements(By.name("deal-log-row")).size() > 0);
+        assertTrue(driver.findElements(By.className("deal-log-row")).size() > 0);
     }
 }

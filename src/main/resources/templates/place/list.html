@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
-<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        xmlns:th="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
     <head>
         <title th:text="#{place.list.headline}" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -28,15 +28,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr name="place-row" th:each="place : ${places}">
-                            <td name="place-name" ><a th:href="@{/places/show/{id}(id=${place.id})}"
+                        <tr class="place-row" th:each="place : ${places}">
+                            <td class="place-name" ><a th:href="@{/places/show/{id}(id=${place.id})}"
                                                       th:text="${place.name}" /></td>
-                            <td name="place-address" th:text="${place.truncatedAddress}" />
+                            <td class="place-address" th:text="${place.truncatedAddress}" />
                             <td>
-                                <i class="bi bi-check-circle-fill" name="order-ahead-ind" th:if="${place.orderAhead}"></i>
+                                <i class="bi bi-check-circle-fill order-ahead-ind" th:if="${place.orderAhead}"></i>
                             </td>
                             <td>
-                                <i class="bi bi-check-circle-fill" name="rewards-ind" th:if="${null != place.rewardType}"></i>
+                                <i class="bi bi-check-circle-fill rewards-ind" th:if="${null != place.rewardType}"></i>
                             </td>
                             <td sec:authorize="hasRole('ROLE_ADMIN')" style="white-space:nowrap">
                                 <form class="js-submit-confirm float-end" method="post"
