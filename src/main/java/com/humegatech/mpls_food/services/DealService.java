@@ -66,7 +66,7 @@ public class DealService {
                 .filter(deal -> null == deal.getEndDate() || LocalDate.now().isBefore(deal.getEndDate()) ||
                         LocalDate.now().isEqual(deal.getEndDate()))
                 .map(deal -> mapToDTO(deal, new DealDTO()))
-                .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replaceAll("-", "~"))
+                .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replace("-", "~"))
                         .thenComparing(DealDTO::getPlaceName)
                         .thenComparing(DealDTO::getDescription))
                 .collect(Collectors.toList());
@@ -76,7 +76,7 @@ public class DealService {
         return dealRepository.findByPlaceId(placeId)
                 .stream()
                 .map(deal -> mapToDTO(deal, new DealDTO()))
-                .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replaceAll("-", "~"))
+                .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replace("-", "~"))
                         .thenComparing(DealDTO::getDescription))
                 .collect(Collectors.toList());
     }
@@ -111,7 +111,7 @@ public class DealService {
         if (places.size() < placeIds.size()) {
             List<Long> notFound = new ArrayList<>(placeIds);
             notFound.removeAll(places.stream().map(Place::getId).toList());
-            final String message = "one or more places not found:\n %s".formatted(notFound);
+            final String message = "one or more places not found:%n %s".formatted(notFound);
             log.warn(message);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
@@ -217,7 +217,7 @@ public class DealService {
                 final Method isDay = DealDTO.class.getDeclaredMethod(methodName);
                 final Boolean result = (Boolean) isDay.invoke(dealDTO);
 
-                if (result) {
+                if (result.booleanValue()) {
                     addDay(deal, d);
                 } else {
                     removeDay(deal, d);

@@ -1,14 +1,28 @@
 package com.humegatech.mpls_food.domains;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import jakarta.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -36,12 +50,12 @@ public class Place extends BaseEntity {
     private String website;
 
     @Column
-    @Value("false")
-    private boolean app;
+    @Builder.Default
+    private boolean app = false;
 
     @Column
-    @Value("false")
-    private boolean orderAhead;
+    @Builder.Default
+    private boolean orderAhead = false;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "place")
     @PrimaryKeyJoinColumn
