@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -39,6 +40,7 @@ class UploadServiceTest extends MFServiceTest {
         upload.setVerified(true);
         UploadDTO uploadDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", upload, new UploadDTO());
 
+        assertNotNull(uploadDTO);
         assertEquals(deal.getId(), uploadDTO.getDealId());
         assertTrue(uploadDTO.getImage().length > 2);
         assertTrue(uploadDTO.isVerified());
@@ -56,6 +58,7 @@ class UploadServiceTest extends MFServiceTest {
 
         Upload upload = ReflectionTestUtils.invokeMethod(service, "mapToEntity", uploadDTO, new Upload());
 
+        assertNotNull(upload);
         assertEquals(deal, upload.getDeal());
         assertTrue(upload.isVerified());
         assertTrue(upload.getImage().length > 2);

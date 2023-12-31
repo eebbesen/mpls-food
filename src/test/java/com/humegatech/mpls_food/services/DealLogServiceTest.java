@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -82,6 +84,7 @@ class DealLogServiceTest extends MFServiceTest {
 
         final DealLog dealLog = ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, new DealLog());
 
+        assertNotNull(dealLog);
         assertEquals(deal.getPlace().getId(), dealLog.getPlace().getId());
     }
 
@@ -102,6 +105,7 @@ class DealLogServiceTest extends MFServiceTest {
 
         DealLog dealLog = ReflectionTestUtils.invokeMethod(service, "mapToEntity", dealLogDTO, new DealLog());
 
+        assertNotNull(dealLog);
         assertEquals(dealLogDTO.getDeal(), dealLog.getDeal().getId());
         assertEquals(dealLogDTO.getPlace(), dealLog.getPlace().getId());
         assertEquals(dealLogDTO.getDescription(), dealLog.getDescription());
@@ -116,6 +120,7 @@ class DealLogServiceTest extends MFServiceTest {
 
         DealLogDTO dealLogDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", dealLog, new DealLogDTO());
 
+        assertNotNull(dealLogDTO);
         assertEquals(dealLog.getDeal().getId(), dealLogDTO.getDeal());
         assertEquals(dealLog.getDeal().getDescription(), dealLogDTO.getDealDescription());
         assertEquals(dealLog.getPlace().getId(), dealLogDTO.getPlace());
@@ -139,6 +144,7 @@ class DealLogServiceTest extends MFServiceTest {
 
         List<DealLogDTO> dealLogDTOs = service.findAll();
 
+        assertTrue(dealLogDTOs.size() > 0);
     }
 
     @Test
