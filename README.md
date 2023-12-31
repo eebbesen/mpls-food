@@ -11,11 +11,10 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
   * this is only needed if you are running end-to-end tests
 
 ## Start
-* modify application.yml to point to a running database instance
+* modify application.yml to point to a running database instance (or use H2)
 * run MplsFoodApplication.java
-  * DDL will be executed on startup based on application.yml `spring:jpa:hibernate:ddl-auto:` value
+  * DDL will be executed on startup based on application.yml setttings
 * navigate to http://localhost:8080
-* data seed scripts are in `src/test/test_data/`
 
 ### Start via gradle
 ```bash
@@ -27,12 +26,11 @@ gradle bootRun --args='--spring.profiles.active=default'
 ```bash
 gradle -q dependencies
 ```
-### data
-Note that Spring has built-in data population that is not in use by default but that you can employ.
-#### add users
-Fixtures for all models can be found in src/main/test/resources/test_data. The default password for the user and the admin is `retek01!`
 
-To generate your own credentials you'll need to bcrypt passwords, then assign users to a roles in `authorities`. You can bcrypt a password using https://www.devglan.com/online-tools/bcrypt-hash-generator.
+### data
+Note that Spring has built-in data population that is not in use by default but that you can employ. Fixtures for all models can be found in src/main/resources/db/data.sql.
+
+The default password for the user and the admin is `retek01!`. To generate your own credentials you'll need to bcrypt passwords, then assign users to a roles in `authorities`. You can bcrypt a password using https://www.devglan.com/online-tools/bcrypt-hash-generator.
 
 #### add all data
 In the following order -- note that uploads is a large file
@@ -66,6 +64,21 @@ https://docs.sonarqube.org/latest/try-out-sonarqube/ for setup and run instructi
 gradle checkstyleMain
 ```
 
+#### Schemalint
+https://github.com/kristiandupont/schemalint
+Linter for PostgreSQL based on rules defined in `src/test/resources/schemalintrc.js`.
+
+Install once
+```bash
+npm i -g schemalint
+```
+
+Run
+```bash
+cd src/test/resources/
+npx schemalint
+```
+
 ### CI
 #### gradle build scan
 This will run the tests and build a jarfile.
@@ -81,34 +94,29 @@ gradle build --scan -PexcludeTests=**/endtoend*
 
 ```
 
-#### heroku
-Test Heroku locally using `heroku local web`
-
 ### PostgreSQL
 Get size of database
 ```bash
-select pg_size_pretty(pg_database_size('dbname'));
-
-select pg_database_size('dbname')
+select pg_size_pretty(pg_database_size('mpls-food'));
+select pg_database_size('mpls-food')
 ```
 
 ## Chromedriver tests
 https://bonigarcia.dev/webdrivermanager/#advanced-configuration
 
-These tests can be brittle due to dependencies on webdrivermanager. 
-If you get errors pointing out a mismatch between your Chrome version and the driver version 
-you can try one or more of the following steps:
+These tests can be brittle due to dependencies on webdrivermanager.
+If you get errors pointing out a mismatch between your Chrome version and the driver version you can try one or more of the following steps:
 * Add `WebDriverManager.chromedriver().clearDriverCache();` before the setup call to refresh
 * Explicitly pass the Chrome version number `:test --tests "com.humegatech.mpls_food.endtoend.*" -Dwdm.chromeDriverVersion="119.0.6045.105"`
 * Log the version being used and where it is located
 ```java
 System.out.printf("USING chromedriver %s version %s%n",
         WebDriverManager.chromedriver().getDownloadedDriverPath(),
-        WebDriverManager.chromedriver().getDownloadedDriverVersion()); 
+        WebDriverManager.chromedriver().getDownloadedDriverVersion());
 ```
 
 ## data
-Data manually collected using 
+Data manually collected using
 * Google Maps
 * Walking around
 * https://www.mplsdowntown.com/wp-content/uploads/2022/07/220706-restaurant-list.pdf (07/06/2022)
