@@ -105,9 +105,10 @@ public class DealController extends MFController {
         final String[] places = request.getParameterMap().get("places");
         if (null != places) {
             String[] placeIds = Arrays.stream(places).filter(place -> !place.isEmpty()).toArray(String[]::new);
-            if (placeIds.length > 0){
+            if (placeIds.length > 0) {
                 dealService.copy(id, Arrays.stream(placeIds).map(Long::parseLong).toList());
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
+                redirectAttributes
+                    .addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
                 return REDIRECT_DEALS;
             }
         }
