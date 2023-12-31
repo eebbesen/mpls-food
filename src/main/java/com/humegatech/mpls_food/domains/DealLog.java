@@ -19,7 +19,7 @@ import java.util.Objects;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "deal_log")
+@Table(name = "deal_logs")
 @Entity
 public class DealLog extends BaseEntity {
 

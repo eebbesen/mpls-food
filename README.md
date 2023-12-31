@@ -13,9 +13,8 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
 ## Start
 * modify application.yml to point to a running database instance (or use H2)
 * run MplsFoodApplication.java
-  * DDL will be executed on startup based on application.yml `spring:jpa:hibernate:ddl-auto:` value
+  * DDL will be executed on startup based on application.yml setttings
 * navigate to http://localhost:8080
-* data seed scripts are in `src/test/test_data/`
 
 ### Start via gradle
 ```bash
@@ -27,12 +26,11 @@ gradle bootRun --args='--spring.profiles.active=default'
 ```bash
 gradle -q dependencies
 ```
-### data
-Note that Spring has built-in data population that is not in use by default but that you can employ.
-#### add users
-Fixtures for all models can be found in src/main/test/resources/test_data. The default password for the user and the admin is `retek01!`
 
-To generate your own credentials you'll need to bcrypt passwords, then assign users to a roles in `authorities`. You can bcrypt a password using https://www.devglan.com/online-tools/bcrypt-hash-generator.
+### data
+Note that Spring has built-in data population that is not in use by default but that you can employ. Fixtures for all models can be found in src/main/resources/db/data.sql.
+
+The default password for the user and the admin is `retek01!`. To generate your own credentials you'll need to bcrypt passwords, then assign users to a roles in `authorities`. You can bcrypt a password using https://www.devglan.com/online-tools/bcrypt-hash-generator.
 
 #### add all data
 In the following order -- note that uploads is a large file
