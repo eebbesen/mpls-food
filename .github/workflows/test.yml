@@ -7,11 +7,7 @@
 
 name: test and build
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "*" ]
+on: pull_request
 
 permissions:
   contents: read
