@@ -19,6 +19,11 @@ spring:
   devtools:
     livereload:
       enabled: true
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: file:src/main/resources/templates/
   servlet:
     multipart:
       max-file-size: 10MB

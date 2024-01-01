@@ -54,12 +54,12 @@
                     th:text="${place}"
                     th:value="${place}"></option>
           </select>
-          <label for="happyHour" th:checked value="happyHour" >Include Happy Hour?</label>
+          <label class="mt-2" for="happyHour" th:checked value="happyHour" th:text="#{day.filter.includeHappyHour}"></label>
           <input id="happyHour" name="happyHour" th:checked="${happyHour}" type="checkbox" />
           <p></p>
           <input id="sort-by" name="sortBy" th:value="${selectedSortBy}" type="hidden"/>
           <input id="filter-button" class="btn btn-primary mt-2 mb-4" th:value="#{day.filter}" type="submit" />
-          <input id="reset-button" class="btn btn-secondary mt-2 mb-4" onclick="resetFilters()" th:value="#{day.filter.reset}" />
+          <input id="reset-button" class="btn btn-secondary mt-2 mb-4 mr-6" onclick="resetFilters()" th:value="#{day.filter.reset}" />
         </form>
       </div>
       <div id="no-deals" th:if="${days.empty}" th:text="#{deal.list.empty}" />
