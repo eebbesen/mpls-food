@@ -105,7 +105,8 @@ public class PlaceController {
                             return "place/edit";
                         }
                         placeService.update(id, placeDTO);
-                        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("place.update.success"));
+                        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS,
+                                                             WebUtils.getMessage("place.update.success"));
                         return REDIRECT_PLACES;
                     }
 

@@ -1,17 +1,7 @@
-spring:
-  config:
-    activate:
-      on-profile: h2
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create-drop
-  datasource:
-    url: jdbc:h2:mem:mpls-food
-    username: sa
-    driverClassName: org.h2.Driver
+logging:
+  file:
+    name: ./logs/mpls-food.log
 
----
 spring:
   config:
     activate:
@@ -56,6 +46,7 @@ spring:
       schema-locations: classpath:db/schema.sql
       data-locations: optional:classpath*:db/data.sql
       mode: never # set to 'always' to create and populate the database on startup
+
 management:
   endpoints:
     web:
@@ -63,3 +54,20 @@ management:
         include: "*"
 springdoc:
   pathsToMatch: /api/**
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: h2
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:h2:mem:mpls-food
+    username: sa
+    driverClassName: org.h2.Driver
+
+---

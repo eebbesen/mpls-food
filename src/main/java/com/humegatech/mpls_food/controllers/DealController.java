@@ -49,7 +49,9 @@ public class DealController extends MFController {
 
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public String add(@ModelAttribute("deal") final DealDTO dealDto, final Model model, final HttpServletRequest request) {
+    public String add(@ModelAttribute("deal") final DealDTO dealDto,
+                                      final Model model,
+                                      final HttpServletRequest request) {
         model.addAttribute(REQUEST_URI, request.getRequestURI());
         return "deal/add";
     }

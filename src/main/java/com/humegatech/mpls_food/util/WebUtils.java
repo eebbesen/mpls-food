@@ -1,5 +1,7 @@
 package com.humegatech.mpls_food.util;
 
+import java.util.Objects;
+
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
@@ -10,7 +12,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
-import java.util.Objects;
 
 
 @Component
@@ -18,7 +19,7 @@ public class WebUtils {
 
     public static final String MSG_SUCCESS = "MSG_SUCCESS";
     public static final String MSG_INFO = "MSG_INFO";
-//    public static final String MSG_ERROR = "MSG_ERROR";
+    public static final String MSG_ERROR = "MSG_ERROR";
     private static MessageSource messageSource;
     private static LocaleResolver localeResolver;
 
@@ -38,7 +39,8 @@ public class WebUtils {
     }
 
     public static String getMessage(final String code, final Object... args) {
-        return messageSource.getMessage(code, args, code, localeResolver.resolveLocale(Objects.requireNonNull(getRequest())));
+        return messageSource
+            .getMessage(code, args, code, localeResolver.resolveLocale(Objects.requireNonNull(getRequest())));
     }
 
     // used by Thymeleaf -- do not remove

@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RestExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
-//    @ApiResponse(responseCode = "4xx/5xx", description = "Error")
+    // @ApiResponse(responseCode = "4xx/5xx", description = "Error")
     public ResponseEntity<ErrorResponse> handleNotFound(final ResponseStatusException exception) {
         final ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setHttpStatus(exception.getStatusCode().value());

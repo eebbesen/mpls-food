@@ -37,12 +37,12 @@ public class SecurityConfig {
     }
 
     /**
-     * Due to H2's additional servlet MvcRequestMatcher must be used
+     * Due to H2's additional servlet MvcRequestMatcher must be used.
      *
      * @param http HttpSecurity
      * @param introspector HandlerMappingIntrospector
      * @return SecurityFilterChain
-     * @throws Exception
+     * @throws Exception formLogin Exception
      */
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http,
@@ -87,14 +87,16 @@ public class SecurityConfig {
     }
 
     /**
-     * Helper to create MvcRequestMatcher
+     * Helper to create MvcRequestMatcher.
      *
      * @param builder MvcRequestMatcher.Builder
      * @param pattern String
      * @param servletPath if null default SpringMVC path used
      * @return MvcRequestMatcher
      */
-    private static MvcRequestMatcher filterPattern(final MvcRequestMatcher.Builder builder, final String pattern, final String servletPath) {
+    private static MvcRequestMatcher filterPattern(final MvcRequestMatcher.Builder builder,
+                                                   final String pattern,
+                                                   final String servletPath) {
         MvcRequestMatcher matcher = builder.pattern(pattern);
 
         if (null != servletPath) {
