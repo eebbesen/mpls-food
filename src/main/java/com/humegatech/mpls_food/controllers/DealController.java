@@ -49,7 +49,9 @@ public class DealController extends MFController {
 
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public String add(@ModelAttribute("deal") final DealDTO dealDto, final Model model, final HttpServletRequest request) {
+    public String add(@ModelAttribute("deal") final DealDTO dealDto,
+                                      final Model model,
+                                      final HttpServletRequest request) {
         model.addAttribute(REQUEST_URI, request.getRequestURI());
         return "deal/add";
     }
@@ -105,9 +107,10 @@ public class DealController extends MFController {
         final String[] places = request.getParameterMap().get("places");
         if (null != places) {
             String[] placeIds = Arrays.stream(places).filter(place -> !place.isEmpty()).toArray(String[]::new);
-            if (placeIds.length > 0){
+            if (placeIds.length > 0) {
                 dealService.copy(id, Arrays.stream(placeIds).map(Long::parseLong).toList());
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
+                redirectAttributes
+                    .addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
                 return REDIRECT_DEALS;
             }
         }

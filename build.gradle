@@ -2,15 +2,14 @@ plugins {
     id 'org.springframework.boot' version '3.1.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'org.flywaydb.flyway' version '9.0.2'
     id 'jacoco'
     id "org.sonarqube" version "3.5.0.2730"
-    // id 'checkstyle' // uncomment to run checkstyle
+    // id 'checkstyle' // uncomment to run checkstyle locally
 }
 
 group = 'com.humegatech'
 version = '0.0.2-SNAPSHOT'
-sourceCompatibility = '17' // took out to avoid Heroku deployment issues
+sourceCompatibility = JavaVersion.VERSION_17
 
 bootRun {
     environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: 'local'
@@ -70,12 +69,4 @@ test {
 
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
-}
-
-flyway {
-    url = 'jdbc:postgresql://localhost:5432/mpls-food'
-    user = 'postgres'
-    password = ''
-    schemas = ['public']
-    cleanDisabled = false
 }

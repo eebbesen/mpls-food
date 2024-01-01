@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        xmlns:th="http://www.thymeleaf.org">
+    xmlns:th="http://www.thymeleaf.org" lang="en">
     <head>
         <title th:text="#{deal.edit.headline}" />
     </head>
@@ -44,6 +44,7 @@
             <div class="d-flex flex-wrap mb-4">
                 <form enctype="multipart/form-data" method="post" th:action="@{/uploads/{id}(id=${deal.id})}">
                     <input class="form-control btn btn-secondary" id="formFile" name="file" type="file">
+                    <p></p>
                     <input class="btn btn-primary mt-4" th:value="#{deal.upload}" type="submit"  id="fileUploadButton"/>
                 </form>
             </div>
