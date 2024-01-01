@@ -4,7 +4,7 @@ plugins {
     id 'java'
     id 'jacoco'
     id "org.sonarqube" version "3.5.0.2730"
-    id 'checkstyle' // uncomment to run checkstyle
+    // id 'checkstyle' // uncomment to run checkstyle locally
 }
 
 group = 'com.humegatech'
