@@ -28,13 +28,12 @@ spring:
       validation-query: SELECT 1
       validation-query-timeout: 30
   jpa:
-    show-sql: true
     open-in-view: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc:
           lob:
             non_contextual_creation: true
