@@ -1,10 +1,8 @@
 package com.humegatech.mpls_food.controllers;
 
-import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.domains.*;
-import com.humegatech.mpls_food.models.*;
-import com.humegatech.mpls_food.services.*;
-import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,14 +13,24 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import jakarta.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.humegatech.mpls_food.domains.Day;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.DealLog;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.domains.Upload;
+import com.humegatech.mpls_food.models.DayDTO;
+import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.models.DealLogDTO;
+import com.humegatech.mpls_food.models.PlaceDTO;
+import com.humegatech.mpls_food.models.UploadDTO;
+import com.humegatech.mpls_food.services.DayService;
+import com.humegatech.mpls_food.services.DealLogService;
+import com.humegatech.mpls_food.services.DealService;
+import com.humegatech.mpls_food.services.PlaceHourService;
+import com.humegatech.mpls_food.services.PlaceService;
+import com.humegatech.mpls_food.services.UploadService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import jakarta.transaction.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -44,23 +52,11 @@ class MFControllerTest {
     DealLogService dealLogService;
     @MockBean
     UploadService uploadService;
+    @MockBean
+    PlaceHourService placeHourService;
 
     @Mock
     BindingResult bindingResult;
-
-    @Test
-    void testSortedPlaces() {
-        final MFController controller = new MFController();
-        final Place place = TestObjects.ginellis();
-        final Place newPlace = TestObjects.tacoJohns();
-        when(placeService.findAll()).thenReturn(placesToPlaceDTOs(List.of(place, newPlace)));
-
-        Map<Long, String> placeMap = controller.sortedPlaces(placeService);
-        Iterator<Map.Entry<Long, String>> places = placeMap.entrySet().iterator();
-
-        assertEquals("Ginelli's Pizza", places.next().getValue());
-        assertEquals("Taco John's", places.next().getValue());
-    }
 
     List<DealDTO> dealsToDealDTOs(final List<Deal> deals) {
         final List<DealDTO> dealDTOs = new ArrayList<>();

@@ -1,17 +1,28 @@
 package com.humegatech.mpls_food;
 
-import com.humegatech.mpls_food.domains.*;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
-
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+
+import com.humegatech.mpls_food.domains.Day;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.DealLog;
+import com.humegatech.mpls_food.domains.DealType;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.domains.PlaceHour;
+import com.humegatech.mpls_food.domains.Reward;
+import com.humegatech.mpls_food.domains.RewardType;
+import com.humegatech.mpls_food.domains.Upload;
 
 public class TestObjects {
     private static Long PLACE_ID = 1L;
@@ -19,6 +30,7 @@ public class TestObjects {
     private static Long DEAL_DAY_ID = 1L;
     private static Long UPLOAD_ID = 1L;
     private static Long DEAL_LOG_ID = 1L;
+    private static Long PLACE_HOUR_ID = 1L;
 
     private static Long placeId() {
         return ++PLACE_ID;
@@ -36,8 +48,12 @@ public class TestObjects {
         return ++DEAL_LOG_ID;
     }
 
+    private static Long placeHourId() {
+        return ++PLACE_HOUR_ID;
+    }
+
     public static Place tacoJohns() {
-        return Place.builder()
+        Place place = Place.builder()
                 .name("Taco John's")
                 .address("'607 Marquette Ave.\n" +
                         "        Minneapolis, MN 55402")
@@ -46,6 +62,10 @@ public class TestObjects {
                 .app(true)
                 .id(placeId())
                 .build();
+
+        addPlaceHours(place);
+
+        return place;
     }
 
     public static Deal tacoTuesday() {
@@ -77,6 +97,7 @@ public class TestObjects {
                 .website("https://www.ginellispizza.com/")
                 .id(placeId())
                 .build();
+        addPlaceHours(place);
 
         final Reward reward = reward(place);
         place.setReward(reward);
@@ -119,12 +140,15 @@ public class TestObjects {
      */
     public static Place place(final String name) {
         Integer random = ThreadLocalRandom.current().nextInt(5, 100);
-        return Place.builder()
+        Place place = Place.builder()
                 .name(name)
                 .address(String.format("%d West Seventh\nSaint Paul, MN 55105", random))
                 .website(String.format("httpx:\\%d.biz", random))
                 .id(placeId())
                 .build();
+        addPlaceHours(place);
+
+        return place;
     }
 
     public static List<Place> places() {
@@ -261,5 +285,32 @@ public class TestObjects {
                 .redemptionDate(LocalDate.now())
                 .dealType(DealType.PUNCH_CARD)
                 .build();
+    }
+
+    public static PlaceHour placeHour(final Place place, final DayOfWeek dayOfWeek, final boolean populateId) {
+        Integer randomHoursOpen = ThreadLocalRandom.current().nextInt(6, 10);
+        Integer randomHoursClose = ThreadLocalRandom.current().nextInt(13, 20);
+        Integer randomMinutesOpen = ThreadLocalRandom.current().nextInt(0, 59);
+        Integer randomMinutesClose = ThreadLocalRandom.current().nextInt(0, 59);
+
+        return PlaceHour.builder()
+                .id(populateId ? placeHourId() : null)
+                .dayOfWeek(dayOfWeek)
+                .openTime(LocalTime.of(randomHoursOpen, randomMinutesOpen, 0, 0))
+                .closeTime(LocalTime.of(randomHoursClose, randomMinutesClose, 0, 0))
+                .place(place)
+                .build();
+    }
+
+    public static void addPlaceHours(final Place place, final boolean populateId) {
+        Arrays.stream(DayOfWeek.values()).forEach(dayOfWeek -> {
+            final PlaceHour placeHour = placeHour(place, dayOfWeek, populateId);
+
+            place.getPlaceHours().add(placeHour);
+        });
+    }
+
+    public static void addPlaceHours(final Place place) {
+        addPlaceHours(place, true);
     }
 }

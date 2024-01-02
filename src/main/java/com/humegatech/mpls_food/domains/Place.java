@@ -46,6 +46,12 @@ public class Place extends BaseEntity {
     @Builder.Default
     private Set<Deal> deals = new LinkedHashSet<>();
 
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
+    @OrderBy(value = "dayOfWeek")
+    @Builder.Default
+    private Set<PlaceHour> placeHours = new LinkedHashSet<>();
+
     @Column
     private String website;
 
