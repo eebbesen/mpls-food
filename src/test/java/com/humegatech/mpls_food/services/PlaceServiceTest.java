@@ -178,6 +178,7 @@ class PlaceServiceTest extends MFServiceTest {
         final PlaceDTO placeDTO = service.get(place.getId());
 
         assertEquals(place.getName(), placeDTO.getName());
+        assertEquals(place.getPlaceHours().size(), placeDTO.getPlaceHours().size());
     }
 
     @Test
