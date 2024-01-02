@@ -10,6 +10,8 @@ node_modules/
 snippets.md
 .java-version
 bin/
+!logs/.keep
+logs/
 
 ## IntelliJ IDEA
 .idea
