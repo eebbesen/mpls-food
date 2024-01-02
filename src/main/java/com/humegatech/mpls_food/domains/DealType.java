@@ -1,10 +1,19 @@
 package com.humegatech.mpls_food.domains;
 
-// Do not change order of constants -- you'll need to change entries in the database
 public enum DealType {
-    APP,
-    EMAIL,
-    PUNCH_CARD,
-    DEAL,
-    TOAST
+    APP(0),
+    EMAIL(1),
+    PUNCH_CARD(2),
+    DEAL(3),
+    TOAST(4);
+
+    private final int value;
+
+    DealType(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }
