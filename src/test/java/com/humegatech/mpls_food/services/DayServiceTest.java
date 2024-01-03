@@ -30,6 +30,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.controllers.DayController;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.Place;
@@ -279,6 +280,39 @@ class DayServiceTest extends MFServiceTest {
 
         assertNotNull(dto);
         assertFalse(dto.isTimeBoxed());
+    }
+
+    @Test
+    void testMapToEntityHappyHour() {
+        Deal deal = TestObjects.deal();
+        deal.setStartTime(DayController.HH_CUTOFF.plusMinutes(1));
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertTrue(dto.isHappyHour());
+    }
+
+    @Test
+    void testMapToEntityNotHappyHour() {
+        Deal deal = TestObjects.deal();
+        deal.setStartTime(DayController.HH_CUTOFF.minusMinutes(1));
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertFalse(dto.isHappyHour());
+    }
+
+    @Test
+    void testMapToEntityNotHappyHourNoDealStartTime() {
+        Deal deal = TestObjects.deal();
+        deal.setStartTime(null);
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertFalse(dto.isHappyHour());
     }
 
     @Test

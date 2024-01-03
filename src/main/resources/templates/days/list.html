@@ -97,8 +97,9 @@
           <tbody>
           <tr class="day-row" th:each="day : ${days}">
             <td>
-              <i class="bi bi-check-circle" th:if="${day.isVerified}" th:title="#{verified}"></i>
+              <i class="bi bi-emoji-smile" th:if="${day.isHappyHour}" th:title="#{happyHour}"></i>
               <i class="bi bi-clock" th:if="${day.isTimeBoxed}" th:title="#{timeBoxed}"></i>
+              <i class="bi bi-check-circle" th:if="${day.isVerified}" th:title="#{verified}"></i>
               <span th:text="${day.dealDescription}"/>
             </td>
             <td th:text="${day.placeName}" />

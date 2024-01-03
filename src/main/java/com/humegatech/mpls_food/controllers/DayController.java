@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping("/days")
 public class DayController {
-    private static final LocalTime HH_CUTOFF = LocalTime.of(13, 00);
+    public static final LocalTime HH_CUTOFF = LocalTime.of(13, 00);
     private final DayService dayService;
 
     public DayController(DayService dayService) {

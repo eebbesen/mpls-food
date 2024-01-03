@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.humegatech.mpls_food.controllers.DayController;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.domains.PlaceHour;
@@ -72,6 +73,10 @@ public class DayService {
              null != day.getDeal().getEndTime() && placeHour.getCloseTime().isAfter(day.getDeal().getEndTime()));
     }
 
+    private boolean isHappyHour(final Day day) {
+        return null != day.getDeal().getStartTime() && day.getDeal().getStartTime().isAfter(DayController.HH_CUTOFF);
+    }
+
     private DayDTO mapToDTO(final Day day, final DayDTO dayDTO) {
         dayDTO.setId(day.getId());
         dayDTO.setDeal(day.getDeal().getId());
@@ -94,16 +99,10 @@ public class DayService {
         dayDTO.setEndTime(day.getDeal().getEndTime());
         dayDTO.setVerified(day.getDeal().isVerified());
         dayDTO.setTimeBoxed(isTimeBoxed(day));
+        dayDTO.setHappyHour(isHappyHour(day));
 
         return dayDTO;
     }
-
-    // private boolean isHappyHour(final Day day) {
-    //     return day.getDeal().getPlace().getPlaceHours().stream()
-    //             .anyMatch(placeHour -> placeHour.getDayOfWeek().equals(day.getDayOfWeek())
-    //                     && (placeHour.getOpenTime().isBefore(day.getDeal().getStartTime())
-    //                     && placeHour.getCloseTime().isAfter(day.getDeal().getEndTime())));
-    // }
 
     private Day mapToEntity(final DayDTO dayDTO, final Day day) {
         final Deal deal = dealRepository.findById(dayDTO.getDeal())
