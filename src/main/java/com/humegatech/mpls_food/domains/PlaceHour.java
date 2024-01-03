@@ -45,7 +45,10 @@ public class PlaceHour extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlaceHour placeHour = (PlaceHour) o;
-        return Objects.equals(place, placeHour.place) && dayOfWeek == placeHour.dayOfWeek && Objects.equals(openTime, placeHour.openTime) && Objects.equals(closeTime, placeHour.closeTime);
+        return Objects.equals(place, placeHour.place) &&
+                              dayOfWeek == placeHour.dayOfWeek &&
+                              Objects.equals(openTime, placeHour.openTime) &&
+            Objects.equals(closeTime, placeHour.closeTime);
     }
 
     @Override
