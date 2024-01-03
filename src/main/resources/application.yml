@@ -24,9 +24,7 @@ spring:
     password: ${JDBC_DATABASE_PASSWORD:<<YOUR_PASSWORD>>}
     driver-class-name: org.postgresql.Driver
     dbcp2:
-      max-wait-millis: 30000
       validation-query: SELECT 1
-      validation-query-timeout: 30
   jpa:
     open-in-view: true
     properties:
