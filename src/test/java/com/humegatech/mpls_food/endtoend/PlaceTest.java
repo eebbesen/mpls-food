@@ -42,7 +42,8 @@ class PlaceTest extends MFSeleniumTest {
         assertFalse(Boolean.parseBoolean(driver.findElement(By.id("app1")).getAttribute("selected")));
         assertTrue(Boolean.parseBoolean(driver.findElement(By.id("orderAhead1")).getAttribute("selected")));
         assertEquals("TOAST", driver.findElement(By.id("rewardType")).getAttribute("value"));
-        assertEquals("1 point for every $2 you spend and receive a $2.50 discount for every 50 points you redeem. 2.5% back.",
+        assertEquals("1 point for every $2 you spend and receive a $2.50 discount " +
+                              "for every 50 points you redeem. 2.5% back.",
                 driver.findElement(By.id("rewardNotes")).getText());
         assertEquals("No Deals found", driver.findElement(By.id("deal-rows")).getText());
         List<WebElement> hours = driver.findElements(By.className("hours-row"));
