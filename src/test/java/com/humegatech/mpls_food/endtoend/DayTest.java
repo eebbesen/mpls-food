@@ -69,7 +69,7 @@ class DayTest extends MFSeleniumTest {
 
         driver.findElement(By.linkText("Filters")).click();
         Select place = new Select(driver.findElement(By.id("place")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"place\"]/option[9]")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"place\"]/option[8]")));
         place.selectByValue("The Burger Place");
         wait.until(ExpectedConditions.elementToBeClickable(By.id("filter-button")));
         driver.findElement(By.id("filter-button")).click();
@@ -92,7 +92,7 @@ class DayTest extends MFSeleniumTest {
         Select dish = new Select(driver.findElement(By.id("dish")));
         dish.selectByVisibleText("Burger");
         Select place = new Select(driver.findElement(By.id("place")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"place\"]/option[9]")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"place\"]/option[8]")));
         place.selectByValue("The Burger Place");
         wait.until(ExpectedConditions.elementToBeClickable(By.id("filter-button")));
         driver.findElement(By.id("filter-button")).click();
