@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.List;
 import java.util.Optional;
@@ -277,8 +278,8 @@ class DealServiceTest extends MFServiceTest {
 
     @Test
     void testMapToEntity() {
-        dealMonTuesDTO.setStartTime("10:30");
-        dealMonTuesDTO.setEndTime("11:00");
+        dealMonTuesDTO.setStartTime(LocalTime.of(10, 30));
+        dealMonTuesDTO.setEndTime(LocalTime.of(11, 00));
         dealMonTuesDTO.setStartDate(LocalDate.of(2022, 10, 1));
         dealMonTuesDTO.setStartDate(LocalDate.of(2022, 10, 31));
 
@@ -395,8 +396,8 @@ class DealServiceTest extends MFServiceTest {
     @Test
     void testMapToDTO() {
         final Upload upload = TestObjects.upload(dealMonTues);
-        dealMonTues.setStartTime("10:30");
-        dealMonTues.setEndTime("11:00");
+        dealMonTues.setStartTime(LocalTime.of(10, 30));
+        dealMonTues.setEndTime(LocalTime.of(11, 00));
         dealMonTues.setStartDate(LocalDate.of(2022, 10, 1));
         dealMonTues.setStartDate(LocalDate.of(2022, 10, 31));
 

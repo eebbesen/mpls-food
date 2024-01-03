@@ -1,20 +1,22 @@
 package com.humegatech.mpls_food.services;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
 import com.humegatech.mpls_food.models.DayDTO;
 import com.humegatech.mpls_food.repositories.DayRepository;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class DayService {
@@ -46,8 +48,8 @@ public class DayService {
         return days.stream()
                 .map(day -> mapToDTO(day, new DayDTO()))
                 .sorted(Comparator.comparing((DayDTO d) -> order.get(d.getDayOfWeek()))
-                        .thenComparing((DayDTO d) -> null == d.getStartTime() ? "zzz" : d.getStartTime())
-                        .thenComparing((DayDTO d) -> null == d.getEndTime() ? "zzz" : d.getEndTime())
+                        .thenComparing((DayDTO d) -> null == d.getStartTime() ? LocalTime.of(0, 0) : d.getStartTime())
+                        .thenComparing((DayDTO d) -> null == d.getEndTime() ? LocalTime.of(23, 59) : d.getEndTime())
                         .thenComparing(DayDTO::getPlaceName))
                 .toList();
     }
@@ -82,8 +84,16 @@ public class DayService {
         dayDTO.setEndTime(day.getDeal().getEndTime());
 
         dayDTO.setVerified(day.getDeal().isVerified());
+        // dayDTO.setHappyHour(day.getDeal().getPlace().getPlaceHours());
 
         return dayDTO;
+    }
+
+    private boolean isHappyHour(final Day day) {
+        return day.getDeal().getPlace().getPlaceHours().stream()
+                .anyMatch(placeHour -> placeHour.getDayOfWeek().equals(day.getDayOfWeek())
+                        && (placeHour.getOpenTime().isBefore(day.getDeal().getStartTime())
+                        && placeHour.getCloseTime().isAfter(day.getDeal().getEndTime())));
     }
 
     private Day mapToEntity(final DayDTO dayDTO, final Day day) {

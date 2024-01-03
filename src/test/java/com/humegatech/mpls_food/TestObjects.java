@@ -112,8 +112,8 @@ public class TestObjects {
                 .description("$5.00 for two slices from 10:30 - 11:00")
                 .id(dealId())
                 .place(ginellis)
-                .startTime("10:30")
-                .endTime("11:00")
+                .startTime(LocalTime.of(10, 30))
+                .endTime(LocalTime.of(11, 0))
                 .minPrice(5d)
                 .maxPrice(5d)
                 .minDiscount(2.4)
@@ -165,8 +165,8 @@ public class TestObjects {
                 .minDiscount(2.4d)
                 .minDiscountPercent(32d)
                 .verified(true)
-                .startTime("10:30")
-                .endTime("11:00")
+                .startTime(LocalTime.of(10, 30))
+                .endTime(LocalTime.of(11, 0))
                 .dealType(DealType.DEAL)
                 .build();
 
@@ -194,8 +194,8 @@ public class TestObjects {
                 .maxDiscountPercent(28.08d)
                 .verified(true)
                 .taxIncluded(true)
-                .startTime("10:30")
-                .endTime("15:00")
+                .startTime(LocalTime.of(10, 30))
+                .endTime(LocalTime.of(15, 00))
                 .dealType(DealType.DEAL)
                 .build();
 

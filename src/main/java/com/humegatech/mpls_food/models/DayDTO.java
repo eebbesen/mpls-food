@@ -1,10 +1,15 @@
 package com.humegatech.mpls_food.models;
 
-import lombok.*;
-
-import jakarta.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -31,7 +36,9 @@ public class DayDTO {
     private Double minPrice;
     private Double minDiscount;
     private Double minDiscountPercent;
-    private String startTime;
-    private String endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private boolean verified;
+    private boolean happyHour;
+    private boolean timeBoxed;
 }
