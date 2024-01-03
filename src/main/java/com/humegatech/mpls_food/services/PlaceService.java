@@ -1,25 +1,30 @@
 package com.humegatech.mpls_food.services;
 
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.domains.Reward;
-import com.humegatech.mpls_food.models.PlaceDTO;
-import com.humegatech.mpls_food.repositories.PlaceRepository;
-import com.humegatech.mpls_food.util.MplsFoodUtils;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.domains.Reward;
+import com.humegatech.mpls_food.models.PlaceDTO;
+import com.humegatech.mpls_food.models.PlaceHourDTO;
+import com.humegatech.mpls_food.repositories.PlaceRepository;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
 
 
 @Service
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
+    private final PlaceHourService placeHourService;
 
-    public PlaceService(final PlaceRepository placeRepository) {
+    public PlaceService(final PlaceRepository placeRepository, PlaceHourService placeHourService) {
         this.placeRepository = placeRepository;
+        this.placeHourService = placeHourService;
     }
 
     public List<PlaceDTO> findAll() {
@@ -63,6 +68,10 @@ public class PlaceService {
         placeDTO.setTruncatedAddress(MplsFoodUtils.truncateAddress(place.getAddress()));
         placeDTO.setRewardNotes(null == place.getReward() ? null : place.getReward().getNotes());
         placeDTO.setRewardType(null == place.getReward() ? null : place.getReward().getRewardType());
+        placeDTO.setPlaceHours(place.getPlaceHours().stream()
+                .map(placeHour -> placeHourService.mapToDTO(placeHour, new PlaceHourDTO()))
+                .collect(Collectors.toSet()));
+
         return placeDTO;
     }
 

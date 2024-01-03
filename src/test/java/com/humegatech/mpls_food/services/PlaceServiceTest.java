@@ -1,10 +1,20 @@
 package com.humegatech.mpls_food.services;
 
-import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.domains.RewardType;
-import com.humegatech.mpls_food.models.PlaceDTO;
-import com.humegatech.mpls_food.util.MplsFoodUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,16 +22,31 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.domains.PlaceHour;
+import com.humegatech.mpls_food.domains.RewardType;
+import com.humegatech.mpls_food.models.PlaceDTO;
+import com.humegatech.mpls_food.models.PlaceHourDTO;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
 
 @SpringBootTest
 class PlaceServiceTest extends MFServiceTest {
     @Autowired
     private PlaceService service;
+
+    private void comparePlaceHours(final Set<PlaceHour> placeHours, final Set<PlaceHourDTO> placeHourDTOs) {
+        assertEquals(placeHours.size(), placeHourDTOs.size());
+        for (final PlaceHour placeHour : placeHours) {
+            final PlaceHourDTO placeHourDTO = placeHourDTOs.stream()
+                    .filter(ph -> ph.getDayOfWeek().equals(placeHour.getDayOfWeek()))
+                    .findFirst()
+                    .orElseThrow();
+            assertEquals(placeHour.getPlace().getId(), placeHourDTO.getPlace());
+            assertEquals(placeHour.getOpenTime(), placeHourDTO.getOpenTime());
+            assertEquals(placeHour.getCloseTime(), placeHourDTO.getCloseTime());
+        }
+    }
 
     @Test
     void testMapToDTO() {
@@ -39,6 +64,8 @@ class PlaceServiceTest extends MFServiceTest {
         assertEquals(MplsFoodUtils.truncateAddress(place.getAddress()), placeDTO.getTruncatedAddress());
         assertEquals(place.getReward().getNotes(), placeDTO.getRewardNotes());
         assertEquals(place.getReward().getRewardType(), placeDTO.getRewardType());
+        assertEquals(place.getPlaceHours().size(), placeDTO.getPlaceHours().size());
+        comparePlaceHours(place.getPlaceHours(), placeDTO.getPlaceHours());
     }
 
     @Test
@@ -151,6 +178,7 @@ class PlaceServiceTest extends MFServiceTest {
         final PlaceDTO placeDTO = service.get(place.getId());
 
         assertEquals(place.getName(), placeDTO.getName());
+        assertEquals(place.getPlaceHours().size(), placeDTO.getPlaceHours().size());
     }
 
     @Test

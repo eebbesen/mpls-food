@@ -1,11 +1,25 @@
 package com.humegatech.mpls_food.services;
 
-import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.models.DayDTO;
-import com.humegatech.mpls_food.util.MplsFoodUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -15,17 +29,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.controllers.DayController;
+import com.humegatech.mpls_food.domains.Day;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.models.DayDTO;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
 
 @SpringBootTest
 class DayServiceTest extends MFServiceTest {
@@ -74,9 +84,9 @@ class DayServiceTest extends MFServiceTest {
             assertEquals(4, dayDTOs.size());
             assertEquals("Ginelli's Pizza", dayDTOs.get(0).getPlaceName());
             assertEquals(DayOfWeek.MONDAY, dayDTOs.get(0).getDayOfWeek());
-            assertEquals("Ginelli's Pizza", dayDTOs.get(1).getPlaceName());
+            assertEquals("Taco John's", dayDTOs.get(1).getPlaceName());
             assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(1).getDayOfWeek());
-            assertEquals("Taco John's", dayDTOs.get(2).getPlaceName());
+            assertEquals("Ginelli's Pizza", dayDTOs.get(2).getPlaceName());
             assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(2).getDayOfWeek());
             assertEquals("Ginelli's Pizza", dayDTOs.get(3).getPlaceName());
             assertEquals(DayOfWeek.WEDNESDAY, dayDTOs.get(3).getDayOfWeek());
@@ -92,9 +102,9 @@ class DayServiceTest extends MFServiceTest {
             assertEquals(DayOfWeek.WEDNESDAY, dayDTOs.get(0).getDayOfWeek());
             assertEquals("Ginelli's Pizza", dayDTOs.get(1).getPlaceName());
             assertEquals(DayOfWeek.MONDAY, dayDTOs.get(1).getDayOfWeek());
-            assertEquals("Ginelli's Pizza", dayDTOs.get(2).getPlaceName());
+            assertEquals("Taco John's", dayDTOs.get(2).getPlaceName());
             assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(2).getDayOfWeek());
-            assertEquals("Taco John's", dayDTOs.get(3).getPlaceName());
+            assertEquals("Ginelli's Pizza", dayDTOs.get(3).getPlaceName());
             assertEquals(DayOfWeek.TUESDAY, dayDTOs.get(3).getDayOfWeek());
         }
     }
@@ -102,25 +112,26 @@ class DayServiceTest extends MFServiceTest {
     @Test
     void testFindAllSortsByDealStartTimeEndTimePlaceName() {
         final Place place1 = TestObjects.place("first");
-        final Deal deal1 = TestObjects.deal(place1, "z10:30 - 15:00 deal", DayOfWeek.MONDAY);
-        final Deal deal2 = TestObjects.deal(place1, "a11:00 - 11:00 deal", DayOfWeek.MONDAY);
-        deal2.setEndTime("11:00");
+        final Deal deal1 = TestObjects.deal(place1, "z10:30 - 15:00 deal: 1", DayOfWeek.MONDAY);
+        final Deal deal2 = TestObjects.deal(place1, "a11:00 - 11:00 deal: 2", DayOfWeek.MONDAY);
+        deal2.setStartTime(LocalTime.of(11, 00));
+        deal2.setEndTime(LocalTime.of(11, 00));
         final Place place2 = TestObjects.place("asecond");
-        final Deal deal3 = TestObjects.deal(place2, "aa 11:00 - 12:30 deal", DayOfWeek.MONDAY);
-        deal3.setStartTime("11:00");
-        deal3.setEndTime("12:30");
-        final Deal deal4 = TestObjects.deal(place2, "aaa 10:30 - 12:30 deal", DayOfWeek.MONDAY);
-        deal4.setStartTime("10:30");
-        deal4.setEndTime("12:30");
-        final Deal deal5 = TestObjects.deal(place2, "aaa 10:30 - 11:00 deal", DayOfWeek.MONDAY);
-        deal5.setStartTime("10:30");
-        deal5.setEndTime("11:00");
-        final Deal deal6 = TestObjects.deal(place2, "null start and end time", DayOfWeek.MONDAY);
+        final Deal deal3 = TestObjects.deal(place2, "aa 11:00 - 12:30 deal: 3", DayOfWeek.MONDAY);
+        deal3.setStartTime(LocalTime.of(11, 00));
+        deal3.setEndTime(LocalTime.of(12, 30));
+        final Deal deal4 = TestObjects.deal(place2, "aaa 10:30 - 12:30 deal: 4", DayOfWeek.MONDAY);
+        deal4.setStartTime(LocalTime.of(10, 30));
+        deal4.setEndTime(LocalTime.of(12, 30));
+        final Deal deal5 = TestObjects.deal(place2, "aaa 10:30 - 11:00 deal: 5", DayOfWeek.MONDAY);
+        deal5.setStartTime(LocalTime.of(10, 30));
+        deal5.setEndTime(LocalTime.of(11, 00));
+        final Deal deal6 = TestObjects.deal(place2, "null start and end time: 6", DayOfWeek.MONDAY);
         deal6.setStartTime(null);
         deal6.setEndTime(null);
-        final Deal deal7 = TestObjects.deal(place2, "null start - 12:30", DayOfWeek.MONDAY);
+        final Deal deal7 = TestObjects.deal(place2, "null start - 12:30: 7", DayOfWeek.MONDAY);
         deal7.setStartTime(null);
-        deal7.setEndTime(null);
+        deal7.setEndTime(LocalTime.of(12, 30));
 
         final List<Day> days = new ArrayList<>();
         for (Deal d : List.of(deal1, deal2, deal3, deal4, deal5, deal6, deal7)) {
@@ -130,37 +141,38 @@ class DayServiceTest extends MFServiceTest {
 
         final List<DayDTO> dayDTOs = service.findAll();
 
-        assertEquals(deal5.getDescription(), dayDTOs.get(0).getDealDescription());
-        assertEquals(deal2.getDescription(), dayDTOs.get(1).getDealDescription());
-        assertEquals(deal4.getDescription(), dayDTOs.get(2).getDealDescription());
-        assertEquals(deal1.getDescription(), dayDTOs.get(3).getDealDescription());
-        assertEquals(deal3.getDescription(), dayDTOs.get(4).getDealDescription());
-        assertEquals(deal6.getDescription(), dayDTOs.get(5).getDealDescription());
-        assertEquals(deal7.getDescription(), dayDTOs.get(6).getDealDescription());
+        assertEquals(deal7.getDescription(), dayDTOs.get(0).getDealDescription());
+        assertEquals(deal6.getDescription(), dayDTOs.get(1).getDealDescription());
+        assertEquals(deal5.getDescription(), dayDTOs.get(2).getDealDescription());
+        assertEquals(deal4.getDescription(), dayDTOs.get(3).getDealDescription());
+        assertEquals(deal1.getDescription(), dayDTOs.get(4).getDealDescription());
+        assertEquals(deal2.getDescription(), dayDTOs.get(5).getDealDescription());
+        assertEquals(deal3.getDescription(), dayDTOs.get(6).getDealDescription());
     }
 
     @Test
     void testFindAllActiveSortsByDealStartTimeEndTimePlaceName() {
         final Place place1 = TestObjects.place("first");
-        final Deal deal1 = TestObjects.deal(place1, "z10:30 - 15:00 deal", DayOfWeek.MONDAY);
-        final Deal deal2 = TestObjects.deal(place1, "a11:00 - 11:00 deal", DayOfWeek.MONDAY);
-        deal2.setEndTime("11:00");
+        final Deal deal1 = TestObjects.deal(place1, "z10:30 - 15:00 deal: 1", DayOfWeek.MONDAY);
+        final Deal deal2 = TestObjects.deal(place1, "a11:00 - 11:00 deal: 2", DayOfWeek.MONDAY);
+        deal2.setStartTime(LocalTime.of(11, 00));
+        deal2.setEndTime(LocalTime.of(11, 00));
         final Place place2 = TestObjects.place("asecond");
-        final Deal deal3 = TestObjects.deal(place2, "aa 11:00 - 12:30 deal", DayOfWeek.MONDAY);
-        deal3.setStartTime("11:00");
-        deal3.setEndTime("12:30");
-        final Deal deal4 = TestObjects.deal(place2, "aaa 10:30 - 12:30 deal", DayOfWeek.MONDAY);
-        deal4.setStartTime("10:30");
-        deal4.setEndTime("12:30");
-        final Deal deal5 = TestObjects.deal(place2, "aaa 10:30 - 11:00 deal", DayOfWeek.MONDAY);
-        deal5.setStartTime("10:30");
-        deal5.setEndTime("11:00");
-        final Deal deal6 = TestObjects.deal(place2, "null start and end time", DayOfWeek.MONDAY);
+        final Deal deal3 = TestObjects.deal(place2, "aa 11:00 - 12:30 deal: 3", DayOfWeek.MONDAY);
+        deal3.setStartTime(LocalTime.of(11, 00));
+        deal3.setEndTime(LocalTime.of(12, 30));
+        final Deal deal4 = TestObjects.deal(place2, "aaa 10:30 - 12:30 deal: 4", DayOfWeek.MONDAY);
+        deal4.setStartTime(LocalTime.of(10, 30));
+        deal4.setEndTime(LocalTime.of(12, 30));
+        final Deal deal5 = TestObjects.deal(place2, "aaa 10:30 - 11:00 deal: 5", DayOfWeek.MONDAY);
+        deal5.setStartTime(LocalTime.of(10, 30));
+        deal5.setEndTime(LocalTime.of(11, 00));
+        final Deal deal6 = TestObjects.deal(place2, "null start and end time: 6", DayOfWeek.MONDAY);
         deal6.setStartTime(null);
         deal6.setEndTime(null);
-        final Deal deal7 = TestObjects.deal(place2, "null start - 12:30", DayOfWeek.MONDAY);
+        final Deal deal7 = TestObjects.deal(place2, "null start - 12:30: 7", DayOfWeek.MONDAY);
         deal7.setStartTime(null);
-        deal7.setEndTime(null);
+        deal7.setEndTime(LocalTime.of(12, 30));
 
         final List<Day> days = new ArrayList<>();
         for (Deal d : List.of(deal1, deal2, deal3, deal4, deal5, deal6, deal7)) {
@@ -170,13 +182,13 @@ class DayServiceTest extends MFServiceTest {
 
         final List<DayDTO> dayDTOs = service.findAllActive();
 
-        assertEquals(deal5.getDescription(), dayDTOs.get(0).getDealDescription());
-        assertEquals(deal2.getDescription(), dayDTOs.get(1).getDealDescription());
-        assertEquals(deal4.getDescription(), dayDTOs.get(2).getDealDescription());
-        assertEquals(deal1.getDescription(), dayDTOs.get(3).getDealDescription());
-        assertEquals(deal3.getDescription(), dayDTOs.get(4).getDealDescription());
-        assertEquals(deal6.getDescription(), dayDTOs.get(5).getDealDescription());
-        assertEquals(deal7.getDescription(), dayDTOs.get(6).getDealDescription());
+        assertEquals(deal7.getDescription(), dayDTOs.get(0).getDealDescription());
+        assertEquals(deal6.getDescription(), dayDTOs.get(1).getDealDescription());
+        assertEquals(deal5.getDescription(), dayDTOs.get(2).getDealDescription());
+        assertEquals(deal4.getDescription(), dayDTOs.get(3).getDealDescription());
+        assertEquals(deal1.getDescription(), dayDTOs.get(4).getDealDescription());
+        assertEquals(deal2.getDescription(), dayDTOs.get(5).getDealDescription());
+        assertEquals(deal3.getDescription(), dayDTOs.get(6).getDealDescription());
     }
 
     @Test
@@ -222,6 +234,85 @@ class DayServiceTest extends MFServiceTest {
         assertEquals(deal.getEndTime(), dto.getEndTime());
         assertTrue(dto.isVerified());
         assertEquals(deal.isVerified(), dto.isVerified());
+    }
+
+    @Test
+    void testMapToEntityTimeBoxedOnOpenTime() {
+        Deal deal = TestObjects.deal();
+        deal.getPlace().getPlaceHours().stream().forEach(ph -> {
+            if (ph.getDayOfWeek().equals(DayOfWeek.WEDNESDAY)) {
+                ph.setOpenTime(deal.getStartTime().minusHours(1));
+            }
+        });
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertTrue(dto.isTimeBoxed());
+    }
+
+    @Test
+    void testMapToEntityTimeBoxedOnCloseTime() {
+        Deal deal = TestObjects.deal();
+        deal.getPlace().getPlaceHours().stream().forEach(ph -> {
+            if (ph.getDayOfWeek().equals(DayOfWeek.WEDNESDAY)) {
+                ph.setCloseTime(deal.getEndTime().plusHours(1));
+            }
+        });
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertTrue(dto.isTimeBoxed());
+    }
+
+    @Test
+    void testMapToEntityNotTimeBoxed() {
+        Deal deal = TestObjects.deal();
+        deal.getPlace().getPlaceHours().stream().forEach(ph -> {
+            if (ph.getDayOfWeek().equals(DayOfWeek.WEDNESDAY)) {
+                ph.setOpenTime(deal.getStartTime());
+                ph.setCloseTime(deal.getEndTime());
+            }
+        });
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertFalse(dto.isTimeBoxed());
+    }
+
+    @Test
+    void testMapToEntityHappyHour() {
+        Deal deal = TestObjects.deal();
+        deal.setStartTime(DayController.HH_CUTOFF.plusMinutes(1));
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertTrue(dto.isHappyHour());
+    }
+
+    @Test
+    void testMapToEntityNotHappyHour() {
+        Deal deal = TestObjects.deal();
+        deal.setStartTime(DayController.HH_CUTOFF.minusMinutes(1));
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertFalse(dto.isHappyHour());
+    }
+
+    @Test
+    void testMapToEntityNotHappyHourNoDealStartTime() {
+        Deal deal = TestObjects.deal();
+        deal.setStartTime(null);
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertFalse(dto.isHappyHour());
     }
 
     @Test

@@ -47,8 +47,12 @@ public class PlaceController {
 
     @GetMapping("/show/{id}")
     public String show(@PathVariable final Long id, final Model model) {
-        model.addAttribute("place", placeService.get(id));
+        PlaceDTO place = placeService.get(id);
+        model.addAttribute("place", place);
         model.addAttribute("deals", dealService.findByPlaceId(id));
+        model.addAttribute("placeHours", place.getPlaceHours()
+            .stream()
+            .sorted((h1, h2) -> Integer.compare(h1.getDayOfWeek().getValue(), h2.getDayOfWeek().getValue())));
         return "place/show";
     }
 

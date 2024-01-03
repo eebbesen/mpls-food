@@ -1,10 +1,27 @@
 package com.humegatech.mpls_food.controllers;
 
-import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.models.DayDTO;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Stream;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -19,22 +36,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.domains.Day;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.models.DayDTO;
 
 class DayControllerTest extends MFControllerTest {
     private Place place;
@@ -158,7 +164,7 @@ class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithHappyHourFilterStartTimeAtCutoff() throws Exception {
-        deal.setStartTime("13:00");
+        deal.setStartTime(LocalTime.of(13, 00));
         when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
@@ -172,7 +178,7 @@ class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithHappyHourFilterStartTimeAfterCutoff() throws Exception {
-        deal.setStartTime("13:01");
+        deal.setStartTime(LocalTime.of(13, 01));
         when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
@@ -186,7 +192,7 @@ class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithHappyHourFilterStartTimeJustBeforeCutoff() throws Exception {
-        deal.setStartTime("12:59");
+        deal.setStartTime(LocalTime.of(12, 59));
         when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))
@@ -214,7 +220,7 @@ class DayControllerTest extends MFControllerTest {
 
     @Test
     void testListWithHappyHourFilterIncorrectFilterValue() throws Exception {
-        deal.setStartTime("14:00");
+        deal.setStartTime(LocalTime.of(14, 00));
         when(dayService.findAllActive()).thenReturn(daysToDayDTOs(deal.getDays().stream().toList()));
 
         mvc.perform(MockMvcRequestBuilders.get("/days").accept(MediaType.APPLICATION_XML))

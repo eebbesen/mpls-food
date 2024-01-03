@@ -1,12 +1,15 @@
 package com.humegatech.mpls_food.endtoend;
 
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 class PlaceTest extends MFSeleniumTest {
     @Test
@@ -39,9 +42,15 @@ class PlaceTest extends MFSeleniumTest {
         assertFalse(Boolean.parseBoolean(driver.findElement(By.id("app1")).getAttribute("selected")));
         assertTrue(Boolean.parseBoolean(driver.findElement(By.id("orderAhead1")).getAttribute("selected")));
         assertEquals("TOAST", driver.findElement(By.id("rewardType")).getAttribute("value"));
-        assertEquals("1 point for every $2 you spend and receive a $5 discount for every 100 points you redeem",
+        assertEquals("1 point for every $2 you spend and receive a $2.50 discount " +
+                              "for every 50 points you redeem. 2.5% back.",
                 driver.findElement(By.id("rewardNotes")).getText());
         assertEquals("No Deals found", driver.findElement(By.id("deal-rows")).getText());
+        List<WebElement> hours = driver.findElements(By.className("hours-row"));
+        assertTrue(hours.size() > 0);
+        hours.forEach(hour -> {
+            assertTrue(hour.getText().contains("11:00"));
+        });
     }
 
     @Test

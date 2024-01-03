@@ -1,10 +1,16 @@
 package com.humegatech.mpls_food.models;
 
+import java.util.Set;
+
 import com.humegatech.mpls_food.domains.RewardType;
-import lombok.*;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -28,5 +34,6 @@ public class PlaceDTO {
     private boolean orderAhead;
     private String rewardNotes;
     private RewardType rewardType;
+    private Set<PlaceHourDTO> placeHours;
 
 }

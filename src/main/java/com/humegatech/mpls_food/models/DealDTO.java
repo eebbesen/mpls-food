@@ -1,12 +1,19 @@
 package com.humegatech.mpls_food.models;
 
-import com.humegatech.mpls_food.domains.DealType;
-import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.humegatech.mpls_food.domains.DealType;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -41,9 +48,13 @@ public class DealDTO {
     private String discountRange;
     private String discountPercentRange;
     private boolean verified;
+    private boolean happyHour;
+    private boolean timeBoxed;
     private boolean taxIncluded;
-    private String startTime;
-    private String endTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime startTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime endTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

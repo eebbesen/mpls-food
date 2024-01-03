@@ -1,9 +1,23 @@
 package com.humegatech.mpls_food.controllers;
 
-import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.models.DealDTO;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -11,19 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.List;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.services.PlaceHourService;
 
 @SpringBootTest
 class DealControllerTest extends MFControllerTest {
@@ -223,5 +232,22 @@ class DealControllerTest extends MFControllerTest {
 
         verify(dealService, times(0)).copy(eq(deal.getId()),
                 ArgumentMatchers.<List<Long>>any());
+    }
+
+    @Test
+    void testSortedPlaces() {
+        final MFController controller = new MFController();
+        final Place place = TestObjects.ginellis();
+        final Place newPlace = TestObjects.tacoJohns();
+        PlaceHourService placeHourService = new PlaceHourService(null);
+        ReflectionTestUtils.setField(placeService, "placeHourService", placeHourService);
+        when(placeService.findAll()).thenReturn(placesToPlaceDTOs(List.of(place, newPlace)));
+
+
+        Map<Long, String> placeMap = controller.sortedPlaces(placeService);
+        Iterator<Map.Entry<Long, String>> places = placeMap.entrySet().iterator();
+
+        assertEquals("Ginelli's Pizza", places.next().getValue());
+        assertEquals("Taco John's", places.next().getValue());
     }
 }

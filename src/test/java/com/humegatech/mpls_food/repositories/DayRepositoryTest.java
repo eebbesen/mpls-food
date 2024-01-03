@@ -1,14 +1,6 @@
 package com.humegatech.mpls_food.repositories;
 
-import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.Place;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -17,7 +9,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.domains.Day;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
 
 @DataJpaTest
 class DayRepositoryTest {
@@ -30,9 +31,9 @@ class DayRepositoryTest {
 
     @BeforeEach
     void setUp() {
-
         place = TestObjects.place("my place");
         place.setId(null);
+        place.getPlaceHours().forEach(placeHour -> placeHour.setId(null));
         entityManager.persist(place);
     }
 

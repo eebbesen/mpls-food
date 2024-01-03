@@ -1,19 +1,35 @@
 package com.humegatech.mpls_food.domains;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import jakarta.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 
 @EntityListeners(AuditingEntityListener.class)
@@ -65,9 +81,11 @@ public class Deal extends BaseEntity {
     @Column
     private boolean verified;
     @Column
-    private String startTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime startTime;
     @Column
-    private String endTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime endTime;
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
