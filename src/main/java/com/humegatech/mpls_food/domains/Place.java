@@ -52,6 +52,15 @@ public class Place extends BaseEntity {
     @Builder.Default
     private Set<PlaceHour> placeHours = new LinkedHashSet<>();
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true)
+    @PrimaryKeyJoinColumn
+    private Reward reward;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<DealLog> dealLogs = new LinkedHashSet<>();
+
     @Column
     private String website;
 
@@ -62,15 +71,6 @@ public class Place extends BaseEntity {
     @Column
     @Builder.Default
     private boolean orderAhead = false;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "place")
-    @PrimaryKeyJoinColumn
-    private Reward reward;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    @Builder.Default
-    private Set<DealLog> dealLogs = new LinkedHashSet<>();
 
     @Override
     public int hashCode() {
