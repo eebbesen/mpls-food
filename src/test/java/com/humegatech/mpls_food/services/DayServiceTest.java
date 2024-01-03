@@ -236,6 +236,52 @@ class DayServiceTest extends MFServiceTest {
     }
 
     @Test
+    void testMapToEntityTimeBoxedOnOpenTime() {
+        Deal deal = TestObjects.deal();
+        deal.getPlace().getPlaceHours().stream().forEach(ph -> {
+            if (ph.getDayOfWeek().equals(DayOfWeek.WEDNESDAY)) {
+                ph.setOpenTime(deal.getStartTime().minusHours(1));
+            }
+        });
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertTrue(dto.isTimeBoxed());
+    }
+
+    @Test
+    void testMapToEntityTimeBoxedOnCloseTime() {
+        Deal deal = TestObjects.deal();
+        deal.getPlace().getPlaceHours().stream().forEach(ph -> {
+            if (ph.getDayOfWeek().equals(DayOfWeek.WEDNESDAY)) {
+                ph.setCloseTime(deal.getEndTime().plusHours(1));
+            }
+        });
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertTrue(dto.isTimeBoxed());
+    }
+
+    @Test
+    void testMapToEntityNotTimeBoxed() {
+        Deal deal = TestObjects.deal();
+        deal.getPlace().getPlaceHours().stream().forEach(ph -> {
+            if (ph.getDayOfWeek().equals(DayOfWeek.WEDNESDAY)) {
+                ph.setOpenTime(deal.getStartTime());
+                ph.setCloseTime(deal.getEndTime());
+            }
+        });
+        final DayDTO dto = ReflectionTestUtils
+                .invokeMethod(service, "mapToDTO", TestObjects.day(deal, DayOfWeek.WEDNESDAY), new DayDTO());
+
+        assertNotNull(dto);
+        assertFalse(dto.isTimeBoxed());
+    }
+
+    @Test
     void testMapToEntity() {
         final Deal deal = TestObjects.deal();
         final DayDTO dto = DayDTO.builder()

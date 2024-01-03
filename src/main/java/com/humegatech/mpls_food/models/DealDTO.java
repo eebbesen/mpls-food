@@ -48,6 +48,8 @@ public class DealDTO {
     private String discountRange;
     private String discountPercentRange;
     private boolean verified;
+    private boolean happyHour;
+    private boolean timeBoxed;
     private boolean taxIncluded;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime startTime;
