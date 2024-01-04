@@ -1,14 +1,20 @@
 package com.humegatech.mpls_food.domains;
 
+import java.util.Objects;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import jakarta.persistence.*;
-import java.util.Objects;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -27,7 +33,6 @@ public class Reward extends BaseEntity {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "place_id")
     private Place place;
 
     @Override

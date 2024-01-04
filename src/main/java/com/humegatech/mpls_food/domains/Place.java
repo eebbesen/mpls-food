@@ -15,7 +15,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,11 +45,19 @@ public class Place extends BaseEntity {
     @Builder.Default
     private Set<Deal> deals = new LinkedHashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<DealLog> dealLogs = new LinkedHashSet<>();
+
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy(value = "dayOfWeek")
     @Builder.Default
     private Set<PlaceHour> placeHours = new LinkedHashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
+    private Reward reward;
 
     @Column
     private String website;
@@ -62,15 +69,6 @@ public class Place extends BaseEntity {
     @Column
     @Builder.Default
     private boolean orderAhead = false;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "place")
-    @PrimaryKeyJoinColumn
-    private Reward reward;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    @Builder.Default
-    private Set<DealLog> dealLogs = new LinkedHashSet<>();
 
     @Override
     public int hashCode() {

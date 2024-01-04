@@ -1,17 +1,25 @@
 package com.humegatech.mpls_food.domains;
 
+import java.time.LocalDate;
+import java.util.Objects;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.util.Objects;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -41,7 +49,7 @@ public class DealLog extends BaseEntity {
     @JoinColumn(name = "place_id", foreignKey = @ForeignKey(name = "fk_deal_log_places"))
     private Place place;
 
-    @ManyToOne()
+    @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "deal_id", foreignKey = @ForeignKey(name = "fk_deal_log_deals"))
     private Deal deal;

@@ -34,9 +34,12 @@ public class PlaceHour extends BaseEntity {
     @JsonBackReference
     @JoinColumn(name = "place_id", foreignKey = @ForeignKey(name = "fk_place_hours_places"))
     private Place place;
+
     private DayOfWeek dayOfWeek;
+
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime openTime;
+
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime closeTime;
 
