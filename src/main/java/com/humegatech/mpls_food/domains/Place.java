@@ -40,23 +40,23 @@ public class Place extends BaseEntity {
     private String address;
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy(value = "description")
     @Builder.Default
     private Set<Deal> deals = new LinkedHashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     @Builder.Default
     private Set<DealLog> dealLogs = new LinkedHashSet<>();
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy(value = "dayOfWeek")
     @Builder.Default
     private Set<PlaceHour> placeHours = new LinkedHashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
     private Reward reward;
 
     @Column
