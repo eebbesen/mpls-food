@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -30,7 +29,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "days")
 @EntityListeners(AuditingEntityListener.class)
 public class Day extends BaseEntity {
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "deal_id", foreignKey = @ForeignKey(name = "fk_days_deals"))
     private Deal deal;
