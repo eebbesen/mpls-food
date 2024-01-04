@@ -1,17 +1,25 @@
 package com.humegatech.mpls_food.domains;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.Objects;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import jakarta.persistence.*;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -22,7 +30,7 @@ import java.util.Objects;
 @Table(name = "days")
 @EntityListeners(AuditingEntityListener.class)
 public class Day extends BaseEntity {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "deal_id", foreignKey = @ForeignKey(name = "fk_days_deals"))
     private Deal deal;

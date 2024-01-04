@@ -44,51 +44,69 @@ public class Deal extends BaseEntity {
 
     @Column
     boolean taxIncluded;
+
     @Column
     DealType dealType;
+
     @Column(nullable = false, columnDefinition = "text")
     private String description;
+
     @Column(columnDefinition = "text")
     private String dish;
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "place_id", foreignKey = @ForeignKey(name = "fk_deals_places"))
-    private Place place;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true)
     @JsonManagedReference
     @Builder.Default
     private Set<Day> days = new LinkedHashSet<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    @Builder.Default
-    private Set<Upload> uploads = new LinkedHashSet<>();
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     @Builder.Default
     private Set<DealLog> dealLogs = new LinkedHashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @JoinColumn(name = "place_id", foreignKey = @ForeignKey(name = "fk_deals_places"))
+    private Place place;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deal", orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<Upload> uploads = new LinkedHashSet<>();
+
     @Column
     private Double minPrice;
+
     @Column
     private Double maxPrice;
+
     @Column
     private Double minDiscount;
+
     @Column
     private Double maxDiscount;
+
     @Column
     private Double minDiscountPercent;
+
     @Column
     private Double maxDiscountPercent;
+
     @Column
     private boolean verified;
+
     @Column
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime startTime;
+
     @Column
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime endTime;
+
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;

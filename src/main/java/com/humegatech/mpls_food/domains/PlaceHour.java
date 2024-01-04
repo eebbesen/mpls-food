@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -30,13 +31,16 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "place_hours")
 @EntityListeners(AuditingEntityListener.class)
 public class PlaceHour extends BaseEntity {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "place_id", foreignKey = @ForeignKey(name = "fk_place_hours_places"))
     private Place place;
+
     private DayOfWeek dayOfWeek;
+
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime openTime;
+
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime closeTime;
 

@@ -15,7 +15,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,25 +40,24 @@ public class Place extends BaseEntity {
     private String address;
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.EAGER)
     @OrderBy(value = "description")
     @Builder.Default
     private Set<Deal> deals = new LinkedHashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<DealLog> dealLogs = new LinkedHashSet<>();
+
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.EAGER)
     @OrderBy(value = "dayOfWeek")
     @Builder.Default
     private Set<PlaceHour> placeHours = new LinkedHashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true)
-    @PrimaryKeyJoinColumn
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.EAGER)
     private Reward reward;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place", orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    @Builder.Default
-    private Set<DealLog> dealLogs = new LinkedHashSet<>();
 
     @Column
     private String website;
