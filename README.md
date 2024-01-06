@@ -83,7 +83,7 @@ npx schemalint
 #### gradle build scan
 This will run the tests and build a jarfile.
 If using GitHub Actions you may need to initialize the project's gradle scan by running locally and accepting the terms.
-You can also run without `--scan`.
+You can also run without `--scan` and skip the scan (skipping is done for the Docker images)
 ```bash
 gradle build --scan
 ```
@@ -120,3 +120,19 @@ Data manually collected using
 * Google Maps
 * Walking around
 * https://www.mplsdowntown.com/wp-content/uploads/2022/07/220706-restaurant-list.pdf (07/06/2022)
+
+# Deployment
+## Docker
+For `Dockerfile`
+```bash
+docker build -f Dockerfile -t mpls-food .
+docker run -p 8080:8080 mpls-food
+```
+
+For `gradle.Dockerfile`
+```bash
+docker build -f gradle.Dockerfile -t mpls-food-g .
+docker run -p 8080:8080 mpls-food-g
+```
+
+
