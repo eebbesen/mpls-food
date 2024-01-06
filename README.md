@@ -126,13 +126,13 @@ Data manually collected using
 For `Dockerfile`
 ```bash
 docker build -f Dockerfile -t mpls-food .
-docker run -p 8080:8080 mpls-food
+docker run --name mpls-food -p 8080:8080 mpls-food
 ```
 
 For `gradle.Dockerfile`
 ```bash
 docker build -f gradle.Dockerfile -t mpls-food-g .
-docker run -p 8080:8080 mpls-food-g
+docker run --name mpls-food-g -p 8080:8080 mpls-food-g
 ```
 
 
