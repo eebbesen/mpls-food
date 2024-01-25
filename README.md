@@ -130,12 +130,12 @@ Data manually collected using
 ## Docker
 ```bash
 docker build -f Dockerfile -t mpls-food .
-docker run --name mpls-food -p 8080:8080 mpls-food
+docker run --rm --name mpls-food -p 8080:8080 mpls-food
 ```
 
 If connecting to database with connection properties different from the defaults in applicadtion.yml you need to specify those properties
 ```bash
-docker run --name mpls-food \
+docker run --rm --name mpls-food \
 -e JDBC_DATABASE_URL=jdbc:postgresql://<ip>:5432/<database> \
 -e JDBC_DATABASE_USERNAME=<user> -e JDBC_DATABASE_PASSWORD='<password>' \
 -p 8080:8080 mpls-food
