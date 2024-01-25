@@ -6,7 +6,6 @@ import java.time.LocalTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -160,6 +159,6 @@ public class Deal extends BaseEntity {
 
     public List<DayOfWeek> getDaysOfWeek() {
         return days.stream().map(Day::getDayOfWeek)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

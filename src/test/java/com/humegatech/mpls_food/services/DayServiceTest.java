@@ -345,8 +345,11 @@ class DayServiceTest extends MFServiceTest {
                 .id(88L).build();
 
         when(dealRepository.findById(dto.getDeal())).thenReturn(Optional.empty());
+        Day day = new Day();
 
-        assertThrows(ResponseStatusException.class, () -> ReflectionTestUtils.invokeMethod(service, "mapToEntity", dto, new Day()));
+        assertThrows(ResponseStatusException.class, () -> {
+            ReflectionTestUtils.invokeMethod(service, "mapToEntity", dto, day);
+        });
     }
 
     @Test
@@ -393,8 +396,9 @@ class DayServiceTest extends MFServiceTest {
     @Test
     void testUpdateNoDay() {
         when(dayRepository.findById(99L)).thenReturn(Optional.empty());
+        DayDTO dayDTO = new DayDTO();
 
-        assertThrows(ResponseStatusException.class, () -> service.update(99L, new DayDTO()));
+        assertThrows(ResponseStatusException.class, () -> service.update(99L, dayDTO));
     }
 
     @Test

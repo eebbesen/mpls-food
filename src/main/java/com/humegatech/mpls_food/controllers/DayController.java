@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -145,7 +144,7 @@ public class DayController {
         model.addAttribute("happyHour", happyHourFilter);
         model.addAttribute("dishes",
                 days.stream().map(DayDTO::getDish).filter(Objects::nonNull).distinct().sorted()
-                        .collect(Collectors.toList()));
+                        .toList());
         model.addAttribute("places",
                 days.stream().map(DayDTO::getPlaceName).distinct().sorted().toList());
         model.addAttribute("requestURI", request.getRequestURI());
