@@ -40,3 +40,5 @@ out/
 /dist/
 /nbdist/
 /.nb-gradle/
+
+snippets.md
