@@ -136,9 +136,14 @@ docker run --rm --name mpls-food -p 8080:8080 mpls-food
 If connecting to database with connection properties different from the defaults in applicadtion.yml you need to specify those properties
 ```bash
 docker run --rm --name mpls-food \
--e JDBC_DATABASE_URL=jdbc:postgresql://<ip>:5432/<database> \
+-e JDBC_DATABASE_URL=jdbc:postgresql://<host>:5432/<database> \
 -e JDBC_DATABASE_USERNAME=<user> -e JDBC_DATABASE_PASSWORD='<password>' \
 -p 8080:8080 mpls-food
 ```
 
-
+### Run the application with Docker Compose
+Once the jar has been built you can run a container that has both the database and application running in it
+```bash
+mkdir -p volumes/db/
+docker compose up
+```
