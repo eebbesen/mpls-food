@@ -7,8 +7,13 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
 ## Required
 * A relational database
   * Out of the box this will work with a local PostgreSQL instance (default) and h2 (when starting with `h2` profile)
-* [chrome for testing](https://googlechromelabs.github.io/chrome-for-testing/#stable) on your path that matches your current Chrome version
+* [Chrome for testing](https://googlechromelabs.github.io/chrome-for-testing/#stable) on your path that matches your current Chrome version
   * this is only needed if you are running end-to-end tests
+* Environment variables
+  * JDBC_DATABASE_URL
+  * JDBC_DATABASE_USERNAME
+  * JDBC_DATABASE_PASSWORD
+
 
 ## Start
 * modify application.yml to point to a running database instance (or use H2)
@@ -21,8 +26,8 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
 gradle bootRun --args='--spring.profiles.active=default'
 ```
 
-## tools
-### find dependencies
+## Tools
+### Find dependencies
 ```bash
 gradle -q dependencies
 ```
@@ -123,16 +128,17 @@ Data manually collected using
 
 # Deployment
 ## Docker
-For `Dockerfile`
 ```bash
 docker build -f Dockerfile -t mpls-food .
 docker run --name mpls-food -p 8080:8080 mpls-food
 ```
 
-For `gradle.Dockerfile`
+If connecting to database with connection properties different from the defaults in applicadtion.yml you need to specify those properties
 ```bash
-docker build -f gradle.Dockerfile -t mpls-food-g .
-docker run --name mpls-food-g -p 8080:8080 mpls-food-g
+docker run --name mpls-food \
+-e JDBC_DATABASE_URL=jdbc:postgresql://<ip>:5432/<database> \
+-e JDBC_DATABASE_USERNAME=<user> -e JDBC_DATABASE_PASSWORD='<password>' \
+-p 8080:8080 mpls-food
 ```
 
 
