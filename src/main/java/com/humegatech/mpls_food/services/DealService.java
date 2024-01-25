@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DealService {
     private final DealRepository dealRepository;
     private final PlaceRepository placeRepository;
+    private final Logger logger = LoggerFactory.getLogger(DealService.class);
 
     public DealService(final DealRepository dealRepository, final PlaceRepository placeRepository) {
         this.dealRepository = dealRepository;
@@ -71,7 +73,7 @@ public class DealService {
                 .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replace("-", "~"))
                         .thenComparing(DealDTO::getPlaceName)
                         .thenComparing(DealDTO::getDescription))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<DealDTO> findByPlaceId(final Long placeId) {
@@ -80,7 +82,7 @@ public class DealService {
                 .map(deal -> mapToDTO(deal, new DealDTO()))
                 .sorted(Comparator.comparing((DealDTO c) -> c.getDaysDisplay().replace("-", "~"))
                         .thenComparing(DealDTO::getDescription))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public DealDTO get(final Long id) {
@@ -225,9 +227,8 @@ public class DealService {
                     removeDay(deal, d);
                 }
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
+                logger.error(String.format("Error invoking method %s%n%s", methodName, e.getMessage()));
             }
         });
     }
-
 }

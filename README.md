@@ -90,7 +90,7 @@ gradle build --scan
 
 The test suite includes Chromedriver-based end-to-end tests that require the app running at http://localhost:8080. You can exclude end-to-end tests by running
 ```bash
-gradle build --scan -PexcludeTests=**/endtoend*
+gradle build --scan -PexcludeTests='**/endtoend*'
 
 ```
 
