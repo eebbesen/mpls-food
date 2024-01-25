@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'com.humegatech'
-version = '0.0.2-SNAPSHOT'
+version = '0.0.3-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_17
 
 bootRun {
@@ -19,12 +19,13 @@ repositories {
     mavenCentral()
 }
 
-gradleEnterprise {
-    buildScan {
-        // Connecting to scans.gradle.com by agreeing to the terms of service
-        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-        termsOfServiceAgree = 'yes'
-        publishAlways()
+if (project.hasProperty('runScan')) {
+    gradleEnterprise {
+        buildScan {
+            // Connecting to scans.gradle.com by agreeing to the terms of service
+            termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+            termsOfServiceAgree = 'yes'
+        }
     }
 }
 

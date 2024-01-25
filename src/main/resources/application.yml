@@ -16,7 +16,7 @@ spring:
     cache: false
     mode: HTML
     encoding: UTF-8
-    prefix: file:src/main/resources/templates/
+    prefix: classpath:/templates/
   servlet:
     multipart:
       max-file-size: 10MB
@@ -24,7 +24,7 @@ spring:
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/mpls-food}
     username: ${JDBC_DATABASE_USERNAME:postgres}
-    password: ${JDBC_DATABASE_PASSWORD:<<YOUR_PASSWORD>>}
+    password: ${JDBC_DATABASE_PASSWORD:}
     driver-class-name: org.postgresql.Driver
     dbcp2:
       validation-query: SELECT 1

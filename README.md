@@ -7,8 +7,13 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
 ## Required
 * A relational database
   * Out of the box this will work with a local PostgreSQL instance (default) and h2 (when starting with `h2` profile)
-* [chrome for testing](https://googlechromelabs.github.io/chrome-for-testing/#stable) on your path that matches your current Chrome version
+* [Chrome for testing](https://googlechromelabs.github.io/chrome-for-testing/#stable) on your path that matches your current Chrome version
   * this is only needed if you are running end-to-end tests
+* Environment variables
+  * JDBC_DATABASE_URL
+  * JDBC_DATABASE_USERNAME
+  * JDBC_DATABASE_PASSWORD
+
 
 ## Start
 * modify application.yml to point to a running database instance (or use H2)
@@ -21,8 +26,8 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
 gradle bootRun --args='--spring.profiles.active=default'
 ```
 
-## tools
-### find dependencies
+## Tools
+### Find dependencies
 ```bash
 gradle -q dependencies
 ```
@@ -83,7 +88,7 @@ npx schemalint
 #### gradle build scan
 This will run the tests and build a jarfile.
 If using GitHub Actions you may need to initialize the project's gradle scan by running locally and accepting the terms.
-You can also run without `--scan`.
+You can also run without `--scan` and skip the scan (skipping is done for the Docker images)
 ```bash
 gradle build --scan
 ```
@@ -120,3 +125,25 @@ Data manually collected using
 * Google Maps
 * Walking around
 * https://www.mplsdowntown.com/wp-content/uploads/2022/07/220706-restaurant-list.pdf (07/06/2022)
+
+# Deployment
+## Docker
+```bash
+docker build -f Dockerfile -t mpls-food .
+docker run --rm --name mpls-food -p 8080:8080 mpls-food
+```
+
+If connecting to database with connection properties different from the defaults in applicadtion.yml you need to specify those properties
+```bash
+docker run --rm --name mpls-food \
+-e JDBC_DATABASE_URL=jdbc:postgresql://<host>:5432/<database> \
+-e JDBC_DATABASE_USERNAME=<user> -e JDBC_DATABASE_PASSWORD='<password>' \
+-p 8080:8080 mpls-food
+```
+
+### Run the application with Docker Compose
+Once the jar has been built you can run a container that has both the database and application running in it
+```bash
+mkdir -p volumes/db/
+docker compose up
+```
