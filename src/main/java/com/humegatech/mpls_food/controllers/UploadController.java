@@ -45,7 +45,7 @@ public class UploadController {
                 image = file.getBytes();
             } catch (IOException e) {
                 logger.error(String.format("Error uploading file for user %s", principal.getName()));
-                throw new FileUploadException("Error uploading file", e);
+                throw new MFFileUploadException("Error uploading file", e);
             }
 
             final UploadDTO uploadDTO = UploadDTO.builder()
@@ -68,11 +68,5 @@ public class UploadController {
         InputStream bais = new ByteArrayInputStream(image);
         response.setContentType("image/jpeg");
         IOUtils.copy(bais, response.getOutputStream());
-    }
-}
-
-class FileUploadException extends RuntimeException {
-    FileUploadException(final String message, final Throwable cause) {
-        super(message, cause);
     }
 }

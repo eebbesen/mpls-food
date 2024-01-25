@@ -228,14 +228,7 @@ public class DealService {
                 }
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 logger.error(String.format("Error invoking method %s%n%s", methodName, e.getMessage()));
-                throw new DayNoSuchMethodException(String.format("Error invoking method %s", methodName), e);
             }
         });
-    }
-}
-
-class DayNoSuchMethodException extends RuntimeException {
-    DayNoSuchMethodException(final String message, final Throwable cause) {
-        super(message, cause);
     }
 }
