@@ -1,0 +1,27 @@
+services:
+  web:
+    image: mpls-food
+    environment:
+      - JDBC_DATABASE_URL=jdbc:postgresql://db:5432/${JDBC_DATABASE_NAME}
+      - JDBC_DATABASE_USERNAME=${JDBC_DATABASE_USERNAME}
+      - JDBC_DATABASE_PASSWORD=${JDBC_DATABASE_PASSWORD}
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=${JDBC_DATABASE_NAME}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${JDBC_DATABASE_PASSWORD}
+    volumes:
+      - ./volumes/db:/var/lib/postgresql/data
+      - ./src/main/resources/db/schema.sql:/docker-entrypoint-initdb.d/1schema.sql
+      - ./src/main/resources/db/data.sql:/docker-entrypoint-initdb.d/2data.sql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 10s
+      retries: 5

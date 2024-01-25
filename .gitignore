@@ -42,3 +42,4 @@ out/
 /.nb-gradle/
 
 snippets.md
+volumes/db/*
