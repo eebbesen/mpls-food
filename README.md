@@ -1,8 +1,10 @@
 # MPLS-FOOD
 
-Created with https://bootify.io
+Created with https://bootify.io.
 
-Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Minneapolis.svg
+Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Minneapolis.svg.
+
+Try it out at https://mpls-food.onrender.com/days -- note this is _extremely_ slow, especially as the app has to restart after less than one hour of activity.
 
 ## Required
 * A relational database
@@ -128,12 +130,14 @@ Data manually collected using
 
 # Deployment
 ## Docker
+The Dockerfile is set to run the application using the production profile.
+
 ```bash
 docker build -f Dockerfile -t mpls-food .
 docker run --rm --name mpls-food -p 8080:8080 mpls-food
 ```
 
-If connecting to database with connection properties different from the defaults in applicadtion.yml you need to specify those properties
+If connecting to database with connection properties different from the defaults in application.yml you need to specify those properties
 ```bash
 docker run --rm --name mpls-food \
 -e JDBC_DATABASE_URL=jdbc:postgresql://<host>:5432/<database> \
