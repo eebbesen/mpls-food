@@ -137,7 +137,7 @@ docker build -f Dockerfile -t mpls-food .
 docker run --rm --name mpls-food -p 8080:8080 mpls-food
 ```
 
-If connecting to database with connection properties different from the defaults in applicadtion.yml you need to specify those properties
+If connecting to database with connection properties different from the defaults in application.yml you need to specify those properties
 ```bash
 docker run --rm --name mpls-food \
 -e JDBC_DATABASE_URL=jdbc:postgresql://<host>:5432/<database> \
