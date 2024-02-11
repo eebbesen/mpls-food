@@ -8,7 +8,7 @@ Try it out at https://mpls-food.onrender.com/days -- note this is _extremely_ sl
 
 ## Required
 * A relational database
-  * Out of the box this will work with a local PostgreSQL instance (default) and h2 (when starting with `h2` profile)
+  * Out of the box this will work with a local PostgreSQL instance (default) or H2 (when starting with `h2` profile)
 * [Chrome for testing](https://googlechromelabs.github.io/chrome-for-testing/#stable) on your path that matches your current Chrome version
   * this is only needed if you are running end-to-end tests
 * Environment variables
