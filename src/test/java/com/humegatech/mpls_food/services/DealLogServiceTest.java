@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,10 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -148,6 +146,7 @@ class DealLogServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     void testCreate() {
         final Deal deal = TestObjects.deal();
         deal.setId(77L);
@@ -172,6 +171,7 @@ class DealLogServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     void testUpdate() {
         final Place place = TestObjects.place("Taco Bell");
         place.setId(88L);
@@ -200,6 +200,7 @@ class DealLogServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     void testUpdateNoDealLog() {
         when(dealLogRepository.findById(99L)).thenReturn(Optional.empty());
         final DealLogDTO dto = new DealLogDTO();
@@ -208,6 +209,7 @@ class DealLogServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testDelete() {
         service.delete(99L);
 
