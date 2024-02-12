@@ -1,5 +1,21 @@
 package com.humegatech.mpls_food.services;
 
+import com.humegatech.mpls_food.domains.Day;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.models.UploadDTO;
+import com.humegatech.mpls_food.repositories.DealRepository;
+import com.humegatech.mpls_food.repositories.PlaceRepository;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.DayOfWeek;
@@ -9,23 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.models.DealDTO;
-import com.humegatech.mpls_food.models.UploadDTO;
-import com.humegatech.mpls_food.repositories.DealRepository;
-import com.humegatech.mpls_food.repositories.PlaceRepository;
-import com.humegatech.mpls_food.util.MplsFoodUtils;
-
-import lombok.extern.slf4j.Slf4j;
 
 
 @Service
@@ -47,6 +46,8 @@ public class DealService {
         }
     }
 
+
+    @PreAuthorize("hasRole('USER')")
     private static void addDay(final Deal deal, final DayOfWeek day) {
         if (null == deal.hasDay(day)) {
             deal.getDays().add(Day.builder()
@@ -91,12 +92,16 @@ public class DealService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+
+    @PreAuthorize("hasRole('USER')")
     public Long create(final DealDTO dealDTO) {
         final Deal deal = new Deal();
         mapToEntity(dealDTO, deal);
         return dealRepository.save(deal).getId();
     }
 
+
+    @PreAuthorize("hasRole('USER')")
     public void update(final Long id, final DealDTO dealDTO) {
         final Deal deal = dealRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -104,10 +109,14 @@ public class DealService {
         dealRepository.save(deal);
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final Long id) {
         dealRepository.deleteById(id);
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     public void copy(final Long dealId, List<Long> placeIds) {
         final Deal deal = dealRepository.findById(dealId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
@@ -186,7 +195,7 @@ public class DealService {
                 .image(u.getImage()).build()));
     }
 
-    private Deal mapToEntity(final DealDTO dealDTO, final Deal deal) {
+    protected Deal mapToEntity(final DealDTO dealDTO, final Deal deal) {
         final Place place = placeRepository.findById(dealDTO.getPlace())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("place not found: %d", dealDTO.getPlace())));
@@ -221,7 +230,7 @@ public class DealService {
                 final Method isDay = DealDTO.class.getDeclaredMethod(methodName);
                 final Boolean result = (Boolean) isDay.invoke(dealDTO);
 
-                if (result.booleanValue()) {
+                if (result) {
                     addDay(deal, d);
                 } else {
                     removeDay(deal, d);
