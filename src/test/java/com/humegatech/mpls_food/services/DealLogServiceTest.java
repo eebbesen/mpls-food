@@ -142,7 +142,7 @@ class DealLogServiceTest extends MFServiceTest {
 
         List<DealLogDTO> dealLogDTOs = service.findAll();
 
-        assertTrue(dealLogDTOs.size() > 0);
+        assertFalse(dealLogDTOs.isEmpty());
     }
 
     @Test

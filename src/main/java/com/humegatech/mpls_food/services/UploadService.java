@@ -6,6 +6,7 @@ import com.humegatech.mpls_food.models.UploadDTO;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.UploadRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,7 +21,8 @@ public class UploadService {
         this.uploadRepository = uploadRepository;
         this.dealRepository = dealRepository;
     }
-
+    
+    @PreAuthorize("isAuthenticated()")
     public Long create(final UploadDTO uploadDTO) {
         final Upload upload = new Upload();
         mapToEntity(uploadDTO, upload);
@@ -48,7 +50,7 @@ public class UploadService {
         return uploadDTO;
     }
 
-    private Upload mapToEntity(final UploadDTO uploadDTO, final Upload upload) {
+    protected Upload mapToEntity(final UploadDTO uploadDTO, final Upload upload) {
         final Deal deal = uploadDTO.getDealId() == null ? null : dealRepository.findById(uploadDTO.getDealId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
         if (null == deal) {
