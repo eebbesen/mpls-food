@@ -1,14 +1,21 @@
 package com.humegatech.mpls_food.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.controllers.DayController;
+import com.humegatech.mpls_food.domains.Day;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.models.DayDTO;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -20,22 +27,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.server.ResponseStatusException;
-
-import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.controllers.DayController;
-import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.models.DayDTO;
-import com.humegatech.mpls_food.util.MplsFoodUtils;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class DayServiceTest extends MFServiceTest {
@@ -237,7 +231,7 @@ class DayServiceTest extends MFServiceTest {
     }
 
     @Test
-    void testMapToEntityTimeBoxedOnOpenTime() {
+    void testMapToDTOTimeBoxedOnOpenTime() {
         Deal deal = TestObjects.deal();
         deal.getPlace().getPlaceHours().stream().forEach(ph -> {
             if (ph.getDayOfWeek().equals(DayOfWeek.WEDNESDAY)) {
@@ -252,7 +246,7 @@ class DayServiceTest extends MFServiceTest {
     }
 
     @Test
-    void testMapToEntityTimeBoxedOnCloseTime() {
+    void testMapToDTOTimeBoxedOnCloseTime() {
         Deal deal = TestObjects.deal();
         deal.getPlace().getPlaceHours().stream().forEach(ph -> {
             if (ph.getDayOfWeek().equals(DayOfWeek.WEDNESDAY)) {
@@ -267,7 +261,7 @@ class DayServiceTest extends MFServiceTest {
     }
 
     @Test
-    void testMapToEntityNotTimeBoxed() {
+    void testMapToDTONotTimeBoxed() {
         Deal deal = TestObjects.deal();
         deal.getPlace().getPlaceHours().stream().forEach(ph -> {
             if (ph.getDayOfWeek().equals(DayOfWeek.WEDNESDAY)) {
@@ -283,7 +277,7 @@ class DayServiceTest extends MFServiceTest {
     }
 
     @Test
-    void testMapToEntityHappyHour() {
+    void testMapToDTOHappyHour() {
         Deal deal = TestObjects.deal();
         deal.setStartTime(DayController.HH_CUTOFF.plusMinutes(1));
         final DayDTO dto = ReflectionTestUtils
@@ -294,7 +288,7 @@ class DayServiceTest extends MFServiceTest {
     }
 
     @Test
-    void testMapToEntityNotHappyHour() {
+    void testMapToDTONotHappyHour() {
         Deal deal = TestObjects.deal();
         deal.setStartTime(DayController.HH_CUTOFF.minusMinutes(1));
         final DayDTO dto = ReflectionTestUtils
@@ -305,7 +299,7 @@ class DayServiceTest extends MFServiceTest {
     }
 
     @Test
-    void testMapToEntityNotHappyHourNoDealStartTime() {
+    void testMapToDTONotHappyHourNoDealStartTime() {
         Deal deal = TestObjects.deal();
         deal.setStartTime(null);
         final DayDTO dto = ReflectionTestUtils
@@ -326,6 +320,8 @@ class DayServiceTest extends MFServiceTest {
                 .id(88L).build();
 
         when(dealRepository.findById(deal.getId())).thenReturn(Optional.of(deal));
+        // because mapToEntity is private explicitly inject repository
+        ReflectionTestUtils.setField(service, "dealRepository", dealRepository);
 
         Day day = ReflectionTestUtils
                 .invokeMethod(service, "mapToEntity", dto, new Day());
@@ -402,6 +398,7 @@ class DayServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testDelete() {
         service.delete(99L);
 
