@@ -2,3 +2,12 @@ version: "1.0"
 linter: jetbrains/qodana-jvm-community:2023.3
 include:
   - name: CheckDependencyLicenses
+  - name: FieldMayBeFinal
+  - name: UnnecessaryLocalVariable
+  - name: PublicField
+  - name: MissingOverrideAnnotation
+  - name: ClassCanBeRecord
+  - name: SafeVarargsDetector
+  - name: Convert2Lambda
+  - name: UnstableTypeUsedInSignature
+  - name: FieldMayBeStatic
