@@ -1,8 +1,10 @@
 package com.humegatech.mpls_food.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.humegatech.mpls_food.domains.*;
+import com.humegatech.mpls_food.models.*;
+import com.humegatech.mpls_food.services.*;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,24 +15,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.DealLog;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.domains.Upload;
-import com.humegatech.mpls_food.models.DayDTO;
-import com.humegatech.mpls_food.models.DealDTO;
-import com.humegatech.mpls_food.models.DealLogDTO;
-import com.humegatech.mpls_food.models.PlaceDTO;
-import com.humegatech.mpls_food.models.UploadDTO;
-import com.humegatech.mpls_food.services.DayService;
-import com.humegatech.mpls_food.services.DealLogService;
-import com.humegatech.mpls_food.services.DealService;
-import com.humegatech.mpls_food.services.PlaceHourService;
-import com.humegatech.mpls_food.services.PlaceService;
-import com.humegatech.mpls_food.services.UploadService;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import jakarta.transaction.Transactional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -93,4 +84,25 @@ class MFControllerTest {
         return dayDTOs;
     }
 
+    @Test
+    void testSortedPlaces() {
+        final MFController controller = new MFController();
+        final PlaceDTO place = new PlaceDTO();
+        place.setName("Ginelli's Pizza");
+        place.setId(1L);
+        final PlaceDTO newPlace = new PlaceDTO();
+        newPlace.setName("Aurelio's Pizza");
+        newPlace.setId(2L);
+        PlaceHourService placeHourService = new PlaceHourService(null);
+        ReflectionTestUtils.setField(placeService, "placeHourService", placeHourService);
+
+        final List<PlaceDTO> placeDTOs = List.of(place, newPlace);
+        when(placeService.findAll()).thenReturn(placeDTOs);
+
+        Map<Long, String> placeMap = controller.sortedPlaces(placeService);
+        Iterator<Map.Entry<Long, String>> places = placeMap.entrySet().iterator();
+
+        assertEquals("Aurelio's Pizza", places.next().getValue());
+        assertEquals("Ginelli's Pizza", places.next().getValue());
+    }
 }

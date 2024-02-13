@@ -85,7 +85,7 @@ public class DealLogController extends MFController {
     private static final String REDIRECT_DEAL_LOGS = "redirect:/deal_logs";
 
     @PostMapping("/add")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('USER')")
     public String add(@ModelAttribute("dealLog") @Valid final DealLogDTO dealLogDto,
                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -97,7 +97,7 @@ public class DealLogController extends MFController {
     }
 
     @GetMapping("/edit/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public String edit(@PathVariable final Long id, final Model model, final HttpServletRequest request) {
         model.addAttribute("dealLog", dealLogService.get(id));
         model.addAttribute(REQUEST_URI, request.getRequestURI());
