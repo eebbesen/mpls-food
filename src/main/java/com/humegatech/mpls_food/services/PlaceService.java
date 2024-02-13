@@ -1,19 +1,19 @@
 package com.humegatech.mpls_food.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.domains.Reward;
 import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.models.PlaceHourDTO;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -40,6 +40,8 @@ public class PlaceService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+
+    @PreAuthorize("hasRole('USER')")
     public Long create(final PlaceDTO placeDTO) {
         final Place place = new Place();
         mapToEntity(placeDTO, place);
@@ -47,6 +49,7 @@ public class PlaceService {
         return placeRepository.save(place).getId();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void update(final Long id, final PlaceDTO placeDTO) {
         final Place place = placeRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -54,11 +57,12 @@ public class PlaceService {
         placeRepository.save(place);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final Long id) {
         placeRepository.deleteById(id);
     }
 
-    private PlaceDTO mapToDTO(final Place place, final PlaceDTO placeDTO) {
+    protected PlaceDTO mapToDTO(final Place place, final PlaceDTO placeDTO) {
         placeDTO.setId(place.getId());
         placeDTO.setName(place.getName());
         placeDTO.setAddress(place.getAddress());

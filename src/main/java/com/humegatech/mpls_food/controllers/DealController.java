@@ -1,25 +1,19 @@
 package com.humegatech.mpls_food.controllers;
 
-import java.util.Arrays;
-
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.services.DealService;
 import com.humegatech.mpls_food.services.PlaceService;
 import com.humegatech.mpls_food.util.WebUtils;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Arrays;
 
 
 @RequestMapping("/deals")
@@ -50,8 +44,8 @@ public class DealController extends MFController {
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
     public String add(@ModelAttribute("deal") final DealDTO dealDto,
-                                      final Model model,
-                                      final HttpServletRequest request) {
+                      final Model model,
+                      final HttpServletRequest request) {
         model.addAttribute(REQUEST_URI, request.getRequestURI());
         return "deal/add";
     }
@@ -59,7 +53,7 @@ public class DealController extends MFController {
     private static final String REDIRECT_DEALS = "redirect:/deals";
 
     @PostMapping("/add")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('USER')")
     public String add(@ModelAttribute("deal") @Valid final DealDTO dealDto,
                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -71,7 +65,7 @@ public class DealController extends MFController {
     }
 
     @GetMapping("/edit/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public String edit(@PathVariable final Long id, final Model model, final HttpServletRequest request) {
         model.addAttribute("deal", dealService.get(id));
         model.addAttribute(REQUEST_URI, request.getRequestURI());
@@ -110,7 +104,7 @@ public class DealController extends MFController {
             if (placeIds.length > 0) {
                 dealService.copy(id, Arrays.stream(placeIds).map(Long::parseLong).toList());
                 redirectAttributes
-                    .addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
+                        .addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("deal.update.success"));
                 return REDIRECT_DEALS;
             }
         }

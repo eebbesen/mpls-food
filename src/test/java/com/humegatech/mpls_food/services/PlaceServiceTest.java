@@ -1,27 +1,5 @@
 package com.humegatech.mpls_food.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Sort;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.domains.PlaceHour;
@@ -29,6 +7,23 @@ import com.humegatech.mpls_food.domains.RewardType;
 import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.models.PlaceHourDTO;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class PlaceServiceTest extends MFServiceTest {
@@ -188,13 +183,6 @@ class PlaceServiceTest extends MFServiceTest {
     }
 
     @Test
-    void testUpdateNotFound() {
-        final PlaceDTO dto = new PlaceDTO();
-        final Exception exception = assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
-        assertEquals("404 NOT_FOUND", exception.getMessage());
-    }
-
-    @Test
     void testFindAll() {
         final List<Place> places = TestObjects.places();
 
@@ -207,6 +195,7 @@ class PlaceServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     void testCreate() {
         final Place place = TestObjects.place("Taco Bell");
         place.setId(99L);
@@ -224,6 +213,14 @@ class PlaceServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithAnonymousUser
+    void testCreateUnauthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.create(null);
+        });
+    }
+
+    @Test
     void testNameExistsNameExists() {
         when(placeRepository.existsByNameIgnoreCase("exists")).thenReturn(true);
 
@@ -238,6 +235,7 @@ class PlaceServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testDelete() {
         service.delete(99L);
 
@@ -245,6 +243,23 @@ class PlaceServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
+    void testDeleteUserRole() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.delete(99L);
+        });
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testDeleteUnauthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.delete(99L);
+        });
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     void testUpdate() {
         final Place place = TestObjects.place("Taco Bell");
         final PlaceDTO placeDTO = PlaceDTO.builder()
@@ -259,8 +274,33 @@ class PlaceServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testUpdateNoPlace() {
         final PlaceDTO dto = new PlaceDTO();
         assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void testUpdateUserRole() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.update(99L, null);
+        });
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testUpdateUnauthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.update(99L, null);
+        });
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testUpdateNotFound() {
+        final PlaceDTO dto = new PlaceDTO();
+        final Exception exception = assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
+        assertEquals("404 NOT_FOUND", exception.getMessage());
     }
 }

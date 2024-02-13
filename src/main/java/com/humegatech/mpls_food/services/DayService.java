@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,7 +23,6 @@ import com.humegatech.mpls_food.util.MplsFoodUtils;
 
 @Service
 public class DayService {
-
     private final DayRepository dayRepository;
     private final DealRepository dealRepository;
 
@@ -104,7 +104,7 @@ public class DayService {
         return dayDTO;
     }
 
-    private Day mapToEntity(final DayDTO dayDTO, final Day day) {
+    protected Day mapToEntity(final DayDTO dayDTO, final Day day) {
         final Deal deal = dealRepository.findById(dayDTO.getDeal())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "deal not found"));
 
@@ -129,6 +129,8 @@ public class DayService {
         dayRepository.save(day);
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final Long id) {
         dayRepository.deleteById(id);
     }

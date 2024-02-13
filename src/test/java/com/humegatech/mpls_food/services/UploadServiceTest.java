@@ -8,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,10 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -113,6 +113,7 @@ class UploadServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     void testCreate() {
         deal.setId(77L);
 
@@ -130,6 +131,14 @@ class UploadServiceTest extends MFServiceTest {
         service.create(uploadDTO);
 
         verify(uploadRepository, times(1)).save(upload);
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testCreateUnauthorized() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.create(null);
+        });
     }
 
     @Test

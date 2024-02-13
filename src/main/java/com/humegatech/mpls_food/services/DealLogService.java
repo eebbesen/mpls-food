@@ -8,6 +8,7 @@ import com.humegatech.mpls_food.repositories.DealLogRepository;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.repositories.PlaceRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,12 +28,16 @@ public class DealLogService {
         this.placeRepository = placeRepository;
     }
 
+
+    @PreAuthorize("hasRole('USER')")
     public Long create(final DealLogDTO dealLogDTO) {
         final DealLog dealLog = new DealLog();
         mapToEntity(dealLogDTO, dealLog);
         return dealLogRepository.save(dealLog).getId();
     }
 
+
+    @PreAuthorize("hasRole('USER')")
     public void update(final Long id, final DealLogDTO dealLogDTO) {
         final DealLog dealLog = dealLogRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -50,6 +55,8 @@ public class DealLogService {
                 .toList();
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final Long id) {
         dealLogRepository.deleteById(id);
     }
@@ -76,7 +83,7 @@ public class DealLogService {
         return dealLogDTO;
     }
 
-    private DealLog mapToEntity(final DealLogDTO dealLogDTO, final DealLog dealLog) {
+    protected DealLog mapToEntity(final DealLogDTO dealLogDTO, final DealLog dealLog) {
         final Place place = placeRepository.findById(dealLogDTO.getPlace())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "place not found"));
 

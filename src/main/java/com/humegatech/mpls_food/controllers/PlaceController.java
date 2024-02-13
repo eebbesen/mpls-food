@@ -72,7 +72,7 @@ public class PlaceController {
     private static final String REDIRECT_PLACES = "redirect:/places";
 
     @PostMapping("/add")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('USER')")
     public String add(@ModelAttribute("place") @Valid final PlaceDTO placeDTO,
                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (!bindingResult.hasFieldErrors("name") &&

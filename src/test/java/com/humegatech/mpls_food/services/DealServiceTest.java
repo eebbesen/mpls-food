@@ -1,43 +1,32 @@
 package com.humegatech.mpls_food.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.domains.*;
+import com.humegatech.mpls_food.models.DealDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.domains.Day;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.DealType;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.domains.Upload;
-import com.humegatech.mpls_food.models.DealDTO;
+import java.time.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class DealServiceTest extends MFServiceTest {
@@ -253,6 +242,7 @@ class DealServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     void testupdateNotFound() {
         final DealDTO dto = new DealDTO();
         final Exception ex = assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
@@ -260,6 +250,15 @@ class DealServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithAnonymousUser
+    void testUpdateRemoveUnauthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.update(dealMonTues.getId(), dealMonTuesDTO);
+        });
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
     void testUpdateRemoveDays() {
         final Day deletedDay = dealMonTues.getDays().stream()
                 .filter(day -> day.getDayOfWeek().equals(DayOfWeek.MONDAY))
@@ -279,7 +278,7 @@ class DealServiceTest extends MFServiceTest {
     @Test
     void testMapToEntity() {
         dealMonTuesDTO.setStartTime(LocalTime.of(10, 30));
-        dealMonTuesDTO.setEndTime(LocalTime.of(11, 00));
+        dealMonTuesDTO.setEndTime(LocalTime.of(11, 0));
         dealMonTuesDTO.setStartDate(LocalDate.of(2022, 10, 1));
         dealMonTuesDTO.setStartDate(LocalDate.of(2022, 10, 31));
 
@@ -397,7 +396,7 @@ class DealServiceTest extends MFServiceTest {
     void testMapToDTO() {
         final Upload upload = TestObjects.upload(dealMonTues);
         dealMonTues.setStartTime(LocalTime.of(10, 30));
-        dealMonTues.setEndTime(LocalTime.of(11, 00));
+        dealMonTues.setEndTime(LocalTime.of(11, 0));
         dealMonTues.setStartDate(LocalDate.of(2022, 10, 1));
         dealMonTues.setStartDate(LocalDate.of(2022, 10, 31));
 
@@ -463,12 +462,38 @@ class DealServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testDelete() {
         service.delete(99L);
         verify(dealRepository, times(1)).deleteById(99L);
     }
 
     @Test
+    @WithMockUser(roles = "USER")
+    void testDeleteUserRole() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.delete(99L);
+        });
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testDeleteUnauthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.delete(99L);
+        });
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testCreateUnauthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.create(dealMonTuesDTO);
+        });
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
     void testCreate() {
         dealMonTues.setId(99L);
         when(placeRepository.findById(dealMonTuesDTO.getPlace())).thenReturn(Optional.of(dealMonTues.getPlace()));
@@ -481,6 +506,23 @@ class DealServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
+    void testCopyRoleUser() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.copy(dealMonTues.getId(), new ArrayList<>());
+        });
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testCopyUnAuthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.copy(dealMonTues.getId(), new ArrayList<>());
+        });
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     void testCopy() {
         dealMonTues.setId(99L);
         final List<Place> places = List.of(TestObjects.place("place 1"), TestObjects.place("place 2"),
@@ -499,6 +541,7 @@ class DealServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testCopyPlaceNotFound() {
         dealMonTues.setId(99L);
         final Long dealId = dealMonTues.getId();
@@ -514,6 +557,7 @@ class DealServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testCopyDealNotFound() {
         final Long dealId = dealMonTues.getId();
         final List<Long> ids = List.of(2L, 3L, 72L);
