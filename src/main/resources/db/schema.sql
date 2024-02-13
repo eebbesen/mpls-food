@@ -89,7 +89,7 @@ CREATE TABLE public.days (
 	last_updated timestamptz(6) NULL,
 	created_by varchar(100) NULL,
 	modified_by varchar(100) NULL,
-	"date" date NULL,
+	date_ date NULL,
 	day_of_week int2 NULL,
 	CONSTRAINT days_day_of_week_check CHECK (((day_of_week >= 0) AND (day_of_week <= 6))),
 	CONSTRAINT days_pkey PRIMARY KEY (id)

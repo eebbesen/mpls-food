@@ -1,24 +1,17 @@
 package com.humegatech.mpls_food.domains;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.Objects;
-
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -34,6 +27,7 @@ public class Day extends BaseEntity {
     @JoinColumn(name = "deal_id", foreignKey = @ForeignKey(name = "fk_days_deals"))
     private Deal deal;
     private DayOfWeek dayOfWeek;
+    @Column(name = "date_")
     private LocalDate date;
 
     @Override

@@ -331,7 +331,7 @@ INSERT INTO public.deals (id,place_id,date_created,last_updated,created_by,modif
 	 (122,30,'2022-10-11 09:07:15.51212-05','2022-12-27 16:00:35.925045-06','admin','admin',3,'Get a free fountain drink when you buy 2 slices, or 1 slice and a salad','Beverage',NULL,NULL,2.25,20.81,10.72,2.25,17.35,8.56,NULL,NULL,false,false),
 	 (55,10004,'2022-07-27 23:46:01.33711-05','2022-10-12 13:31:26.65612-05',NULL,'admin',3,'$13.45 mushroom swiss burger, fries and a 20oz fountain drink','Burger',NULL,NULL,1.85,12.09,13.45,1.85,12.09,13.45,NULL,NULL,false,true);
 
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (58,50,'2022-07-27 13:15:04.809267-05','2022-07-27 13:15:04.809267-05','admin','admin',NULL,1),
 	 (60,52,'2022-07-27 13:15:04.809267-05','2022-07-27 13:15:04.809267-05','admin','admin',NULL,0),
 	 (61,53,'2022-07-27 13:15:04.809267-05','2022-07-27 13:15:04.809267-05','admin','admin',NULL,1),
@@ -342,7 +342,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (128,108,'2022-09-14 14:22:38.712201-05','2022-09-14 14:22:38.712189-05','admin','admin',NULL,0),
 	 (129,109,'2022-09-14 14:24:09.302029-05','2022-09-14 14:24:09.302019-05','admin','admin',NULL,2),
 	 (130,110,'2022-09-14 14:30:16.846915-05','2022-09-14 14:30:16.846892-05','admin','admin',NULL,3);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (141,115,'2022-10-09 14:07:22.255393-05','2022-10-09 14:07:22.255346-05','admin','admin',NULL,0),
 	 (142,115,'2022-10-09 14:07:22.255472-05','2022-10-09 14:07:22.255467-05','admin','admin',NULL,1),
 	 (143,115,'2022-10-09 14:07:22.255502-05','2022-10-09 14:07:22.255498-05','admin','admin',NULL,2),
@@ -353,7 +353,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (148,116,'2022-10-09 14:10:01.763657-05','2022-10-09 14:10:01.763654-05','admin','admin',NULL,2),
 	 (149,116,'2022-10-09 14:10:01.763675-05','2022-10-09 14:10:01.763672-05','admin','admin',NULL,3),
 	 (150,116,'2022-10-09 14:10:01.763691-05','2022-10-09 14:10:01.763689-05','admin','admin',NULL,4);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (151,117,'2022-10-09 14:12:25.805797-05','2022-10-09 14:12:25.805787-05','admin','admin',NULL,0),
 	 (152,117,'2022-10-09 14:12:25.805831-05','2022-10-09 14:12:25.805827-05','admin','admin',NULL,1),
 	 (153,117,'2022-10-09 14:12:25.80585-05','2022-10-09 14:12:25.805848-05','admin','admin',NULL,2),
@@ -364,7 +364,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (158,118,'2022-10-09 14:14:43.543253-05','2022-10-09 14:14:43.543251-05','admin','admin',NULL,2),
 	 (159,118,'2022-10-09 14:14:43.543268-05','2022-10-09 14:14:43.543266-05','admin','admin',NULL,3),
 	 (160,118,'2022-10-09 14:14:43.543282-05','2022-10-09 14:14:43.54328-05','admin','admin',NULL,4);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (161,119,'2022-10-09 14:44:00.972178-05','2022-10-09 14:44:00.972162-05','admin','admin',NULL,0),
 	 (162,119,'2022-10-09 14:44:00.97231-05','2022-10-09 14:44:00.972304-05','admin','admin',NULL,1),
 	 (163,119,'2022-10-09 14:44:00.972392-05','2022-10-09 14:44:00.972388-05','admin','admin',NULL,2),
@@ -375,7 +375,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (168,120,'2022-10-09 14:45:18.878164-05','2022-10-09 14:45:18.878161-05','admin','admin',NULL,2),
 	 (169,120,'2022-10-09 14:45:18.878184-05','2022-10-09 14:45:18.878181-05','admin','admin',NULL,3),
 	 (170,120,'2022-10-09 14:45:18.878203-05','2022-10-09 14:45:18.8782-05','admin','admin',NULL,4);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (171,121,'2022-10-11 09:05:49.963214-05','2022-10-11 09:05:49.963191-05','admin','admin',NULL,0),
 	 (172,121,'2022-10-11 09:05:49.963302-05','2022-10-11 09:05:49.963295-05','admin','admin',NULL,1),
 	 (173,121,'2022-10-11 09:05:49.963323-05','2022-10-11 09:05:49.963321-05','admin','admin',NULL,2),
@@ -386,7 +386,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (178,122,'2022-10-11 09:07:15.511669-05','2022-10-11 09:07:15.511668-05','admin','admin',NULL,2),
 	 (179,122,'2022-10-11 09:07:15.511685-05','2022-10-11 09:07:15.511683-05','admin','admin',NULL,3),
 	 (180,122,'2022-10-11 09:07:15.5117-05','2022-10-11 09:07:15.511699-05','admin','admin',NULL,4);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (181,123,'2022-10-11 09:07:57.09405-05','2022-10-11 09:07:57.094042-05','admin','admin',NULL,0),
 	 (182,123,'2022-10-11 09:07:57.094072-05','2022-10-11 09:07:57.09407-05','admin','admin',NULL,1),
 	 (183,123,'2022-10-11 09:07:57.094088-05','2022-10-11 09:07:57.094086-05','admin','admin',NULL,2),
@@ -397,7 +397,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (188,126,'2022-10-13 08:11:55.35505-05','2022-10-13 08:11:55.355036-05','admin','admin',NULL,2),
 	 (189,127,'2022-10-13 08:13:30.179701-05','2022-10-13 08:13:30.179692-05','admin','admin',NULL,3),
 	 (190,128,'2022-10-13 08:16:09.691627-05','2022-10-13 08:16:09.691606-05','admin','admin',NULL,4);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (191,129,'2022-11-20 16:17:39.109248-06','2022-11-20 16:17:39.109248-06','admin','admin',NULL,0),
 	 (192,129,'2022-11-20 16:17:39.114211-06','2022-11-20 16:17:39.114211-06','admin','admin',NULL,4),
 	 (193,132,'2022-12-12 09:26:28.988267-06','2022-12-12 09:26:28.988267-06','admin','admin',NULL,0),
@@ -408,7 +408,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (198,133,'2022-12-12 09:29:59.779575-06','2022-12-12 09:29:59.779575-06','admin','admin',NULL,0),
 	 (205,134,'2022-12-12 09:41:13.250402-06','2022-12-12 09:41:13.250402-06','admin','admin',NULL,0),
 	 (212,135,'2022-12-12 09:42:10.713771-06','2022-12-12 09:42:10.713771-06','admin','admin',NULL,0);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (219,136,'2022-12-12 09:43:15.594686-06','2022-12-12 09:43:15.594686-06','admin','admin',NULL,0),
 	 (226,137,'2022-12-12 10:51:26.450032-06','2022-12-12 10:51:26.450032-06','admin','admin',NULL,0),
 	 (227,137,'2022-12-12 10:51:26.454296-06','2022-12-12 10:51:26.454296-06','admin','admin',NULL,1),
@@ -419,7 +419,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (232,137,'2022-12-12 10:51:26.463836-06','2022-12-12 10:51:26.463836-06','admin','admin',NULL,6),
 	 (233,138,'2022-12-12 10:56:42.920627-06','2022-12-12 10:56:42.920627-06','admin','admin',NULL,0),
 	 (234,138,'2022-12-12 10:56:42.924619-06','2022-12-12 10:56:42.924619-06','admin','admin',NULL,1);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (235,138,'2022-12-12 10:56:42.926506-06','2022-12-12 10:56:42.926506-06','admin','admin',NULL,2),
 	 (236,138,'2022-12-12 10:56:42.927709-06','2022-12-12 10:56:42.927709-06','admin','admin',NULL,3),
 	 (237,138,'2022-12-12 10:56:42.928604-06','2022-12-12 10:56:42.928604-06','admin','admin',NULL,4),
@@ -430,7 +430,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (242,139,'2022-12-12 14:27:38.169621-06','2022-12-12 14:27:38.169621-06','admin','admin',NULL,2),
 	 (243,139,'2022-12-12 14:27:38.170264-06','2022-12-12 14:27:38.170264-06','admin','admin',NULL,3),
 	 (244,139,'2022-12-12 14:27:38.171833-06','2022-12-12 14:27:38.171833-06','admin','admin',NULL,4);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (245,139,'2022-12-12 14:27:38.174829-06','2022-12-12 14:27:38.174829-06','admin','admin',NULL,5),
 	 (246,139,'2022-12-12 14:27:38.175607-06','2022-12-12 14:27:38.175607-06','admin','admin',NULL,6),
 	 (247,140,'2022-12-12 14:33:42.593349-06','2022-12-12 14:33:42.593349-06','admin','admin',NULL,0),
@@ -441,7 +441,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (252,140,'2022-12-12 14:33:42.601892-06','2022-12-12 14:33:42.601892-06','admin','admin',NULL,5),
 	 (253,140,'2022-12-12 14:33:42.604032-06','2022-12-12 14:33:42.604032-06','admin','admin',NULL,6),
 	 (254,141,'2022-12-12 14:35:23.687677-06','2022-12-12 14:35:23.687677-06','admin','admin',NULL,3);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (255,142,'2022-12-12 14:35:44.854864-06','2022-12-12 14:35:44.854864-06','admin','admin',NULL,3),
 	 (256,143,'2022-12-12 14:39:15.184009-06','2022-12-12 14:39:15.184009-06','admin','admin',NULL,0),
 	 (257,143,'2022-12-12 14:39:15.186422-06','2022-12-12 14:39:15.186422-06','admin','admin',NULL,1),
@@ -452,7 +452,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (262,144,'2022-12-12 14:42:11.058716-06','2022-12-12 14:42:11.058716-06','admin','admin',NULL,2),
 	 (263,144,'2022-12-12 14:42:11.059605-06','2022-12-12 14:42:11.059605-06','admin','admin',NULL,3),
 	 (264,144,'2022-12-12 14:42:11.060485-06','2022-12-12 14:42:11.060485-06','admin','admin',NULL,4);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (265,144,'2022-12-12 14:42:11.061277-06','2022-12-12 14:42:11.061277-06','admin','admin',NULL,5),
 	 (266,144,'2022-12-12 14:42:11.062015-06','2022-12-12 14:42:11.062015-06','admin','admin',NULL,6),
 	 (267,145,'2022-12-12 14:45:30.374556-06','2022-12-12 14:45:30.374556-06','admin','admin',NULL,0),
@@ -463,7 +463,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (272,146,'2022-12-12 14:46:19.588733-06','2022-12-12 14:46:19.588733-06','admin','admin',NULL,0),
 	 (273,146,'2022-12-12 14:46:19.590985-06','2022-12-12 14:46:19.590985-06','admin','admin',NULL,1),
 	 (274,146,'2022-12-12 14:46:19.59257-06','2022-12-12 14:46:19.59257-06','admin','admin',NULL,2);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (275,146,'2022-12-12 14:46:19.594181-06','2022-12-12 14:46:19.594181-06','admin','admin',NULL,3),
 	 (276,146,'2022-12-12 14:46:19.595316-06','2022-12-12 14:46:19.595316-06','admin','admin',NULL,4),
 	 (290,150,'2022-12-20 08:36:39.177413-06','2022-12-20 08:36:39.177413-06','admin','admin',NULL,0),
@@ -474,7 +474,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (295,151,'2022-12-20 08:38:41.10654-06','2022-12-20 08:38:41.10654-06','admin','admin',NULL,0),
 	 (296,151,'2022-12-20 08:38:41.107416-06','2022-12-20 08:38:41.107416-06','admin','admin',NULL,1),
 	 (297,151,'2022-12-20 08:38:41.108201-06','2022-12-20 08:38:41.108201-06','admin','admin',NULL,2);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (298,151,'2022-12-20 08:38:41.108907-06','2022-12-20 08:38:41.108907-06','admin','admin',NULL,3),
 	 (299,151,'2022-12-20 08:38:41.109624-06','2022-12-20 08:38:41.109624-06','admin','admin',NULL,4),
 	 (300,152,'2022-12-20 11:05:05.40843-06','2022-12-20 11:05:05.40843-06','admin','admin',NULL,0),
@@ -485,7 +485,7 @@ INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modifie
 	 (319,159,'2022-12-27 13:50:36.835111-06','2022-12-27 13:50:36.835111-06','admin','admin',NULL,0),
 	 (320,159,'2022-12-27 13:50:36.862731-06','2022-12-27 13:50:36.862731-06','admin','admin',NULL,1),
 	 (321,159,'2022-12-27 13:50:36.868433-06','2022-12-27 13:50:36.868433-06','admin','admin',NULL,2);
-INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,"date",day_of_week) VALUES
+INSERT INTO public.days (id,deal_id,date_created,last_updated,created_by,modified_by,date_,day_of_week) VALUES
 	 (322,159,'2022-12-27 13:50:36.873153-06','2022-12-27 13:50:36.873153-06','admin','admin',NULL,3),
 	 (323,159,'2022-12-27 13:50:36.881264-06','2022-12-27 13:50:36.881264-06','admin','admin',NULL,4);
 
