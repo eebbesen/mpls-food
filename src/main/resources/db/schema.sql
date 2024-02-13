@@ -35,11 +35,11 @@ CREATE TABLE public.places (
 	modified_by varchar(255) NULL,
 	address text NULL,
 	app bool NULL,
-	"name" varchar(255) NULL,
+	place_name varchar(255) NULL,
 	order_ahead bool NULL,
 	website varchar(255) NULL,
 	CONSTRAINT places_pkey PRIMARY KEY (id),
-	CONSTRAINT uk_places_name UNIQUE ("name")
+	CONSTRAINT uk_places_name UNIQUE (place_name)
 )
 TABLESPACE pg_default;
 

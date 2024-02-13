@@ -7,7 +7,7 @@ INSERT INTO public.authorities (id,username,authority) VALUES
 	 (2, 'admin','ROLE_USER'),
 	 (3, 'admin','ROLE_ADMIN');
 
-INSERT INTO public.places (id,date_created,last_updated,created_by,modified_by,address,app,"name",order_ahead,website) VALUES
+INSERT INTO public.places (id,date_created,last_updated,created_by,modified_by,address,app,place_name,order_ahead,website) VALUES
    (27,'2022-10-09 14:32:48.968892-05','2022-10-09 14:32:48.968892-05','admin','admin','1260 Hennepin Ave
 Minneapolis, MN 55403',true,'Subway Hennepin',true,'https://restaurants.subway.com/united-states/mn/minneapolis/1260-hennepin-ave'),
    (10004,'2022-07-27 23:38:35.619756-05','2022-07-27 23:38:35.619756-05',NULL,NULL,'220 South 6th St #215
@@ -25,7 +25,7 @@ Minneapolis, MN 55402',true,'Broadway Fast & Fresh',true,'https://www.broadwaypi
 Minneapolis, MN 55402',true,'Dan Kelly''s Broadway Pizza',true,'https://www.broadwaypizza.com/dan-kellys/dan-kellys'),
    (10000,'2022-07-27 13:09:06.542326-05','2022-10-09 13:48:55.803837-05',NULL,'admin','121 S 8th Street #235
 Minneapolis, MN 55402',false,'Ginelli''s Pizza',false,'https://www.ginellispizza.com/');
-INSERT INTO public.places (id,date_created,last_updated,created_by,modified_by,address,app,"name",order_ahead,website) VALUES
+INSERT INTO public.places (id,date_created,last_updated,created_by,modified_by,address,app,place_name,order_ahead,website) VALUES
    (34,'2022-10-12 23:02:05.526777-05','2022-10-12 23:02:05.526777-05','admin','admin','210 IDS Center 80 8th S
 Minneapolis, MN 55402',true,'Potbelly IDS',true,'https://www.potbelly.com/perks'),
    (23,'2022-10-09 14:29:03.084173-05','2022-10-09 14:29:03.084173-05','admin','admin','50 South 9th St.
@@ -48,7 +48,7 @@ Minneapolis, MN 55402',true,'Subway Nicollet',true,'https://restaurants.subway.c
 Minneapolis, MN 55402',true,'Chipotle 50 South 6th',true,'https://locations.chipotle.com/mn/minneapolis/50-s-6th-st'),
    (28,'2022-10-09 14:38:56.14607-05','2022-10-12 23:07:30.687316-05','admin','admin','931 Nicollet Mall
 Minneapolis, MN 55402',false,'The Local',true,'https://the-local.com/pub-club/');
-INSERT INTO public.places (id,date_created,last_updated,created_by,modified_by,address,app,"name",order_ahead,website) VALUES
+INSERT INTO public.places (id,date_created,last_updated,created_by,modified_by,address,app,place_name,order_ahead,website) VALUES
    (45,'2022-10-13 11:00:39.772978-05','2022-10-13 11:00:39.772978-05','admin','admin','200 South 6th St
 Minneapolis, MN 55402',true,'Chipotle 200 South 6th',true,'https://chipotle.com/'),
    (35,'2022-10-12 23:51:31.57337-05','2022-10-12 23:59:11.282884-05','admin','admin','200 South 6th St Ste 280
@@ -69,7 +69,7 @@ Minneapolis, MN 55403',true,'Jimmy John''s #191',true,'https://locations.jimmyjo
 Minneapolis, MN 55402',true,'Jimmy John''s #192 Pillsbury',true,'https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-192.html'),
    (43,'2022-10-13 10:55:04.962617-05','2022-10-13 10:55:04.962617-05','admin','admin','88 S 9th St, Minneapolis
 MN 55402',true,'Jimmy John''s #190',true,'https://locations.jimmyjohns.com/mn/minneapolis/sandwiches-190.html');
-INSERT INTO public.places (id,date_created,last_updated,created_by,modified_by,address,app,"name",order_ahead,website) VALUES
+INSERT INTO public.places (id,date_created,last_updated,created_by,modified_by,address,app,place_name,order_ahead,website) VALUES
    (47,'2022-10-13 11:18:58.565185-05','2022-10-13 11:18:58.565185-05','admin','admin','50 South 10th St, Nicollet Mall
 Minneapolis, MN 55403',true,'Qdoba',true,'https://locations.qdoba.com/us/mn/minneapolis/50-south-10th-st.html'),
    (48,'2022-10-13 11:33:56.752244-05','2022-10-13 11:33:56.752244-05','admin','admin','809 Nicollet Mall
