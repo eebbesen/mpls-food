@@ -9,11 +9,14 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -247,6 +250,14 @@ class DealServiceTest extends MFServiceTest {
     }
 
     @Test
+    @WithAnonymousUser
+    void testUpdateRemoveUnauthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.update(dealMonTues.getId(), dealMonTuesDTO);
+        });
+    }
+
+    @Test
     @WithMockUser(roles = "USER")
     void testUpdateRemoveDays() {
         final Day deletedDay = dealMonTues.getDays().stream()
@@ -267,7 +278,7 @@ class DealServiceTest extends MFServiceTest {
     @Test
     void testMapToEntity() {
         dealMonTuesDTO.setStartTime(LocalTime.of(10, 30));
-        dealMonTuesDTO.setEndTime(LocalTime.of(11, 00));
+        dealMonTuesDTO.setEndTime(LocalTime.of(11, 0));
         dealMonTuesDTO.setStartDate(LocalDate.of(2022, 10, 1));
         dealMonTuesDTO.setStartDate(LocalDate.of(2022, 10, 31));
 
@@ -385,7 +396,7 @@ class DealServiceTest extends MFServiceTest {
     void testMapToDTO() {
         final Upload upload = TestObjects.upload(dealMonTues);
         dealMonTues.setStartTime(LocalTime.of(10, 30));
-        dealMonTues.setEndTime(LocalTime.of(11, 00));
+        dealMonTues.setEndTime(LocalTime.of(11, 0));
         dealMonTues.setStartDate(LocalDate.of(2022, 10, 1));
         dealMonTues.setStartDate(LocalDate.of(2022, 10, 31));
 
@@ -459,6 +470,30 @@ class DealServiceTest extends MFServiceTest {
 
     @Test
     @WithMockUser(roles = "USER")
+    void testDeleteUserRole() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.delete(99L);
+        });
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testDeleteUnauthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.delete(99L);
+        });
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testCreateUnauthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.create(dealMonTuesDTO);
+        });
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
     void testCreate() {
         dealMonTues.setId(99L);
         when(placeRepository.findById(dealMonTuesDTO.getPlace())).thenReturn(Optional.of(dealMonTues.getPlace()));
@@ -468,6 +503,22 @@ class DealServiceTest extends MFServiceTest {
 
         assertEquals(dealMonTues.getId(), id);
         verify(dealRepository, times(1)).save(any(Deal.class));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void testCopyRoleUser() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.copy(dealMonTues.getId(), new ArrayList<>());
+        });
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testCopyUnAuthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.copy(dealMonTues.getId(), new ArrayList<>());
+        });
     }
 
     @Test

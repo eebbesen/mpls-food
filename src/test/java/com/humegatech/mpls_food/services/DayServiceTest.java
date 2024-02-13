@@ -12,6 +12,8 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ObjectUtils;
@@ -395,6 +397,22 @@ class DayServiceTest extends MFServiceTest {
         DayDTO dayDTO = new DayDTO();
 
         assertThrows(ResponseStatusException.class, () -> service.update(99L, dayDTO));
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testDeleteUnauthenticated() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.delete(99L);
+        });
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void testDeleteUserRole() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.delete(99L);
+        });
     }
 
     @Test

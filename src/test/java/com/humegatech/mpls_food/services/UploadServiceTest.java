@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
@@ -129,6 +131,14 @@ class UploadServiceTest extends MFServiceTest {
         service.create(uploadDTO);
 
         verify(uploadRepository, times(1)).save(upload);
+    }
+
+    @Test
+    @WithAnonymousUser
+    void testCreateUnauthorized() {
+        assertThrows(AccessDeniedException.class, () -> {
+            service.create(null);
+        });
     }
 
     @Test
