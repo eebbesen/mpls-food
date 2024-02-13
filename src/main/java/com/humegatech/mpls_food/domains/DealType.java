@@ -1,5 +1,8 @@
 package com.humegatech.mpls_food.domains;
 
+import lombok.Getter;
+
+@Getter
 public enum DealType {
     APP(0),
     EMAIL(1),
@@ -13,7 +16,4 @@ public enum DealType {
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
-    }
 }

@@ -1,12 +1,10 @@
 package com.humegatech.mpls_food.controllers;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-
+import com.humegatech.mpls_food.models.DayDTO;
+import com.humegatech.mpls_food.services.DayService;
+import com.humegatech.mpls_food.util.WebUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,18 +15,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.humegatech.mpls_food.models.DayDTO;
-import com.humegatech.mpls_food.services.DayService;
-import com.humegatech.mpls_food.util.WebUtils;
-
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 @Controller
 @Slf4j
 @RequestMapping("/days")
 public class DayController {
-    public static final LocalTime HH_CUTOFF = LocalTime.of(13, 00);
+    public static final LocalTime HH_CUTOFF = LocalTime.of(13, 0);
     private final DayService dayService;
 
     public DayController(DayService dayService) {
