@@ -4,4 +4,4 @@ COPY build/libs/*SNAPSHOT.jar mpls-food.jar
 
 EXPOSE 8080
 
-ENTRYPOINT [ "java", "-Dspring.profiles.active=production", "-jar", "mpls-food.jar" ]
+ENTRYPOINT [ "java", "-Dspring.profiles.active=prod", "-jar", "mpls-food.jar" ]

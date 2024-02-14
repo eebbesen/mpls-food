@@ -1,19 +1,12 @@
-logging:
-  file:
-    name: ./logs/mpls-food.log
-  level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql: TRACE
-
 spring:
   config:
     activate:
-      on-profile: default
+      on-profile: prod
   devtools:
     livereload:
-      enabled: true
+      enabled: false
   thymeleaf:
-    cache: false
+    cache: true
     mode: HTML
     encoding: UTF-8
     prefix: classpath:/templates/
@@ -39,12 +32,6 @@ spring:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
-  sql:
-    init:
-      platform: postgresql
-      schema-locations: classpath:db/schema.sql
-      data-locations: optional:classpath*:db/data.sql
-      mode: never # set to 'always' to create and populate the database on startup
 
 management:
   endpoints:
@@ -53,21 +40,3 @@ management:
         include: "*"
 springdoc:
   pathsToMatch: /api/**
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: h2
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create-drop
-  datasource:
-    url: jdbc:h2:mem:mpls-food
-    username: sa
-    driverClassName: org.h2.Driver
-
----
-
