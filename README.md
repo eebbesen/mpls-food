@@ -10,7 +10,7 @@ after less than one hour of activity.
 ## Required
 
 * A relational database
-    * Out of the box this will work with a local PostgreSQL instance (default) or H2 (when starting with `h2` profile)
+    * Out of the box this will start dependent upon a local PostgreSQL instance
 * [Chrome for testing](https://googlechromelabs.github.io/chrome-for-testing/#stable) on your path that matches your
   current Chrome version
     * this is only needed if you are running end-to-end tests
@@ -21,15 +21,15 @@ after less than one hour of activity.
 
 ## Start
 
-* modify application.yml to point to a running database instance (or use H2)
+* modify application.yml to point to a running database instance
 * run MplsFoodApplication.java
-    * DDL will be executed on startup based on application.yml setttings
+    * DDL will be executed on startup based on application.yml settings
 * navigate to http://localhost:8080
 
 ### Start via gradle
 
 ```bash
-gradle bootRun --args='--spring.profiles.active=default'
+gradle bootRun --args='--spring.profiles.active=dev'
 ```
 
 ## Tools

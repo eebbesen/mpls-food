@@ -16,7 +16,7 @@ import java.util.Objects;
 public class LocalDevConfig {
 
     public LocalDevConfig(final TemplateEngine templateEngine) throws IOException {
-        File sourceRoot = new ClassPathResource("application.yml").getFile().getParentFile();
+        File sourceRoot = new ClassPathResource("application-dev.yml").getFile().getParentFile();
         while (Objects.requireNonNull(sourceRoot.listFiles((dir, name) -> name.equals("gradlew"))).length != 1) {
             sourceRoot = sourceRoot.getParentFile();
         }

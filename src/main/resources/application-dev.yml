@@ -8,7 +8,7 @@ logging:
 spring:
   config:
     activate:
-      on-profile: default
+      on-profile: dev
   devtools:
     livereload:
       enabled: true
@@ -53,21 +53,3 @@ management:
         include: "*"
 springdoc:
   pathsToMatch: /api/**
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: h2
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create-drop
-  datasource:
-    url: jdbc:h2:mem:mpls-food
-    username: sa
-    driverClassName: org.h2.Driver
-
----
-
