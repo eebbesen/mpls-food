@@ -51,11 +51,13 @@ using https://www.devglan.com/online-tools/bcrypt-hash-generator.
 
 #### add all data
 
-In the following order -- note that uploads is a large file
+In the following order -- note that uploads is a large file and not required 
+to be populated for the application operate properly 
 
 * users
 * authorities
 * places
+* place_hours
 * deals
 * days
 * rewards
