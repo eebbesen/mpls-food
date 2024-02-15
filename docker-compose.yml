@@ -19,9 +19,9 @@ services:
     volumes:
       - ./volumes/db:/var/lib/postgresql/data
       - ./src/main/resources/db/schema.sql:/docker-entrypoint-initdb.d/1schema.sql
-      - ./src/main/resources/db/data.sql:/docker-entrypoint-initdb.d/2xdata.sql
+      - ./src/main/resources/db/data.sql:/docker-entrypoint-initdb.d/2data.sql
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
       interval: 10s
       timeout: 10s
       retries: 5

@@ -1,27 +1,13 @@
 package com.humegatech.mpls_food.domains;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.OrderBy;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -33,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "places")
 public class Place extends BaseEntity {
 
-    @Column(unique = true)
+    @Column(unique = true, name = "place_name")
     private String name;
 
     @Column(columnDefinition = "text")
