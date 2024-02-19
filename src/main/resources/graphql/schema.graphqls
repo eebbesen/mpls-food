@@ -17,6 +17,7 @@ type Place {
     app: Boolean
     orderAhead: Boolean
     placeHours: [PlaceHour]
+    reward: Reward
 }
 
 type PlaceHour {
@@ -24,4 +25,10 @@ type PlaceHour {
     dayOfWeek: String
     openTime: String
     closeTime: String
+}
+
+type Reward {
+    id: ID
+    notes: String
+    rewardType: String
 }

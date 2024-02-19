@@ -23,6 +23,25 @@ public class PlaceControllerQLTest {
     private final static List<Place> places = List.of(TestObjects.ginellis(), TestObjects.tacoJohns());
 
     @Test
+    void testFindByIdWithRewardAttributes() {
+        final Long id = places.get(0).getId();
+        when(placeService.get(id)).thenReturn(places.get(0));
+        final String query = String.format("query findById { findPlaceById(id: %d) { name reward { notes rewardType }  } }", id);
+        graphQlTester.document(query)
+                .execute()
+                .path("findPlaceById.name")
+                .entity(String.class)
+                .isEqualTo("Ginelli's Pizza")
+                .path("findPlaceById.reward")
+                .matchesJson("""
+                        {
+                            "notes":"Free slice after purchase of 9 regularly priced slices",
+                            "rewardType":"PUNCH_CARD"
+                        }
+                        """);
+    }
+
+    @Test
     void testFindByIdWithPlaceHourAttributes() {
         final Long id = places.get(0).getId();
         when(placeService.get(id)).thenReturn(places.get(0));
