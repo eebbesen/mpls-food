@@ -1,0 +1,19 @@
+type Query {
+}
+
+extend type Query {
+    allPlaces: [Place]
+}
+
+extend type Query {
+    findPlaceById(id: ID!): Place
+
+}
+
+
+type Place {
+    id: ID
+    name: String
+    address: String
+    website: String
+}

@@ -170,7 +170,7 @@ class PlaceServiceTest extends MFServiceTest {
         final Place place = TestObjects.place("place");
         when(placeRepository.findById(place.getId())).thenReturn(Optional.of(place));
 
-        final PlaceDTO placeDTO = service.get(place.getId());
+        final PlaceDTO placeDTO = service.getDTO(place.getId());
 
         assertEquals(place.getName(), placeDTO.getName());
         assertEquals(place.getPlaceHours().size(), placeDTO.getPlaceHours().size());
@@ -188,7 +188,7 @@ class PlaceServiceTest extends MFServiceTest {
 
         when(placeRepository.findAll(Sort.by("name"))).thenReturn(places);
 
-        final List<PlaceDTO> placeDTOs = service.findAll();
+        final List<PlaceDTO> placeDTOs = service.findAllDTO();
 
         assertEquals("Taco John's", placeDTOs.get(1).getName());
         assertEquals("Ginelli's Pizza", placeDTOs.get(0).getName());

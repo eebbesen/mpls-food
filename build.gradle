@@ -42,6 +42,7 @@ dependencies {
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'org.jetbrains:annotations:24.1.0'
     implementation 'org.springframework.boot:spring-boot-properties-migrator'
+    implementation 'org.springframework.boot:spring-boot-starter-graphql'
 
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -56,6 +57,8 @@ dependencies {
     testImplementation 'org.jsoup:jsoup:1.16.2'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.15.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.graphql:spring-graphql-test'
+    testImplementation 'org.springframework:spring-webflux'
 }
 
 test {

@@ -9,6 +9,9 @@ spring:
   config:
     activate:
       on-profile: dev
+  graphql:
+    graphiql:
+      enabled: true
   devtools:
     livereload:
       enabled: true
