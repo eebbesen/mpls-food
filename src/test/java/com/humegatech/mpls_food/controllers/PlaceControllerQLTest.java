@@ -23,6 +23,47 @@ public class PlaceControllerQLTest {
     private final static List<Place> places = List.of(TestObjects.ginellis(), TestObjects.tacoJohns());
 
     @Test
+    void testFindByIdWithDealAttributes() {
+        final Place place = TestObjects.fridayTwofer().getPlace();
+        final Long id = place.getId();
+        when(placeService.get(id)).thenReturn(place);
+        final String query = String
+                .format("query findById { findPlaceById(id: %d) { name deals { description dealType dish days { dayOfWeek date } minPrice maxPrice minDiscount maxDiscount minDiscountPercent maxDiscountPercent verified startTime endTime startDate endDate }  } }", id);
+        graphQlTester.document(query)
+                .execute()
+                .path("findPlaceById.name")
+                .entity(String.class)
+                .isEqualTo("Ginelli's Pizza")
+                .path("findPlaceById.deals[*]")
+                .matchesJson("""
+                        [
+                            {
+                                "description":"$5.00 for two slices from 10:30 - 11:00",
+                                "dealType":"DEAL",
+                                "dish":"Pizza",
+                                "days":[
+                                    {
+                                        "dayOfWeek": "FRIDAY",
+                                        "date": null
+                                    }
+                                ],
+                                "minPrice":5.0,
+                                "maxPrice":5.0,
+                                "minDiscount":2.4,
+                                "maxDiscount":3.9,
+                                "minDiscountPercent":32.0,
+                                "maxDiscountPercent":44.0,
+                                "verified":false,
+                                "startTime":"10:30",
+                                "endTime":"11:00",
+                                "startDate":null,
+                                "endDate":null
+                            }
+                        ]
+                        """);
+    }
+
+    @Test
     void testFindByIdWithRewardAttributes() {
         final Long id = places.get(0).getId();
         when(placeService.get(id)).thenReturn(places.get(0));

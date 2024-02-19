@@ -18,6 +18,7 @@ type Place {
     orderAhead: Boolean
     placeHours: [PlaceHour]
     reward: Reward
+    deals: [Deal]
 }
 
 type PlaceHour {
@@ -31,4 +32,29 @@ type Reward {
     id: ID
     notes: String
     rewardType: String
+}
+
+type Deal {
+    id: ID
+    description: String
+    dealType: String
+    dish: String
+    days: [Day]
+    minPrice: Float
+    maxPrice: Float
+    minDiscount: Float
+    maxDiscount: Float
+    minDiscountPercent: Float
+    maxDiscountPercent: Float
+    verified: Boolean
+    startTime: String
+    endTime: String
+    startDate: String
+    endDate: String
+}
+
+type Day {
+    id: ID
+    dayOfWeek: String
+    date: String
 }
