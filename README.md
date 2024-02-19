@@ -13,6 +13,8 @@ Minneapolis flag image from https://upload.wikimedia.org/wikipedia/commons/9/9d/
 Try it out at https://mpls-food.onrender.com/days -- note this is _extremely_ slow, especially as the app has to restart
 after less than one hour of activity.
 
+In addition to the browser-based application there is a GraphQL api (currently only for all places or places by id).
+
 ## Required
 
 * A relational database
