@@ -1,17 +1,17 @@
 package com.humegatech.mpls_food.controllers;
 
+import com.humegatech.mpls_food.domains.DealType;
+import com.humegatech.mpls_food.models.PlaceDTO;
+import com.humegatech.mpls_food.services.PlaceServiceDTO;
+import com.humegatech.mpls_food.util.MplsFoodUtils;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.humegatech.mpls_food.domains.DealType;
-import com.humegatech.mpls_food.models.PlaceDTO;
-import com.humegatech.mpls_food.services.PlaceService;
-import com.humegatech.mpls_food.util.MplsFoodUtils;
-
 public class MFController {
-    protected Map<Long, String> sortedPlaces(final PlaceService placeService) {
+    protected Map<Long, String> sortedPlaces(final PlaceServiceDTO placeService) {
         return placeService.findAll().stream()
                 .collect(Collectors.toMap(PlaceDTO::getId, PlaceDTO::getName))
                 .entrySet().stream().sorted(Map.Entry.comparingByValue())

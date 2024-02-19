@@ -1,13 +1,16 @@
 package com.humegatech.mpls_food.controllers;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.humegatech.mpls_food.TestObjects;
+import com.humegatech.mpls_food.domains.Deal;
+import com.humegatech.mpls_food.domains.Place;
+import com.humegatech.mpls_food.models.DealDTO;
+import com.humegatech.mpls_food.models.PlaceDTO;
+import com.humegatech.mpls_food.models.PlaceHourDTO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -15,20 +18,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.humegatech.mpls_food.TestObjects;
-import com.humegatech.mpls_food.domains.Deal;
-import com.humegatech.mpls_food.domains.Place;
-import com.humegatech.mpls_food.models.DealDTO;
-import com.humegatech.mpls_food.models.PlaceDTO;
-import com.humegatech.mpls_food.models.PlaceHourDTO;
-
-class PlaceControllerTest extends MFControllerTest {
+class PlaceControllerDTOTest extends MFControllerTest {
     private Place place;
     private PlaceDTO placeDTO;
     private Deal deal;
@@ -40,17 +37,17 @@ class PlaceControllerTest extends MFControllerTest {
         deal.setPlace(place);
 
         final PlaceHourDTO placeHourDTO1 = PlaceHourDTO.builder()
-            .place(place.getId())
-            .dayOfWeek(DayOfWeek.FRIDAY)
-            .openTime(LocalTime.of(11, 0))
-            .closeTime(LocalTime.of(17, 0))
-            .build();
+                .place(place.getId())
+                .dayOfWeek(DayOfWeek.FRIDAY)
+                .openTime(LocalTime.of(11, 0))
+                .closeTime(LocalTime.of(17, 0))
+                .build();
         final PlaceHourDTO placeHourDTO2 = PlaceHourDTO.builder()
-            .place(place.getId())
-            .dayOfWeek(DayOfWeek.THURSDAY)
-            .openTime(LocalTime.of(11, 0))
-            .closeTime(LocalTime.of(17, 0))
-            .build();
+                .place(place.getId())
+                .dayOfWeek(DayOfWeek.THURSDAY)
+                .openTime(LocalTime.of(11, 0))
+                .closeTime(LocalTime.of(17, 0))
+                .build();
         final Set<PlaceHourDTO> placeHours = new HashSet<>();
         placeHours.add(placeHourDTO1);
         placeHours.add(placeHourDTO2);
@@ -67,7 +64,7 @@ class PlaceControllerTest extends MFControllerTest {
 
     @Test
     void testList() throws Exception {
-        when(placeService.findAll()).thenReturn(List.of(placeDTO));
+        when(placeServiceDTO.findAll()).thenReturn(List.of(placeDTO));
 
         mvc.perform(MockMvcRequestBuilders.get("/places").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
@@ -78,7 +75,7 @@ class PlaceControllerTest extends MFControllerTest {
     @Test
     @WithMockUser
     void testListUser() throws Exception {
-        when(placeService.findAll()).thenReturn(List.of(placeDTO));
+        when(placeServiceDTO.findAll()).thenReturn(List.of(placeDTO));
 
         mvc.perform(MockMvcRequestBuilders.get("/places").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
@@ -103,7 +100,7 @@ class PlaceControllerTest extends MFControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void testGetEditAdmin() throws Exception {
-        when(placeService.get(place.getId())).thenReturn(placeDTO);
+        when(placeServiceDTO.get(place.getId())).thenReturn(placeDTO);
 
         mvc.perform(MockMvcRequestBuilders.get(String.format("/places/edit/%s", place.getId())).accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
@@ -127,7 +124,7 @@ class PlaceControllerTest extends MFControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void testPostEditAdmin() throws Exception {
-        when(placeService.get(place.getId())).thenReturn(placeDTO);
+        when(placeServiceDTO.get(place.getId())).thenReturn(placeDTO);
 
         mvc.perform(MockMvcRequestBuilders.post(String.format("/places/edit/%s", place.getId()))
                         .with(csrf())
@@ -141,7 +138,7 @@ class PlaceControllerTest extends MFControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void testPostEditNameTheSame() throws Exception {
-        when(placeService.get(place.getId())).thenReturn(placeDTO);
+        when(placeServiceDTO.get(place.getId())).thenReturn(placeDTO);
 
         mvc.perform(MockMvcRequestBuilders.post(String.format("/places/edit/%s", place.getId()))
                         .with(csrf())
@@ -157,8 +154,8 @@ class PlaceControllerTest extends MFControllerTest {
     void testPostEditDifferentNameNameExists() throws Exception {
         Place otherPlace = TestObjects.place("New Place");
         otherPlace.setId(9999L);
-        when(placeService.get(otherPlace.getId())).thenReturn(placeDTO);
-        when(placeService.nameExists(otherPlace.getName())).thenReturn(true);
+        when(placeServiceDTO.get(otherPlace.getId())).thenReturn(placeDTO);
+        when(placeServiceDTO.nameExists(otherPlace.getName())).thenReturn(true);
 
         mvc.perform(MockMvcRequestBuilders.post(String.format("/places/edit/%s", otherPlace.getId()))
                         .with(csrf())
@@ -172,7 +169,7 @@ class PlaceControllerTest extends MFControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void testPostEditNameBlank() throws Exception {
-        when(placeService.get(place.getId())).thenReturn(placeDTO);
+        when(placeServiceDTO.get(place.getId())).thenReturn(placeDTO);
 
         mvc.perform(MockMvcRequestBuilders.post(String.format("/places/edit/%s", place.getId()))
                         .with(csrf())
@@ -192,13 +189,13 @@ class PlaceControllerTest extends MFControllerTest {
                         .accept(MediaType.APPLICATION_XML))
                 .andExpect(status().is3xxRedirection());
 
-        verify(placeService, times(0)).create(any(PlaceDTO.class));
+        verify(placeServiceDTO, times(0)).create(any(PlaceDTO.class));
     }
 
     @Test
     @WithMockUser
     void testPostAddUser() throws Exception {
-        when(placeService.create(placeDTO)).thenReturn(1L);
+        when(placeServiceDTO.create(placeDTO)).thenReturn(1L);
 
         mvc.perform(MockMvcRequestBuilders.post("/places/add")
                         .with(csrf())
@@ -207,7 +204,7 @@ class PlaceControllerTest extends MFControllerTest {
                         .accept(MediaType.APPLICATION_XML))
                 .andExpect(status().is3xxRedirection());
 
-        verify(placeService, times(1)).create(any(PlaceDTO.class));
+        verify(placeServiceDTO, times(1)).create(any(PlaceDTO.class));
     }
 
     @Test
@@ -220,13 +217,13 @@ class PlaceControllerTest extends MFControllerTest {
                         .accept(MediaType.APPLICATION_XML))
                 .andExpect(status().is2xxSuccessful());
 
-        verify(placeService, times(0)).create(any(PlaceDTO.class));
+        verify(placeServiceDTO, times(0)).create(any(PlaceDTO.class));
     }
 
     @Test
     @WithMockUser
     void testPostAddUserNameExists() throws Exception {
-        when(placeService.nameExists(place.getName())).thenReturn(true);
+        when(placeServiceDTO.nameExists(place.getName())).thenReturn(true);
 
         mvc.perform(MockMvcRequestBuilders.post("/places/add")
                         .with(csrf())
@@ -251,7 +248,7 @@ class PlaceControllerTest extends MFControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
 
-        verify(placeService, times(1)).delete(place.getId());
+        verify(placeServiceDTO, times(1)).delete(place.getId());
     }
 
     @Test
@@ -263,7 +260,7 @@ class PlaceControllerTest extends MFControllerTest {
                 .placeName(deal.getPlace().getName())
                 .description(deal.getDescription())
                 .build();
-        when(placeService.get(place.getId())).thenReturn(placeDTO);
+        when(placeServiceDTO.get(place.getId())).thenReturn(placeDTO);
         when(dealService.findByPlaceId(place.getId())).thenReturn(List.of(dealDTO));
 
         mvc.perform(MockMvcRequestBuilders.get(String.format("/places/show/%s", place.getId())).accept(MediaType.APPLICATION_XML))

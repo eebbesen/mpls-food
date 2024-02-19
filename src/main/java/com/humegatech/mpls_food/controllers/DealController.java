@@ -2,7 +2,7 @@ package com.humegatech.mpls_food.controllers;
 
 import com.humegatech.mpls_food.models.DealDTO;
 import com.humegatech.mpls_food.services.DealService;
-import com.humegatech.mpls_food.services.PlaceService;
+import com.humegatech.mpls_food.services.PlaceServiceDTO;
 import com.humegatech.mpls_food.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -20,9 +20,9 @@ import java.util.Arrays;
 @Controller
 public class DealController extends MFController {
     private final DealService dealService;
-    private final PlaceService placeService;
+    private final PlaceServiceDTO placeService;
 
-    public DealController(final DealService dealService, final PlaceService placeService) {
+    public DealController(final DealService dealService, final PlaceServiceDTO placeService) {
         this.placeService = placeService;
         this.dealService = dealService;
     }

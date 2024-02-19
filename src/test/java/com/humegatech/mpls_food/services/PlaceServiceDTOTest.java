@@ -26,9 +26,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class PlaceServiceTest extends MFServiceTest {
+class PlaceServiceDTOTest extends MFServiceTest {
     @Autowired
-    private PlaceService service;
+    private PlaceServiceDTO service;
 
     private void comparePlaceHours(final Set<PlaceHour> placeHours, final Set<PlaceHourDTO> placeHourDTOs) {
         assertEquals(placeHours.size(), placeHourDTOs.size());
@@ -170,7 +170,7 @@ class PlaceServiceTest extends MFServiceTest {
         final Place place = TestObjects.place("place");
         when(placeRepository.findById(place.getId())).thenReturn(Optional.of(place));
 
-        final PlaceDTO placeDTO = service.getDTO(place.getId());
+        final PlaceDTO placeDTO = service.get(place.getId());
 
         assertEquals(place.getName(), placeDTO.getName());
         assertEquals(place.getPlaceHours().size(), placeDTO.getPlaceHours().size());
@@ -188,7 +188,7 @@ class PlaceServiceTest extends MFServiceTest {
 
         when(placeRepository.findAll(Sort.by("name"))).thenReturn(places);
 
-        final List<PlaceDTO> placeDTOs = service.findAllDTO();
+        final List<PlaceDTO> placeDTOs = service.findAll();
 
         assertEquals("Taco John's", placeDTOs.get(1).getName());
         assertEquals("Ginelli's Pizza", placeDTOs.get(0).getName());
@@ -218,20 +218,6 @@ class PlaceServiceTest extends MFServiceTest {
         assertThrows(AccessDeniedException.class, () -> {
             service.create(null);
         });
-    }
-
-    @Test
-    void testNameExistsNameExists() {
-        when(placeRepository.existsByNameIgnoreCase("exists")).thenReturn(true);
-
-        assertTrue(service.nameExists("exists"));
-    }
-
-    @Test
-    void testNameExistsNameDoesNotExist() {
-        when(placeRepository.existsByNameIgnoreCase("exists")).thenReturn(false);
-
-        assertFalse(service.nameExists("exists"));
     }
 
     @Test

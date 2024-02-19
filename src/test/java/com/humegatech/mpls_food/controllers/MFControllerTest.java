@@ -34,7 +34,7 @@ class MFControllerTest {
     WebApplicationContext webApplicationContext;
 
     @MockBean
-    PlaceService placeService;
+    PlaceServiceDTO placeServiceDTO;
     @MockBean
     DealService dealService;
     @MockBean
@@ -66,7 +66,7 @@ class MFControllerTest {
     List<PlaceDTO> placesToPlaceDTOs(final List<Place> places) {
         final List<PlaceDTO> placeDTOs = new ArrayList<>();
         places.forEach(p -> placeDTOs.add(ReflectionTestUtils
-                .invokeMethod(placeService, "mapToDTO", p, new PlaceDTO())));
+                .invokeMethod(placeServiceDTO, "mapToDTO", p, new PlaceDTO())));
         return placeDTOs;
     }
 
@@ -94,12 +94,12 @@ class MFControllerTest {
         newPlace.setName("Aurelio's Pizza");
         newPlace.setId(2L);
         PlaceHourService placeHourService = new PlaceHourService(null);
-        ReflectionTestUtils.setField(placeService, "placeHourService", placeHourService);
+        ReflectionTestUtils.setField(placeServiceDTO, "placeHourService", placeHourService);
 
         final List<PlaceDTO> placeDTOs = List.of(place, newPlace);
-        when(placeService.findAll()).thenReturn(placeDTOs);
+        when(placeServiceDTO.findAll()).thenReturn(placeDTOs);
 
-        Map<Long, String> placeMap = controller.sortedPlaces(placeService);
+        Map<Long, String> placeMap = controller.sortedPlaces(placeServiceDTO);
         Iterator<Map.Entry<Long, String>> places = placeMap.entrySet().iterator();
 
         assertEquals("Aurelio's Pizza", places.next().getValue());
