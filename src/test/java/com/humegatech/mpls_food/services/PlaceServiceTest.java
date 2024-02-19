@@ -3,10 +3,7 @@ package com.humegatech.mpls_food.services;
 import com.humegatech.mpls_food.TestObjects;
 import com.humegatech.mpls_food.domains.Place;
 import com.humegatech.mpls_food.domains.PlaceHour;
-import com.humegatech.mpls_food.domains.RewardType;
-import com.humegatech.mpls_food.models.PlaceDTO;
 import com.humegatech.mpls_food.models.PlaceHourDTO;
-import com.humegatech.mpls_food.util.MplsFoodUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -44,136 +40,13 @@ class PlaceServiceTest extends MFServiceTest {
     }
 
     @Test
-    void testMapToDTO() {
-        final Place place = TestObjects.ginellis();
-
-        final PlaceDTO placeDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", place, new PlaceDTO());
-
-        assertNotNull(placeDTO);
-        assertEquals(place.getId(), placeDTO.getId());
-        assertEquals(place.getName(), placeDTO.getName());
-        assertEquals(place.getAddress(), placeDTO.getAddress());
-        assertEquals(place.getWebsite(), placeDTO.getWebsite());
-        assertEquals(place.isApp(), placeDTO.isApp());
-        assertEquals(place.isOrderAhead(), placeDTO.isOrderAhead());
-        assertEquals(MplsFoodUtils.truncateAddress(place.getAddress()), placeDTO.getTruncatedAddress());
-        assertEquals(place.getReward().getNotes(), placeDTO.getRewardNotes());
-        assertEquals(place.getReward().getRewardType(), placeDTO.getRewardType());
-        assertEquals(place.getPlaceHours().size(), placeDTO.getPlaceHours().size());
-        comparePlaceHours(place.getPlaceHours(), placeDTO.getPlaceHours());
-    }
-
-    @Test
-    void testMapToDTONoReward() {
-        final Place place = TestObjects.ginellis();
-        place.setReward(null);
-
-        final PlaceDTO placeDTO = ReflectionTestUtils.invokeMethod(service, "mapToDTO", place, new PlaceDTO());
-
-        assertNotNull(placeDTO);
-        assertEquals(place.getId(), placeDTO.getId());
-        assertEquals(place.getName(), placeDTO.getName());
-        assertEquals(place.getAddress(), placeDTO.getAddress());
-        assertEquals(place.getWebsite(), placeDTO.getWebsite());
-        assertEquals(place.isApp(), placeDTO.isApp());
-        assertEquals(place.isOrderAhead(), placeDTO.isOrderAhead());
-        assertEquals(MplsFoodUtils.truncateAddress(place.getAddress()), placeDTO.getTruncatedAddress());
-        assertNull(placeDTO.getRewardNotes());
-        assertNull(placeDTO.getRewardType());
-    }
-
-    @Test
-    void testMapToEntityNewPlace() {
-        final PlaceDTO placeDTO = PlaceDTO.builder()
-                .name("test")
-                .address("123 Robert St")
-                .rewardNotes("Free slice after purchase of 9 regularly priced slices")
-                .rewardType(RewardType.PUNCH_CARD)
-                .id(5L)
-                .build();
-
-        Place place = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, new Place());
-
-        assertNotNull(place);
-        assertEquals(placeDTO.getName(), place.getName());
-        assertEquals(placeDTO.getAddress(), place.getAddress());
-        assertEquals(placeDTO.getRewardType(), place.getReward().getRewardType());
-        assertEquals(placeDTO.getRewardNotes(), place.getReward().getNotes());
-    }
-
-    @Test
-    void testMapToEntityRewardUpdate() {
-        final Place place = TestObjects.ginellis();
-        final PlaceDTO placeDTO = PlaceDTO.builder()
-                .name(place.getName())
-                .address(place.getAddress())
-                .rewardNotes("UPDATED: Free slice after purchase of 9 regularly priced slices")
-                .rewardType(RewardType.PUNCH_CARD)
-                .id(place.getId())
-                .build();
-
-        Place updatedPlace = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, new Place());
-
-        assertNotNull(updatedPlace);
-        assertEquals(placeDTO.getName(), updatedPlace.getName());
-        assertEquals(placeDTO.getAddress(), updatedPlace.getAddress());
-        assertEquals(placeDTO.getRewardType(), updatedPlace.getReward().getRewardType());
-        assertEquals(placeDTO.getRewardNotes(), updatedPlace.getReward().getNotes());
-        assertEquals(place.getReward().getId(), updatedPlace.getReward().getId());
-    }
-
-    @Test
-    void testMapToEntityRewardOnPlace() {
-        final Place place = TestObjects.ginellis();
-
-        final PlaceDTO placeDTO = PlaceDTO.builder()
-                .name(place.getName())
-                .address(place.getAddress())
-                .id(place.getId())
-                .rewardType(RewardType.PUNCH_CARD)
-                .rewardNotes("reward")
-                .build();
-
-        Place updatedPlace = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, place);
-
-        assertNotNull(updatedPlace);
-        assertEquals(placeDTO.getName(), updatedPlace.getName());
-        assertEquals(placeDTO.getAddress(), updatedPlace.getAddress());
-        assertEquals(placeDTO.getRewardType(), updatedPlace.getReward().getRewardType());
-        assertEquals(placeDTO.getRewardNotes(), updatedPlace.getReward().getNotes());
-    }
-
-    @Test
-    void testMapToEntityNoRewardOnPlace() {
-        final Place place = TestObjects.ginellis();
-        place.setReward(null);
-
-        final PlaceDTO placeDTO = PlaceDTO.builder()
-                .name(place.getName())
-                .address(place.getAddress())
-                .id(place.getId())
-                .rewardType(RewardType.PUNCH_CARD)
-                .rewardNotes("reward")
-                .build();
-
-        Place updatedPlace = ReflectionTestUtils.invokeMethod(service, "mapToEntity", placeDTO, place);
-
-        assertNotNull(updatedPlace);
-        assertEquals(placeDTO.getName(), updatedPlace.getName());
-        assertEquals(placeDTO.getAddress(), updatedPlace.getAddress());
-        assertEquals(placeDTO.getRewardType(), updatedPlace.getReward().getRewardType());
-        assertEquals(placeDTO.getRewardNotes(), updatedPlace.getReward().getNotes());
-    }
-
-    @Test
     void testGet() {
         final Place place = TestObjects.place("place");
         when(placeRepository.findById(place.getId())).thenReturn(Optional.of(place));
 
-        final PlaceDTO placeDTO = service.get(place.getId());
+        final Place foundPlace = service.get(place.getId());
 
-        assertEquals(place.getName(), placeDTO.getName());
-        assertEquals(place.getPlaceHours().size(), placeDTO.getPlaceHours().size());
+        assertEquals(place.getName(), foundPlace.getName());
     }
 
     @Test
@@ -188,10 +61,10 @@ class PlaceServiceTest extends MFServiceTest {
 
         when(placeRepository.findAll(Sort.by("name"))).thenReturn(places);
 
-        final List<PlaceDTO> placeDTOs = service.findAll();
+        final List<Place> foundPlaces = service.findAll();
 
-        assertEquals("Taco John's", placeDTOs.get(1).getName());
-        assertEquals("Ginelli's Pizza", placeDTOs.get(0).getName());
+        assertEquals("Taco John's", foundPlaces.get(1).getName());
+        assertEquals("Ginelli's Pizza", foundPlaces.get(0).getName());
     }
 
     @Test
@@ -200,15 +73,16 @@ class PlaceServiceTest extends MFServiceTest {
         final Place place = TestObjects.place("Taco Bell");
         place.setId(99L);
 
-        final PlaceDTO placeDTO = PlaceDTO.builder()
+        final Place placeToCreate = Place.builder()
                 .id(place.getId())
                 .name(place.getName())
                 .build();
 
         when(placeRepository.save(any(Place.class))).thenReturn(place);
 
-        final Long id = service.create(placeDTO);
+        final Long id = service.create(placeToCreate);
 
+        assertEquals(place.getId(), id);
         assertEquals(place.getId(), id);
     }
 
@@ -262,29 +136,22 @@ class PlaceServiceTest extends MFServiceTest {
     @WithMockUser(roles = "ADMIN")
     void testUpdate() {
         final Place place = TestObjects.place("Taco Bell");
-        final PlaceDTO placeDTO = PlaceDTO.builder()
+        final Place placeToUpdate = Place.builder()
                 .name(place.getName())
                 .build();
 
         when(placeRepository.findById(place.getId())).thenReturn(Optional.of(place));
 
-        service.update(place.getId(), placeDTO);
+        service.update(placeToUpdate);
 
-        verify(placeRepository, times(1)).findById(place.getId());
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void testUpdateNoPlace() {
-        final PlaceDTO dto = new PlaceDTO();
-        assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
+        verify(placeRepository, times(1)).save(place);
     }
 
     @Test
     @WithMockUser(roles = "USER")
     void testUpdateUserRole() {
         assertThrows(AccessDeniedException.class, () -> {
-            service.update(99L, null);
+            service.update(null);
         });
     }
 
@@ -292,15 +159,7 @@ class PlaceServiceTest extends MFServiceTest {
     @WithAnonymousUser
     void testUpdateUnauthenticated() {
         assertThrows(AccessDeniedException.class, () -> {
-            service.update(99L, null);
+            service.update(null);
         });
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void testUpdateNotFound() {
-        final PlaceDTO dto = new PlaceDTO();
-        final Exception exception = assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
-        assertEquals("404 NOT_FOUND", exception.getMessage());
     }
 }

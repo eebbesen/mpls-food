@@ -1,0 +1,60 @@
+type Query {
+}
+
+extend type Query {
+    allPlaces: [Place]
+}
+
+extend type Query {
+    findPlaceById(id: ID!): Place
+}
+
+type Place {
+    id: ID
+    name: String
+    address: String
+    website: String
+    app: Boolean
+    orderAhead: Boolean
+    placeHours: [PlaceHour]
+    reward: Reward
+    deals: [Deal]
+}
+
+type PlaceHour {
+    id: ID
+    dayOfWeek: String
+    openTime: String
+    closeTime: String
+}
+
+type Reward {
+    id: ID
+    notes: String
+    rewardType: String
+}
+
+type Deal {
+    id: ID
+    description: String
+    dealType: String
+    dish: String
+    days: [Day]
+    minPrice: Float
+    maxPrice: Float
+    minDiscount: Float
+    maxDiscount: Float
+    minDiscountPercent: Float
+    maxDiscountPercent: Float
+    verified: Boolean
+    startTime: String
+    endTime: String
+    startDate: String
+    endDate: String
+}
+
+type Day {
+    id: ID
+    dayOfWeek: String
+    date: String
+}
