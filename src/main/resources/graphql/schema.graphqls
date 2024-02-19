@@ -7,13 +7,13 @@ extend type Query {
 
 extend type Query {
     findPlaceById(id: ID!): Place
-
 }
-
 
 type Place {
     id: ID
     name: String
     address: String
     website: String
+    app: Boolean
+    orderAhead: Boolean
 }
