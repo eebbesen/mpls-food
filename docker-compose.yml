@@ -16,6 +16,8 @@ services:
       - POSTGRES_DB=mplsfood
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD='retek01!'
+    ports:
+      - "5432:5432"
     volumes:
       - ./volumes/db:/var/lib/postgresql/data
       - ./src/main/resources/db/schema.sql:/docker-entrypoint-initdb.d/1schema.sql
