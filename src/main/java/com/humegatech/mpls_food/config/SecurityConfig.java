@@ -49,11 +49,15 @@ public class SecurityConfig {
                                                       final HandlerMappingIntrospector introspector) throws Exception {
         final MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
         final MvcRequestMatcher h2 = filterPattern(mvcMatcherBuilder, "/**", "/h2-console");
+        final MvcRequestMatcher graphql = filterPattern(mvcMatcherBuilder, "/**", "/graphql");
+        final MvcRequestMatcher graphiql = filterPattern(mvcMatcherBuilder, "/**", "/graphiql");
 
         http.formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.ignoringRequestMatchers(h2))
+                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.ignoringRequestMatchers(h2, graphql, graphiql))
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(
                                 h2,
+                                graphql,
+                                graphiql,
                                 filterPattern(mvcMatcherBuilder, "/"),
                                 filterPattern(mvcMatcherBuilder, "/css/**"),
                                 filterPattern(mvcMatcherBuilder, "/places"),
