@@ -53,7 +53,8 @@ public class SecurityConfig {
         final MvcRequestMatcher graphiql = filterPattern(mvcMatcherBuilder, "/**", "/graphiql");
 
         http.formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.ignoringRequestMatchers(h2, graphql, graphiql))
+                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer
+                        .ignoringRequestMatchers(h2, graphql, graphiql))
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(
                                 h2,
                                 graphql,

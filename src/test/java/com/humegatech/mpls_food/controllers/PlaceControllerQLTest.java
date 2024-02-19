@@ -20,7 +20,7 @@ public class PlaceControllerQLTest {
     @MockBean
     PlaceService placeService;
 
-    private final static List<Place> places = List.of(TestObjects.ginellis(), TestObjects.tacoJohns());
+    private static final List<Place> places = List.of(TestObjects.ginellis(), TestObjects.tacoJohns());
 
     @Test
     void testFindByIdWithDealAttributes() {
@@ -67,7 +67,8 @@ public class PlaceControllerQLTest {
     void testFindByIdWithRewardAttributes() {
         final Long id = places.get(0).getId();
         when(placeService.get(id)).thenReturn(places.get(0));
-        final String query = String.format("query findById { findPlaceById(id: %d) { name reward { notes rewardType }  } }", id);
+        final String query = String
+                .format("query findById { findPlaceById(id: %d) { name reward { notes rewardType }  } }", id);
         graphQlTester.document(query)
                 .execute()
                 .path("findPlaceById.name")
@@ -86,7 +87,9 @@ public class PlaceControllerQLTest {
     void testFindByIdWithPlaceHourAttributes() {
         final Long id = places.get(0).getId();
         when(placeService.get(id)).thenReturn(places.get(0));
-        final String query = String.format("query findById { findPlaceById(id: %d) { name placeHours { dayOfWeek openTime closeTime }  } }", id);
+        final String query = String
+                .format("query findById { findPlaceById(id: %d) { name placeHours { dayOfWeek openTime closeTime } } }",
+                        id);
         graphQlTester.document(query)
                 .execute()
                 .path("findPlaceById.name")
@@ -97,17 +100,20 @@ public class PlaceControllerQLTest {
                 .contains("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
                 .path("findPlaceById.placeHours[*].openTime")
                 .entityList(String.class)
-                .contains(places.get(0).getPlaceHours().stream().map(ph -> ph.getOpenTime().toString()).toArray(String[]::new))
+                .contains(places.get(0).getPlaceHours().stream().map(ph ->
+                        ph.getOpenTime().toString()).toArray(String[]::new))
                 .path("findPlaceById.placeHours[*].closeTime")
                 .entityList(String.class)
-                .contains(places.get(0).getPlaceHours().stream().map(ph -> ph.getCloseTime().toString()).toArray(String[]::new));
+                .contains(places.get(0).getPlaceHours().stream().map(ph ->
+                        ph.getCloseTime().toString()).toArray(String[]::new));
     }
 
     @Test
     void testFindById() {
         final Long id = places.get(0).getId();
         when(placeService.get(id)).thenReturn(places.get(0));
-        final String query = String.format("query findById { findPlaceById(id: %d) { id name address website app orderAhead  } }", id);
+        final String query = String
+                .format("query findById { findPlaceById(id: %d) { id name address website app orderAhead } }", id);
         graphQlTester.document(query)
                 .execute()
                 .path("findPlaceById")
