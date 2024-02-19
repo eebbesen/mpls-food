@@ -16,4 +16,12 @@ type Place {
     website: String
     app: Boolean
     orderAhead: Boolean
+    placeHours: [PlaceHour]
+}
+
+type PlaceHour {
+    id: ID
+    dayOfWeek: String
+    openTime: String
+    closeTime: String
 }
