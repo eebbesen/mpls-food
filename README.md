@@ -1,4 +1,10 @@
 # MPLS-FOOD
+![Qodana](https://github.com/eebbesen/mpls-food/actions/workflows/code_quality.yml/badge.svg)
+
+![reviewdog](https://github.com/eebbesen/mpls-food/actions/workflows/reviewdog.yml/badge.svg)
+
+![tests](https://github.com/eebbesen/mpls-food/actions/workflows/test.yml/badge.svg)
+
 
 Created with https://bootify.io.
 
