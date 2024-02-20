@@ -127,8 +127,7 @@ public class DayService {
         mapToEntity(dayDTO, day);
         dayRepository.save(day);
     }
-
-
+    
     @PreAuthorize("hasRole('ADMIN')")
     public void delete(final Long id) {
         dayRepository.deleteById(id);
