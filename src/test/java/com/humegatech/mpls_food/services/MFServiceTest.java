@@ -1,13 +1,7 @@
 package com.humegatech.mpls_food.services;
 
+import com.humegatech.mpls_food.repositories.*;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import com.humegatech.mpls_food.PlaceHourRepository;
-import com.humegatech.mpls_food.repositories.DayRepository;
-import com.humegatech.mpls_food.repositories.DealLogRepository;
-import com.humegatech.mpls_food.repositories.DealRepository;
-import com.humegatech.mpls_food.repositories.PlaceRepository;
-import com.humegatech.mpls_food.repositories.UploadRepository;
 
 class MFServiceTest {
     @MockBean
