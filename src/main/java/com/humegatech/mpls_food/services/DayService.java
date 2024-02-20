@@ -49,8 +49,10 @@ public class DayService {
         return days.stream()
                 .map(day -> mapToDTO(day, new DayDTO()))
                 .sorted(Comparator.comparing((DayDTO d) -> order.get(d.getDayOfWeek()))
-                        .thenComparing((DayDTO d) -> null == d.getStartTime() ? LocalTime.of(0, 0) : d.getStartTime())
-                        .thenComparing((DayDTO d) -> null == d.getEndTime() ? LocalTime.of(23, 59) : d.getEndTime())
+                        .thenComparing((DayDTO d) ->
+                                null == d.getStartTime() ? LocalTime.of(0, 0) : d.getStartTime())
+                        .thenComparing((DayDTO d) ->
+                                null == d.getEndTime() ? LocalTime.of(23, 59) : d.getEndTime())
                         .thenComparing(DayDTO::getPlaceName))
                 .toList();
     }
@@ -68,8 +70,10 @@ public class DayService {
                 .filter(ph -> ph.getDayOfWeek().equals(day.getDayOfWeek())).findFirst().orElse(null);
 
         return null != placeHour &&
-                (null != day.getDeal().getStartTime() && placeHour.getOpenTime().isBefore(day.getDeal().getStartTime()) ||
-                        null != day.getDeal().getEndTime() && placeHour.getCloseTime().isAfter(day.getDeal().getEndTime()));
+                (null != day.getDeal().getStartTime() &&
+                        placeHour.getOpenTime().isBefore(day.getDeal().getStartTime()) ||
+                        null != day.getDeal().getEndTime() &&
+                                placeHour.getCloseTime().isAfter(day.getDeal().getEndTime()));
     }
 
     private boolean isHappyHour(final Day day) {
@@ -127,7 +131,7 @@ public class DayService {
         mapToEntity(dayDTO, day);
         dayRepository.save(day);
     }
-    
+
     @PreAuthorize("hasRole('ADMIN')")
     public void delete(final Long id) {
         dayRepository.deleteById(id);

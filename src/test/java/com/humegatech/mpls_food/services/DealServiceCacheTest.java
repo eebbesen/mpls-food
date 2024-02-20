@@ -35,7 +35,8 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class DealServiceCacheTest extends MFServiceTest {
-    private static final CacheManager cacheManager = new ConcurrentMapCacheManager("allDeals", "singleDeal", "singleDealByPlaceId");
+    private static final CacheManager cacheManager =
+            new ConcurrentMapCacheManager("allDeals", "singleDeal", "singleDealByPlaceId");
     @Autowired
     private DealService service;
 
