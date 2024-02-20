@@ -24,30 +24,13 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class PlaceServiceCacheTest extends MFServiceTest {
+    private static final CacheManager cacheManager = new ConcurrentMapCacheManager("allPlaces", "singlePlace");
     @Autowired
     private PlaceService service;
-    private static final CacheManager cacheManager = new ConcurrentMapCacheManager("allPlaces", "singlePlace");
 
     @BeforeEach
     void setUp() {
-        Objects.requireNonNull(cacheManager.getCache("allPlaces")).clear();
-        Objects.requireNonNull(cacheManager.getCache("singlePlace")).clear();
-    }
-
-    @EnableCaching
-    @Configuration
-    public static class CachingTestConfig {
-
-        @Bean
-        public CacheManager cacheManager() {
-            return cacheManager;
-        }
-
-        @Bean
-        public PlaceService placeService(final PlaceRepository placeRepository) {
-            return new PlaceService(placeRepository);
-        }
-
+        cacheManager.getCacheNames().forEach(cn -> Objects.requireNonNull(cacheManager.getCache(cn)).clear());
     }
 
     @Test
@@ -80,6 +63,22 @@ class PlaceServiceCacheTest extends MFServiceTest {
         assertEquals(cachedPlaces.size(), 2);
         assertTrue(cachedPlaces.containsAll(foundPlaces));
         verifyNoMoreInteractions(placeRepository);
+    }
+
+    @EnableCaching
+    @Configuration
+    public static class CachingTestConfig {
+
+        @Bean
+        public CacheManager cacheManager() {
+            return cacheManager;
+        }
+
+        @Bean
+        public PlaceService placeService(final PlaceRepository placeRepository) {
+            return new PlaceService(placeRepository);
+        }
+
     }
 
 }
