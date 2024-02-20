@@ -1,17 +1,5 @@
 package com.humegatech.mpls_food.services;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.humegatech.mpls_food.controllers.DayController;
 import com.humegatech.mpls_food.domains.Day;
 import com.humegatech.mpls_food.domains.Deal;
@@ -20,6 +8,17 @@ import com.humegatech.mpls_food.models.DayDTO;
 import com.humegatech.mpls_food.repositories.DayRepository;
 import com.humegatech.mpls_food.repositories.DealRepository;
 import com.humegatech.mpls_food.util.MplsFoodUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class DayService {
@@ -65,12 +64,12 @@ public class DayService {
     }
 
     private boolean isTimeBoxed(final Day day) {
-        final PlaceHour placeHour =  day.getDeal().getPlace().getPlaceHours().stream()
+        final PlaceHour placeHour = day.getDeal().getPlace().getPlaceHours().stream()
                 .filter(ph -> ph.getDayOfWeek().equals(day.getDayOfWeek())).findFirst().orElse(null);
 
         return null != placeHour &&
-            (null != day.getDeal().getStartTime() && placeHour.getOpenTime().isBefore(day.getDeal().getStartTime()) ||
-             null != day.getDeal().getEndTime() && placeHour.getCloseTime().isAfter(day.getDeal().getEndTime()));
+                (null != day.getDeal().getStartTime() && placeHour.getOpenTime().isBefore(day.getDeal().getStartTime()) ||
+                        null != day.getDeal().getEndTime() && placeHour.getCloseTime().isAfter(day.getDeal().getEndTime()));
     }
 
     private boolean isHappyHour(final Day day) {

@@ -68,7 +68,6 @@ class PlaceServiceCacheTest extends MFServiceTest {
     @EnableCaching
     @Configuration
     public static class CachingTestConfig {
-
         @Bean
         public CacheManager cacheManager() {
             return cacheManager;
@@ -78,7 +77,6 @@ class PlaceServiceCacheTest extends MFServiceTest {
         public PlaceService placeService(final PlaceRepository placeRepository) {
             return new PlaceService(placeRepository);
         }
-
     }
 
 }
