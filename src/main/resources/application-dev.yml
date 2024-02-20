@@ -4,6 +4,9 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql: TRACE
+    org.springframework.cache: TRACE
+    org.springframework.boot.autoconfigure.cache: TRACE
+    javax.cache: TRACE
 
 spring:
   config:

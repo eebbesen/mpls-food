@@ -11,6 +11,7 @@ import com.humegatech.mpls_food.util.MplsFoodUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,6 @@ public class DealService {
         }
     }
 
-
     @PreAuthorize("hasRole('USER')")
     private static void addDay(final Deal deal, final DayOfWeek day) {
         if (null == deal.hasDay(day)) {
@@ -63,6 +63,7 @@ public class DealService {
     // Replacing '-' with '~' for the sorting because '~' is the last character alphabetically
     // and '-' is before all letters.
     // I prefer to display '-' so I'm taking the hit on the replacement
+    @Cacheable("allDeals")
     public List<DealDTO> findAll() {
         return dealRepository.findAll()
                 .stream()
@@ -77,6 +78,7 @@ public class DealService {
                 .toList();
     }
 
+    @Cacheable("singleDealByPlaceId")
     public List<DealDTO> findByPlaceId(final Long placeId) {
         return dealRepository.findByPlaceId(placeId)
                 .stream()
@@ -86,6 +88,7 @@ public class DealService {
                 .toList();
     }
 
+    @Cacheable("singleDeal")
     public DealDTO get(final Long id) {
         return dealRepository.findById(id)
                 .map(deal -> mapToDTO(deal, new DealDTO()))
