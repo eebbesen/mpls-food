@@ -58,7 +58,6 @@ class PlaceServiceTest extends MFServiceTest {
     @Test
     void testFindAll() {
         final List<Place> places = TestObjects.places();
-
         when(placeRepository.findAll(Sort.by("name"))).thenReturn(places);
 
         final List<Place> foundPlaces = service.findAll();

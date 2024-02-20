@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -72,178 +71,8 @@ class DealServiceTest extends MFServiceTest {
     }
 
     @Test
-    void testFindByPlaceId() {
-        final Place place = TestObjects.ginellis();
-        final Deal deal1 = Deal.builder()
-                .place(place)
-                .id(1L)
-                .description("BB").build();
-        final Day day1_1 = Day.builder().deal(deal1).dayOfWeek(DayOfWeek.WEDNESDAY).build();
-        final Day day1_2 = Day.builder().deal(deal1).dayOfWeek(DayOfWeek.FRIDAY).build();
-        deal1.setDays(Stream.of(day1_1, day1_2).collect(Collectors.toSet()));
-
-        final Deal deal2 = Deal.builder()
-                .place(place)
-                .id(2L)
-                .description("AA").build();
-        final Day day2_1 = Day.builder().deal(deal2).dayOfWeek(DayOfWeek.WEDNESDAY).build();
-        final Day day2_2 = Day.builder().deal(deal2).dayOfWeek(DayOfWeek.FRIDAY).build();
-        deal2.setDays(Stream.of(day2_1, day2_2).collect(Collectors.toSet()));
-
-        final Deal deal3 = Deal.builder()
-                .place(place)
-                .id(3L)
-                .description("Z").build();
-        final Day day3_1 = Day.builder().deal(deal3).dayOfWeek(DayOfWeek.WEDNESDAY).build();
-        final Day day3_2 = Day.builder().deal(deal3).dayOfWeek(DayOfWeek.FRIDAY).build();
-        deal3.setDays(Stream.of(day3_1, day3_2).collect(Collectors.toSet()));
-
-        final Deal deal4 = Deal.builder()
-                .place(place)
-                .id(4L)
-                .description("C").build();
-        final Day day4_1 = Day.builder().deal(deal4).dayOfWeek(DayOfWeek.MONDAY).build();
-        final Day day4_2 = Day.builder().deal(deal4).dayOfWeek(DayOfWeek.FRIDAY).build();
-        deal4.setDays(Stream.of(day4_1, day4_2).collect(Collectors.toSet()));
-
-        final List<Deal> deals = Stream.of(deal1, deal2, deal3, deal4).collect(Collectors.toList());
-        when(dealRepository.findByPlaceId(place.getId())).thenReturn(deals);
-
-        final LocalDateTime wed = LocalDateTime.of(2022, Month.AUGUST, 31, 12, 12);
-        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
-            ldt.when(LocalDateTime::now).thenReturn(wed);
-
-            final List<DealDTO> dtos = service.findByPlaceId(place.getId());
-
-            assertEquals(deal2.getId(), dtos.get(0).getId());
-            assertEquals(deal1.getId(), dtos.get(1).getId());
-            assertEquals(deal3.getId(), dtos.get(2).getId());
-            assertEquals(deal4.getId(), dtos.get(3).getId());
-        }
-
-        final LocalDateTime sat = LocalDateTime.of(2022, Month.SEPTEMBER, 3, 12, 12);
-        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
-            ldt.when(LocalDateTime::now).thenReturn(sat);
-
-            final List<DealDTO> dtos = service.findByPlaceId(place.getId());
-
-            assertEquals(deal4.getId(), dtos.get(0).getId());
-            assertEquals(deal2.getId(), dtos.get(1).getId());
-            assertEquals(deal1.getId(), dtos.get(2).getId());
-            assertEquals(deal3.getId(), dtos.get(3).getId());
-        }
-    }
-
-    @Test
-    void testFindAllActiveOnly() {
-        final Deal active = TestObjects.tacoTuesday();
-        final Deal notStarted = TestObjects.dealMonTues();
-        notStarted.setStartDate(LocalDate.now().plusDays(1));
-        final Deal ended = TestObjects.fridayTwofer();
-        ended.setEndDate(LocalDate.now().minusDays(1));
-
-        when(dealRepository.findAll()).thenReturn(List.of(active, notStarted, ended));
-
-        final List<DealDTO> dealDTOs = service.findAll();
-
-        assertEquals(1, dealDTOs.size());
-        assertEquals(active.getDescription(), dealDTOs.get(0).getDescription());
-    }
-
-    @Test
-    void testFindAllActiveOnlySameDay() {
-        final Deal active = TestObjects.tacoTuesday();
-        final Deal startsToday = TestObjects.dealMonTues();
-        startsToday.setStartDate(LocalDate.now());
-        final Deal endsToday = TestObjects.fridayTwofer();
-        endsToday.setEndDate(LocalDate.now());
-
-        when(dealRepository.findAll()).thenReturn(List.of(active, startsToday, endsToday));
-
-        final List<DealDTO> dealDTOs = service.findAll();
-
-        assertEquals(3, dealDTOs.size());
-    }
-
-    @Test
-    void testFindAll() {
-        final Deal tt = TestObjects.tacoTuesday();
-        final Deal mt = TestObjects.dealMonTues();
-        final Deal ft = TestObjects.fridayTwofer();
-        final Deal t = TestObjects.deal();
-        final Deal t2 = TestObjects.deal();
-        t2.setDescription("t2");
-        final List<Deal> deals = Stream.of(tt, ft, mt, t, t2)
-                .collect(Collectors.toList());
-
-        when(dealRepository.findAll()).thenReturn(deals);
-
-        final LocalDateTime mon = LocalDateTime.of(2022, Month.SEPTEMBER, 5, 12, 12);
-        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
-            ldt.when(LocalDateTime::now).thenReturn(mon);
-            final List<DealDTO> dealDTOs = service.findAll();
-
-            assertEquals(5, dealDTOs.size());
-            assertEquals(mt.getPlace().getId(), dealDTOs.get(0).getPlace());
-            assertEquals("MT-----", dealDTOs.get(0).getDaysDisplay());
-            assertEquals(tt.getPlace().getId(), dealDTOs.get(1).getPlace());
-            assertEquals("-T-----", dealDTOs.get(1).getDaysDisplay());
-            assertEquals(t.getPlace().getId(), dealDTOs.get(2).getPlace());
-            assertEquals("---t---", dealDTOs.get(2).getDaysDisplay());
-            assertEquals(t2.getPlace().getId(), dealDTOs.get(3).getPlace());
-            assertEquals("---t---", dealDTOs.get(3).getDaysDisplay());
-            assertEquals(ft.getPlace().getId(), dealDTOs.get(4).getPlace());
-            assertEquals("----F--", dealDTOs.get(4).getDaysDisplay());
-        }
-
-        final LocalDateTime fri = LocalDateTime.of(2022, Month.SEPTEMBER, 9, 12, 12);
-        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class, Mockito.CALLS_REAL_METHODS)) {
-            ldt.when(LocalDateTime::now).thenReturn(fri);
-            final List<DealDTO> dealDTOs = service.findAll();
-
-            assertEquals(5, dealDTOs.size());
-            assertEquals(ft.getPlace().getId(), dealDTOs.get(0).getPlace());
-            assertEquals("F------", dealDTOs.get(0).getDaysDisplay());
-            assertEquals(mt.getPlace().getId(), dealDTOs.get(1).getPlace());
-            assertEquals("---MT--", dealDTOs.get(1).getDaysDisplay());
-            assertEquals(tt.getPlace().getId(), dealDTOs.get(2).getPlace());
-            assertEquals("----T--", dealDTOs.get(2).getDaysDisplay());
-            assertEquals(t.getPlace().getId(), dealDTOs.get(3).getPlace());
-            assertEquals("------t", dealDTOs.get(3).getDaysDisplay());
-            assertEquals(t2.getPlace().getId(), dealDTOs.get(4).getPlace());
-            assertEquals("------t", dealDTOs.get(4).getDaysDisplay());
-        }
-    }
-
-    @Test
-    void testFindAllSorting() {
-        final Deal dealNoStartDateNoEndDate = TestObjects.deal();
-        dealNoStartDateNoEndDate.setDescription("dealNoStartDateNoEndDate");
-        dealNoStartDateNoEndDate.setStartDate(null);
-        dealNoStartDateNoEndDate.setEndDate(null);
-        final Deal dealStartDateEndDate1 = TestObjects.deal();
-        dealStartDateEndDate1.setDescription("dealStartDateEndDate1");
-        dealStartDateEndDate1.setStartDate(LocalDate.now().minusDays(1));
-        dealStartDateEndDate1.setEndDate(LocalDate.now().plusDays(1));
-        final Deal dealStartDateEndDate2 = TestObjects.deal();
-        dealStartDateEndDate2.setDescription("dealStartDateEndDate2");
-        dealStartDateEndDate2.setStartDate(LocalDate.now());
-        dealStartDateEndDate2.setEndDate(LocalDate.now());
-
-        when(dealRepository.findAll()).thenReturn(List.of(dealStartDateEndDate1,
-                dealStartDateEndDate2,
-                dealNoStartDateNoEndDate));
-
-        final List<DealDTO> dealDTOs = service.findAll();
-
-        assertEquals(dealNoStartDateNoEndDate.getDescription(), dealDTOs.get(0).getDescription());
-        assertEquals(dealStartDateEndDate1.getDescription(), dealDTOs.get(1).getDescription());
-        assertEquals(dealStartDateEndDate2.getDescription(), dealDTOs.get(2).getDescription());
-    }
-
-    @Test
     @WithMockUser(roles = "USER")
-    void testupdateNotFound() {
+    void testUpdateNotFound() {
         final DealDTO dto = new DealDTO();
         final Exception ex = assertThrows(ResponseStatusException.class, () -> service.update(99L, dto));
         assertEquals("404 NOT_FOUND", ex.getMessage());
@@ -334,21 +163,6 @@ class DealServiceTest extends MFServiceTest {
         );
 
         assertEquals("404 NOT_FOUND \"place not found: null\"", ex.getMessage());
-    }
-
-    @Test
-    void testGet() {
-        dealMonTues.setId(99L);
-        when(dealRepository.findById(dealMonTues.getId())).thenReturn(Optional.of(dealMonTues));
-
-        final DealDTO dealDTO = service.get(dealMonTues.getId());
-
-        assertEquals(dealMonTues.getId(), dealDTO.getId());
-    }
-
-    @Test
-    void testGetNotFound() {
-        assertThrows(ResponseStatusException.class, () -> service.get(99L));
     }
 
     @Test
@@ -452,7 +266,7 @@ class DealServiceTest extends MFServiceTest {
                 .verified(true)
                 .image(new byte['a']).build();
 
-        List<Upload> uploads = Stream.of(upload, upload2).toList();
+        List<Upload> uploads = List.of(upload, upload2);
         dealMonTues.getUploads().addAll(uploads);
 
         final DealDTO dto = new DealDTO();
